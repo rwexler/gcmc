@@ -9,7 +9,7 @@ import os
 import numpy as np
 
 xsf_filename = sys.argv[1] # read xsf filename from command line
-el_list_filename = sys.argv[2] # read element list filename
+el_filename = sys.argv[2] # read element list filename
 
 # set simulation parameters
 niter = 1500
@@ -24,20 +24,11 @@ mu_list = [-1579.40 - 3, -428.07 - 3] # ti, o
 xsf = xsf_info(xsf_filename) # instantiate xsf_info objects
 xsf_old = xsf_info(xsf_filename)
 xsf_new = xsf_info(xsf_filename)
-xsf.get_lat_vec() # get lattice vectors
-xsf.get_at_coord() # get atomic coordinates
-xsf.get_el_list() # get list of element symbols
-xsf.get_num_each_el() # get number of each element
-xsf.get_c_min_max(buf_len) # get c values within which atom can be added
-xsf.get_vol() # get volume of variable composition region
-xsf.get_ind_rem_at() # get indices of removable atoms
+xsf.pop_attr(buf_len) # populate attributes in xsf_info object
 
+# get element info
 el = el_info(el_filename) # instantiates el_info object
-el.get_el_sym() # get element symbols
-el.get_at_wt() # get atomic weights
-el.get_therm_db(T_exc) # get thermal de Broglie wavelengths
-el.get_ind_to_el_dict() # get index-to-element symbol dictionary
-el.get_el_to_ind_dict() # get element symbol-to-index dictionary
+el.pop_attr(T_exc) # populate attributes in el_info object
 
 # instantiate mc object
 mc_test = mc(T_move, T_exc, max_disp, xsf)

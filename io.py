@@ -129,6 +129,16 @@ class xsf_info(object) :
         self.vol = np.dot(np.cross(self.lat_vec[0], self.lat_vec[1]), (self.c_max - self.c_min) * c_unit)
         return self.vol
 
+    def pop_attr(self, buf_len) :
+        """populate attributes"""
+        self.get_lat_vec()
+        self.get_at_coord()
+        self.get_el_list()
+        self.get_num_each_el()
+        self.get_c_min_max(buf_len)
+        self.get_vol()
+        self.get_ind_rem_at()
+
 class qe_out_info(object) :
     """class for representing a QE output file
 
@@ -299,3 +309,11 @@ class el_info(object) :
                                                    'at_wt' : self.at_wt[i],
                                                    'therm_db' : self.therm_db[i]}
         return self.el_to_ind_dict
+
+    def pop_attr(self, T_exc) :
+        """populate attributes"""
+        self.get_el_sym()
+        self.get_at_wt()
+        self.get_therm_db(T_exc)
+        self.get_ind_to_el_dict()
+        self.get_el_to_ind_dict()
