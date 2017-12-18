@@ -40,11 +40,7 @@ log_file = init_log('log.dat') # initialize log file
 axsf_file = init_axsf('coord.axsf', niter, xsf) # initialize axsf file
 for i in range(niter) :
     # makes a copy of xsf attributes called xsf_old
-    xsf_old.at_coord = copy.copy(xsf.at_coord)
-    xsf_old.ind_rem_at = copy.copy(xsf.ind_rem_at)
-    xsf_old.el_list = copy.copy(xsf.el_list)
-    xsf_old.num_each_el = copy.copy(xsf.num_each_el)
-    xsf_old.num_at = copy.copy(xsf.num_at)
+    xsf_old.copy(xsf)
 
     # attempt uvt action and store xsf attributes in xsf_new
     xsf_new.at_coord, \
@@ -54,11 +50,7 @@ for i in range(niter) :
         xsf_new.num_at = mc_test.uvt_new_structure_np(xsf, el)
     
     # copy xsf_new attributes to xsf, try to figure out a way around this
-    xsf.at_coord = copy.copy(xsf_new.at_coord)
-    xsf.ind_rem_at = copy.copy(xsf_new.ind_rem_at)
-    xsf.el_list = copy.copy(xsf_new.el_list)
-    xsf.num_each_el = copy.copy(xsf_new.num_each_el)
-    xsf.num_at = copy.copy(xsf_new.num_at)
+    xsf.copy(xsf_new)
 
     # make input file
     make_qe_in('qe.in', xsf)
@@ -84,11 +76,7 @@ for i in range(niter) :
 
     # if step not accepted, copy attributes from xsf_old to xsf
     if accept == 0 :
-        xsf.at_coord = copy.copy(xsf_old.at_coord)
-        xsf.ind_rem_at = copy.copy(xsf_old.ind_rem_at)
-        xsf.el_list = copy.copy(xsf_old.el_list)
-        xsf.num_each_el = copy.copy(xsf_old.num_each_el)
-        xsf.num_at = copy.copy(xsf_old.num_at)
+        xsf.copy(xsf_old)
 
     # write energies, number of accepted steps, and acceptance rate to log file
     upd_log(log_file, i, free_en, mc_test)

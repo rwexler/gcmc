@@ -2,6 +2,7 @@
 
 import numpy as np
 import os
+import copy
 
 # global variable definitions
 h = 6.626070040e-34 # j * s
@@ -138,6 +139,15 @@ class xsf_info(object) :
         self.get_c_min_max(buf_len)
         self.get_vol()
         self.get_ind_rem_at()
+
+    def copy(self, xsf_new) :
+        """copy attributes from xsf_new to this xsf"""
+        self.at_coord = copy.copy(xsf_new.at_coord)
+        self.ind_rem_at = copy.copy(xsf_new.ind_rem_at)
+        self.el_list = copy.copy(xsf_new.el_list)
+        self.num_each_el = copy.copy(xsf_new.num_each_el)
+        self.num_at = copy.copy(xsf_new.num_at)
+
 
 class qe_out_info(object) :
     """class for representing a QE output file
