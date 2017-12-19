@@ -66,7 +66,7 @@ for i in range(niter) :
     new_en = qe_out.get_final_en() * ry_ev # convert final energy from ry to ev
 
     # update T
-    mc_test.update_T(T_move, T_exc, i, niter)
+    mc_test.update_T_exp(T_move, i, 5000)
 
     # decide whether or not to accept uvt action, 
     accept = mc_test.uvt_mc(new_en, xsf, el, mu_list)

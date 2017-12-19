@@ -231,8 +231,11 @@ class mc :
 		return free_g_new, prob_acc
 
 	# Adjust T_exc
-	def update_T(self, T1, T2, iter, tot_iter) : ##### adjust to change temperature for moving rather than exchanging.
-		self.T = T1 # This is for fixing temperature case
+	def update_T_linear(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
+		self.T = T1 + float(1 - T1) / period * (iter % period)
+
+	def update_T_exp(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
+		self.T = T1 * (1 / float(T1))**( float(iter % period) / (period-1))
 
 	# Grand canonical acceptance condition, return 1 if accepted, 0 otherwise
 	def uvt_mc(self, en, xsf, el, mu_list) :
