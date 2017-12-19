@@ -31,7 +31,7 @@ class mc :
 		self.T = T                # System temperature # RBW: change to T_move
 		self.T_exc = T2           # Temperature for exchange atoms # RBW : change to T_exc
 		self.pace = pace          # Max displacement # RBW : change to curr_max_disp
-		self.max_pace = 0.2       # Max displacement limit # RBW : change to max_disp
+		self.max_pace = 0.3       # Max displacement limit # RBW : change to max_disp
 		self.nvt_run_cnt = 1      # Canonical ensemble running count
 		self.uvt_run_cnt = 1      # Grand canonical ensemble running count
 		self.check_acc = 25       # Max displacement update rate
@@ -95,9 +95,9 @@ class mc :
 	"""
 	def uvt_new_structure(self,xsf,el) : # el is of el_info class
 		if len(xsf.ind_rem_at) == 0 :
-			cndt = np.random.rand() * 0.75                         # avoid removing from void removable list
+			cndt = np.random.rand() * 0.5 ##### modified from 0.75 to 0.5 to always run NVT                         # avoid removing from void removable list
 		else :
-			cndt = np.random.rand()
+			cndt = np.random.rand() * 0.5 ##### multiplied by 0.5 to always run NVT
 		if cndt < 0.50 :    # move atoms
 			self.uvt_act = 0
 			self.uvt_exc_el = 0
@@ -231,8 +231,8 @@ class mc :
 		return free_g_new, prob_acc
 
 	# Adjust T_exc
-	def update_T_exc(self, T1, T2, iter, tot_iter) :
-		self.T_exc = T2 + float(iter) / tot_iter * (T1 - T2)
+	def update_T(self, T1, T2, iter, tot_iter) : ##### adjust to change temperature for moving rather than exchanging.
+		self.T = T1 # This is for fixing temperature case
 
 	# Grand canonical acceptance condition, return 1 if accepted, 0 otherwise
 	def uvt_mc(self, en, xsf, el, mu_list) :

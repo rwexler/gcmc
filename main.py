@@ -12,7 +12,7 @@ xsf_filename = sys.argv[1] # read xsf filename from command line
 el_filename = sys.argv[2] # read element list filename
 
 # set simulation parameters
-niter = 1500
+niter = 50000
 max_disp = 0.05 # angstroms
 T_move = 1 # kelvin
 T_exc = T_move # temperature for exchange steps, use with caution
@@ -65,8 +65,8 @@ for i in range(niter) :
     qe_out = qe_out_info('qe.out')
     new_en = qe_out.get_final_en() * ry_ev # convert final energy from ry to ev
 
-    # update T_exc
-    mc_test.update_T_exc(T_move, T_exc, i, niter)
+    # update T
+    mc_test.update_T(T_move, T_exc, i, niter)
 
     # decide whether or not to accept uvt action, 
     accept = mc_test.uvt_mc(new_en, xsf, el, mu_list)
