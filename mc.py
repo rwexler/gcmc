@@ -237,6 +237,9 @@ class mc :
 	def update_T_exp(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
 		self.T = T1 * (1 / float(T1))**( float(iter % period) / (period-1))
 
+	def update_T_quadratic(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
+		self.T = float(T1 - 1) / (period-1)**2 * (period - iter%period - 1)**2 + 1
+
 	# Grand canonical acceptance condition, return 1 if accepted, 0 otherwise
 	def uvt_mc(self, en, xsf, el, mu_list) :
 		self.uvt_run_cnt += 1
