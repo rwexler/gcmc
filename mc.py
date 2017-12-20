@@ -93,19 +93,30 @@ class mc :
 		atoms could only be added to / removed from the top of 
 		the initial geometry.
 	"""
-	def uvt_new_structure(self,xsf,el) : # el is of el_info class
-		if len(xsf.ind_rem_at) == 0 :
-			cndt = np.random.rand() * 0.5 ##### modified from 0.75 to 0.5 to always run NVT                         # avoid removing from void removable list
-		else :
-			cndt = np.random.rand() * 0.5 ##### multiplied by 0.5 to always run NVT
-		if cndt < 0.50 :    # move atoms
+	def uvt_new_structure(self,xsf,el,act_p) : # el is of el_info class
+		# act_p defines probablity of taking different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
+
+		if len(xsf.ind_rem_at) == 0 : # if no atom is removable, set p_remove = 0
+			act_p[3] = 0
+		# normalize act_p, and make it accumalate probablity
+		act_p = act_p / np.sum(act_p)
+		act_p[1] += act_p[0]
+		act_p[2] += act_p[1]
+		act_p[3] += act_p[2]
+		# generate a random number between 0 and 1
+		print act_p
+		exit()
+		cndt = np.random.rand()
+		if cndt < act_p[0] :    # move atoms
 			self.uvt_act = 0
 			self.uvt_exc_el = 0
 			self.rand_mv(xsf)
 			for i, ind in enumerate(self.mv_ind) :
 				xsf.at_coord[ind, :] += self.mv_vec[i, :]
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
-		elif cndt < 0.75 : # add one atom
+		elif cndt < act_p[1] : # swap atoms
+			return 0
+		elif cndt < act_p[2] : # add one atom
 			dis = 0
 			trial = 0
                         self.uvt_act = 1

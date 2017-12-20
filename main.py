@@ -19,6 +19,7 @@ T_exc = T_move # temperature for exchange steps, use with caution
 ry_ev = 13.605693009
 buf_len = 2.0 # length above surface within which atoms can be added
 mu_list = [0, 0, 0] # sr, ti, o
+act_p = np.array([0.5,0.5,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
 
 # get info from xsf file
 xsf = xsf_info(xsf_filename) # instantiate xsf_info objects
@@ -47,7 +48,7 @@ for i in range(niter) :
         xsf_new.ind_rem_at, \
         xsf_new.el_list, \
         xsf_new.num_each_el, \
-        xsf_new.num_at = mc_test.uvt_new_structure(xsf, el) 
+        xsf_new.num_at = mc_test.uvt_new_structure(xsf, el, act_p) 
     
     # copy xsf_new attributes to xsf, try to figure out a way around this
     xsf.copy(xsf_new)
