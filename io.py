@@ -8,6 +8,7 @@ import copy
 h = 6.626070040e-34 # j * s
 kb = 1.38064852e-23 # j / k
 amu_kg = 1.660539040e-27 # kg / amu
+ry_ev = 13.605693009 # ev / ry
 
 class xsf_info(object) :
     """class for representing an xsf file
@@ -158,11 +159,14 @@ class qe_out_info(object) :
         QE output filename
     final_en : float
         final energy in Ry
+    forces : num_at x 3 array of floats
+        forces
     """
     
     def __init__(self, filename) :
         self.filename = filename
         self.final_en = 0
+        self.forces = []
 
     def get_final_en(self) :
         """get final energy attribute"""
@@ -172,6 +176,15 @@ class qe_out_info(object) :
                     self.final_en = np.asarray(line.split())[4].astype('float')
                     break
         return self.final_en
+
+    def get_forces(self) :
+        """get forces attribute"""
+        with open(self.filename, 'r') as f :
+            for line in f :
+                if '  force =' in line :
+                    self.forces.append(line.split()[6:9])
+        self.forces = np.array(self.forces).astype(float)
+        return self.forces
 
 def make_qe_in(filename, xsf) :
     """function for making QE input file"""
@@ -235,7 +248,7 @@ def init_axsf(filename, niter, xsf) :
                          str(xsf.lat_vec[row, 2]) + '\n')
     return axsf_file
 
-def upd_axsf(axsf_file, iter, xsf) :
+def upd_axsf(axsf_file, iter, xsf, forces) :
     """function for updating axsf file"""
     axsf_file.write('PRIMCOORD ' + str(iter + 1) + '\n')
     axsf_file.write(str(xsf.num_at) + ' 1\n')
@@ -243,7 +256,10 @@ def upd_axsf(axsf_file, iter, xsf) :
         axsf_file.write(xsf.el_list[row] + ' ' +
                         str(xsf.at_coord[row, 0]) + ' ' +
                         str(xsf.at_coord[row, 1]) + ' ' +
-                        str(xsf.at_coord[row, 2]) + '\n')
+                        str(xsf.at_coord[row, 2]) + ' ' +
+                        str(forces[row, 0]) + ' ' +
+                        str(forces[row, 1]) + ' ' +
+                        str(forces[row, 2]) + '\n')
     axsf_file.flush()
 
 class el_info(object) :

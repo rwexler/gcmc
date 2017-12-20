@@ -17,6 +17,7 @@ max_disp = 0.05 # angstroms
 T_move = 1 # kelvin
 T_exc = T_move # temperature for exchange steps, use with caution
 ry_ev = 13.605693009
+bohr_ang = 0.52917721067
 buf_len = 2.0 # length above surface within which atoms can be added
 mu_list = [0, 0, 0] # sr, ti, o
 act_p = np.array([0.5,0.5,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
@@ -65,6 +66,7 @@ for i in range(niter) :
         os.system('mpiexec.hydra -np 36 ../bin/pw.x -i qe.in > qe.out')
     qe_out = qe_out_info('qe.out')
     new_en = qe_out.get_final_en() * ry_ev # convert final energy from ry to ev
+    forces = qe_out.get_forces() * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
 
     # update T
     mc_test.update_T_const(T_move, i, 3000)
@@ -83,7 +85,7 @@ for i in range(niter) :
     upd_log(log_file, i, free_en, mc_test)
 
     # write atomic coordinates to axsf file
-    upd_axsf(axsf_file, i, xsf)
+    upd_axsf(axsf_file, i, xsf, forces)
 
 log_file.close()
 axsf_file.close()
