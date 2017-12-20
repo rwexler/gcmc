@@ -231,6 +231,9 @@ class mc :
 		return free_g_new, prob_acc
 
 	# Adjust T_exc
+	def update_T_const(self, T1, iter, period) :
+		self.T = T1
+
 	def update_T_linear(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
 		self.T = T1 + float(1 - T1) / period * (iter % period)
 
