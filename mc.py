@@ -264,7 +264,7 @@ class mc :
 		else : 
 			print 'Wrong action number for get_free_g_p! Undefined action!'
 			exit()
-		prob_acc = np.minimum(1, exp_coef * (xsf.volume / exc_therm_db**3 / exc_el_num )**self.uvt_act_eff)
+		prob_acc = np.minimum(1, exp_coef * (xsf.vol / exc_therm_db**3 / exc_el_num )**self.uvt_act_eff)
 		return free_g_new, prob_acc
 
 	# Adjust T_exc
