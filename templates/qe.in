@@ -26,7 +26,7 @@ Ti 47.88   ti.upf
 Sr 87.62   sr.upf
 
 K_POINTS (automatic)
-2 2 1 1 1 0
+1 2 1 0 1 0
 
 CELL_PARAMETERS (angstrom)
 
