@@ -287,6 +287,10 @@ class el_info(object) :
         list of element symbols
     at_wt : numpy array of float
         atomic weights
+    therm_db : numpy array of float
+        thermal de broglie wavelengths
+    pref_coord : numpy array of float
+        preferred coordination numbers
     ind_to_el_dict : dict of int keys, and str and float values
         maps element index to symbol, atomic weight, and thermal de broglie wavelength
     el_to_ind_dict : dict of str keys, and int and float values
@@ -304,6 +308,7 @@ class el_info(object) :
         self.el_sym = []
         self.at_wt = np.zeros((self.num_el, ))
         self.therm_db = np.zeros((self.num_el, ))
+        self.pref_coord = np.zeros((self.num_el, ))
         self.ind_to_el_dict = {}
         self.el_to_ind_dict = {}
 
@@ -322,9 +327,16 @@ class el_info(object) :
         return self.at_wt
 
     def get_therm_db(self, T) :
-        """function for getting thermal de broglie wavelength"""
+        """function for getting thermal de broglie wavelengths"""
         self.therm_db = np.sqrt(h ** 2 / (2 * np.pi * self.at_wt * kb * T)) * 1e10
         return self.therm_db
+
+    def get_pref_coord(self) :
+        """function for getting preferred coordination numbers"""
+        with open(self.filename, 'r') as f :
+            for row, line in enumerate(f) :
+                self.pref_coord[row] = np.asarray(line.split())[3].astype('int')
+        return self.pref_coord
 
     def get_ind_to_el_dict(self) :
         """function for making dictionary of
@@ -334,7 +346,8 @@ class el_info(object) :
         for i in range(self.num_el) :
             self.ind_to_el_dict[i] = {'el_sym' : self.el_sym[i],
                                       'at_wt' : self.at_wt[i],
-                                      'therm_db' : self.therm_db[i]}
+                                      'therm_db' : self.therm_db[i],
+                                      'pref_coord' : self.pref_coord[i]}
         return self.ind_to_el_dict
 
     def get_el_to_ind_dict(self) :
@@ -345,7 +358,8 @@ class el_info(object) :
         for i in range(self.num_el) :
             self.el_to_ind_dict[self.el_sym[i]] = {'el_ind' : i,
                                                    'at_wt' : self.at_wt[i],
-                                                   'therm_db' : self.therm_db[i]}
+                                                   'therm_db' : self.therm_db[i],
+                                                   'pref_coord' : self.pref_coord[i]}
         return self.el_to_ind_dict
 
     def pop_attr(self, T_exc) :
@@ -353,5 +367,6 @@ class el_info(object) :
         self.get_el_sym()
         self.get_at_wt()
         self.get_therm_db(T_exc)
+        self.get_pref_coord()
         self.get_ind_to_el_dict()
         self.get_el_to_ind_dict()
