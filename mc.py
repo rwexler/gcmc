@@ -97,12 +97,19 @@ class mc :
 		atoms could only be added to / removed from the top of 
 		the initial geometry.
 	"""
-	def uvt_new_structure(self,xsf,el,act_p) : # el is of el_info class
-		# act_p defines probability for different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
-		# if no atom is removable, set p_remove = 0
-		if len(xsf.ind_rem_at) == 0 : 
+	def uvt_new_structure(self,xsf,el,act_p) : # el is of el_info class # act_p defines probability for different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
+		# adjust act_p
+		# avoid swapping action if only one element is removable(swappable)
+		el_swap_num = 0
+		for i in range(len(xsf.ind_swap_at)) :
+			if len(xsf.ind_swap_at[i]) > 0 :
+				el_swap_num += 1
+		if el_swap_num <= 1 :
 			act_p[1] = 0
-			act_p[3] = 0
+		#### avoid adding action if too many atoms
+		# avoid removing action if no removable atoms
+		if len(xsf.ind_rem_at) == 0 : 
+			act_p[4] = 0
 		# normalize act_p, and make it accumalate probability
 		act_p = act_p / np.sum(act_p)
 		for i in range(len(act_p) - 1) :
@@ -136,9 +143,18 @@ class mc :
 			xsf.at_coord[swap_ind_1, :] = copy.copy(xsf.at_coord[swap_ind_2, :])
 			xsf.at_coord[swap_ind_2, :] = copy.copy(coord_tmp)
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
+		# make atom jump
+		elif cndt < atc_p[2]:
+			jump_ind = np.random.choice('choosing list', 1, p='weight array')
+			for i in int(xsf.vol * 1000) : 
+				jump_vec = np.zeros(3)
+				jump_vec += np.random.rand() * xsf.lat_vec[0]
+				jump_vec += np.random.rand() * xsf.lat_vec[1]
+				jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
+				jump_
 		# add one atom
 		#### Need to update xsf.ind_swap_at, and return xsf.ind_swap_at
-		elif cndt < act_p[2] : 
+		elif cndt < act_p[3] : 
 			dis = 0
 			trial = 0
 			self.uvt_act = 1
