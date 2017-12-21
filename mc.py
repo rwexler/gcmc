@@ -28,35 +28,35 @@ class mc :
 	"""
 
 	def __init__(self, T, T2, pace, xsf) :
-		self.T = T                # System temperature # RBW: change to T_move
-		self.T_exc = T2           # Temperature for exchange atoms # RBW : change to T_exc
-		self.pace = pace          # Max displacement # RBW : change to curr_max_disp
-		self.max_pace = 0.3       # Max displacement limit # RBW : change to max_disp
-		self.nvt_run_cnt = 1      # Canonical ensemble running count
-		self.uvt_run_cnt = 1      # Grand canonical ensemble running count
-		self.check_acc = 25       # Max displacement update rate
-		self.acc = 0              # Number of acceptance
-		self.mv_num = 0           # Number of atoms to move
-		self.mv_ind = 0           # Indices of atoms to move
-		self.mv_vec = 0           # Displacement of atoms
-		self.old_coord = 0        # Coordinates in last iteration
-		self.new_coord = 0        # Coordinates in this iteration
-		self.ad_vec = 0           # Coordinate of the added atom
-		self.en_curr = 100          # Energy in this (previous) iteration
-		self.g_curr = 100           # Free energy in this (previous) iteration
-		self.en_low = 100           # Lowest energy
-		self.g_low = 100            # Lowest free energy?
-		self.coord_opt = 0        # Coordinates associated with the lowest energy
+		self.T = T                 # System temperature # RBW: change to T_move
+		self.T_exc = T2            # Temperature for exchange atoms # RBW : change to T_exc
+		self.pace = pace           # Max displacement # RBW : change to curr_max_disp
+		self.max_pace = 0.3        # Max displacement limit # RBW : change to max_disp
+		self.nvt_run_cnt = 1       # Canonical ensemble running count
+		self.uvt_run_cnt = 1       # Grand canonical ensemble running count
+		self.check_acc = 25        # Max displacement update rate
+		self.acc = 0               # Number of acceptance
+		self.mv_num = 0            # Number of atoms to move
+		self.mv_ind = 0            # Indices of atoms to move
+		self.mv_vec = 0            # Displacement of atoms
+		self.old_coord = 0         # Coordinates in last iteration
+		self.new_coord = 0         # Coordinates in this iteration
+		self.ad_vec = 0            # Coordinate of the added atom
+		self.en_curr = 100         # Energy in this (previous) iteration
+		self.g_curr = 100          # Free energy in this (previous) iteration
+		self.en_low = 100          # Lowest energy
+		self.g_low = 100           # Lowest free energy?
+		self.coord_opt = 0         # Coordinates associated with the lowest energy
 		self.xsf_opt_at_coord = copy.copy(xsf.at_coord)
 		self.xsf_opt_ind_rem_at = copy.copy(xsf.ind_rem_at)
 		self.xsf_opt_el_list = copy.copy(xsf.el_list)
 		self.xsf_opt_num_each_el = copy.copy(xsf.num_each_el)
 		self.xsf_opt_num_at = xsf.num_at
-		self.uvt_rm_ind = 0       # Grand canonical ensemble, index of the atom to be removed
-		self.uvt_ad_ind = 0       # Grand canonical ensemble, index of the atom to be added
-		self.uvt_act = 0          # Grand canonical ensemble actions, 0: move atom, 1: add atom, -1: remove atom, 2: swap atoms
-		self.uvt_act_eff = 0      # Grand canonical ensemble effective actions, could only be 0, 1, -1
-		self.uvt_exc_el = 0       # Grand canonical ensemble, index of the element to be exchanged
+		self.uvt_rm_ind = 0        # Grand canonical ensemble, index of the atom to be removed
+		self.uvt_ad_ind = 0        # Grand canonical ensemble, index of the atom to be added
+		self.uvt_act = 0           # Grand canonical ensemble actions, 0: move atom, 1: add atom, -1: remove atom, 2: swap atoms
+		self.uvt_act_eff = 0       # Grand canonical ensemble effective actions, could only be 0, 1, -1
+		self.uvt_exc_el = 0        # Grand canonical ensemble, index of the element to be exchanged
 
 	# determine atoms to mv and step 
 	def rand_mv(self, xsf) : # xsf is of xsf_info class
@@ -96,8 +96,8 @@ class mc :
 	"""
 	def uvt_new_structure(self,xsf,el,act_p) : # el is of el_info class
 		# act_p defines probability for different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
-
-		if len(xsf.ind_rem_at) == 0 : # if no atom is removable, set p_remove = 0
+		# if no atom is removable, set p_remove = 0
+		if len(xsf.ind_rem_at) == 0 : 
 			act_p[1] = 0
 			act_p[3] = 0
 		# normalize act_p, and make it accumalate probability
@@ -107,7 +107,8 @@ class mc :
 		act_p[3] += act_p[2]
 		# generate a random number between 0 and 1
 		cndt = np.random.rand()
-		if cndt < act_p[0] :    # move atoms
+		# move atoms
+		if cndt < act_p[0] :    
 			self.uvt_act = 0
 			self.uvt_act_eff = 0
 			self.uvt_exc_el = 0
@@ -115,18 +116,26 @@ class mc :
 			for i, ind in enumerate(self.mv_ind) :
 				xsf.at_coord[ind, :] += self.mv_vec[i, :]
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
-		elif cndt < act_p[1] : # swap atoms
+		# swap atoms
+		elif cndt < act_p[1] : 
 			self.uvt_act = 2
 			self.uvt_act_eff = 0
-			swap_ind1 = random.choice(xsf.ind_rem_at)               # index of atom to be swapped 1
-			swap_ind2 = random.choice(xsf.ind_rem_at)               # index of atom to be swapped 2
+			# element to be swapped, ### Need a check for number of atoms of each element. Also, need to find a way of avoiding unremovable atoms
+			swap_el_1 = np.random.randint(el.num_el)
+			swap_el_2 = np.random.randint(el.num_el)
+			while swap_el_1 == swap_el_2 :
+				swap_el_2 = np.random.randint(el.num_el)
+			##### atom to be swapped, need to create xsf.ind_at_el now
+			swap_ind_1 = random.choice(xsf.ind_at_el[swap_el_1])
+			swap_ind_2 = random.choice(xsf.ind_at_el[swap_el_2])
 			while swap_ind2 == swap_ind1 :
 				swap_ind2 = random.choice(xsf.ind_rem_at)
 			coord_tmp = copy.copy(xsf.at_coord[swap_ind1, :])
 			xsf.at_coord[swap_ind1, :] = copy.copy(xsf.at_coord[swap_ind2, :])
 			xsf.at_coord[swap_ind2, :] = copy.copy(coord_tmp)
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
-		elif cndt < act_p[2] : # add one atom
+		# add one atom
+		elif cndt < act_p[2] : 
 			dis = 0
 			trial = 0
 			self.uvt_act = 1
@@ -149,7 +158,8 @@ class mc :
 			xsf.num_each_el[el_to_ad] += 1                          # increase the number of that element
 			xsf.num_at += 1                                         # increase the total number of atoms
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
-		else :             # remove one atom
+		# remove one atom
+		else :             
 			self.uvt_act = -1
 			self.uvt_act_eff = -1
 			self.uvt_rm_ind = random.choice(xsf.ind_rem_at)                   # index of atom to be removed
@@ -158,7 +168,7 @@ class mc :
 			xsf.at_coord = np.delete(xsf.at_coord, (self.uvt_rm_ind), 0)      # remove the coordinates
 			xsf.ind_rem_at.remove(self.uvt_rm_ind)                            # update the list of removable atoms
 			xsf.ind_rem_at = [ind if ind < self.uvt_rm_ind else ind - 1 for ind in xsf.ind_rem_at]
-			del xsf.el_list[self.uvt_rm_ind]                                  ##### remove the atom from atoms list # need to change index of atoms after this one!
+			del xsf.el_list[self.uvt_rm_ind]                                  # remove the atom from atoms list # need to change index of atoms after this one!
 			xsf.num_each_el[el_to_rm] -= 1                                    # decrease the number of that element
 			xsf.num_at -= 1                                                   # decrease the total number of atoms
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
@@ -167,7 +177,7 @@ class mc :
 	def uvt_new_structure_np(self,xsf,el,act_p) : # el is of el_info class
 		# act_p defines probability for different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
 		max_dis = max([np.linalg.norm(xsf.at_coord[ind]) for ind in range(xsf.num_at)])
-		##### avoid np get in touch, parameter 3.5 need to be change to variable
+		## avoid np get in touch, parameter 3.5 need to be change to variable
 		if max_dis > 3.5 :
 			act_p[2] = 0
 		# avoid removing from void removable list
@@ -219,7 +229,7 @@ class mc :
 			xsf.at_coord = np.delete(xsf.at_coord, (self.uvt_rm_ind), 0)      # remove the coordinates
 			xsf.ind_rem_at.remove(self.uvt_rm_ind)                            # update the list of removable atoms
 			xsf.ind_rem_at = [ind if ind < self.uvt_rm_ind else ind - 1 for ind in xsf.ind_rem_at]
-			del xsf.el_list[self.uvt_rm_ind]                                  ##### remove the atom from atoms list # need to change index of atoms after this one!
+			del xsf.el_list[self.uvt_rm_ind]                                  # remove the atom from atoms list # need to change index of atoms after this one!
 			xsf.num_each_el[el_to_rm] -= 1                                    # decrease the number of that element
 			xsf.num_at -= 1                                                   # decrease the total number of atoms
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
@@ -271,13 +281,13 @@ class mc :
 	def update_T_const(self, T1, iter, period) :
 		self.T = T1
 
-	def update_T_linear(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
+	def update_T_linear(self, T1, iter, period) : 
 		self.T = T1 + float(1 - T1) / period * (iter % period)
 
-	def update_T_exp(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
+	def update_T_exp(self, T1, iter, period) : 
 		self.T = T1 * (1 / float(T1))**( float(iter % period) / (period-1))
 
-	def update_T_quadratic(self, T1, iter, period) : ##### adjust to change temperature for moving rather than exchanging.
+	def update_T_quadratic(self, T1, iter, period) : 
 		self.T = float(T1 - 1) / (period-1)**2 * (period - iter%period - 1)**2 + 1
 
 	# Grand canonical acceptance condition, return 1 if accepted, 0 otherwise
