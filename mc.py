@@ -98,7 +98,7 @@ class mc :
 		the initial geometry.
 	"""
 	def uvt_new_structure(self,xsf,el,act_p) : # el is of el_info class # act_p defines probability for different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
-		# adjust act_p
+		# adjust act_p-----------------------------------------------------------------
 		# avoid swapping action if only one element is removable(swappable)
 		el_swap_num = 0
 		for i in range(len(xsf.ind_swap_at)) :
@@ -114,8 +114,10 @@ class mc :
 		act_p = act_p / np.sum(act_p)
 		for i in range(len(act_p) - 1) :
 			act_p[i + 1] += act_p[i]
+		# end adjust act_p--------------------------------------------------------------
 		# generate a random number between 0 and 1
 		cndt = np.random.rand()
+
 		# move atoms
 		if cndt < act_p[0] :    
 			self.uvt_act = 0
@@ -125,6 +127,7 @@ class mc :
 			for i, ind in enumerate(self.mv_ind) :
 				xsf.at_coord[ind, :] += self.mv_vec[i, :]
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
+
 		# swap atoms
 		elif cndt < act_p[1] : 
 			self.uvt_act = 2
@@ -143,15 +146,26 @@ class mc :
 			xsf.at_coord[swap_ind_1, :] = copy.copy(xsf.at_coord[swap_ind_2, :])
 			xsf.at_coord[swap_ind_2, :] = copy.copy(coord_tmp)
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
+
 		# make atom jump
 		elif cndt < atc_p[2]:
+			# choose atom to jump
 			jump_ind = np.random.choice('choosing list', 1, p='weight array')
+			# choose site to jump to
 			for i in int(xsf.vol * 1000) : 
 				jump_vec = np.zeros(3)
 				jump_vec += np.random.rand() * xsf.lat_vec[0]
 				jump_vec += np.random.rand() * xsf.lat_vec[1]
 				jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
-				jump_
+				jump_neighbor = 'function return neighbor'(jump_vec)
+				if (np.random.rand() < 'p calculated with jump_neighbor and jump_neighbor_ideal') : 
+					break
+			# successfully find the site to jump to
+			##### need to put this in the act_p adjusting part at the very beginning
+			if i < int(xsf.vol * 1000) - 1 :
+				xsf.at_coord[jump_ind, :] = copy.copy(jump_vec)
+			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
+
 		# add one atom
 		#### Need to update xsf.ind_swap_at, and return xsf.ind_swap_at
 		elif cndt < act_p[3] : 
@@ -177,6 +191,7 @@ class mc :
 			xsf.num_each_el[el_to_ad] += 1                          # increase the number of that element
 			xsf.num_at += 1                                         # increase the total number of atoms
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
+
 		# remove one atom
 		else :             
 			self.uvt_act = -1
