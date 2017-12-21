@@ -22,15 +22,15 @@ buf_len = 2.0 # length above surface within which atoms can be added
 mu_list = [0, 0, 0] # sr, ti, o
 act_p = np.array([0.5,0.5,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
 
+# get element info
+el = el_info(el_filename) # instantiates el_info object
+el.pop_attr(T_exc) # populate attributes in el_info object
+
 # get info from xsf file
 xsf = xsf_info(xsf_filename) # instantiate xsf_info objects
 xsf_old = xsf_info(xsf_filename)
 xsf_new = xsf_info(xsf_filename)
-xsf.pop_attr(buf_len) # populate attributes in xsf_info object
-
-# get element info
-el = el_info(el_filename) # instantiates el_info object
-el.pop_attr(T_exc) # populate attributes in el_info object
+xsf.pop_attr(buf_len, el) # populate attributes in xsf_info object
 
 # instantiate mc object
 mc_test = mc(T_move, T_exc, max_disp, xsf)

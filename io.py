@@ -35,6 +35,8 @@ class xsf_info(object) :
         maximum allowed projection of atomic coordinates on c
     vol : int
         volume of variable composition region
+    ind_swap_at : list of lists of int
+        list of indices of swappable atoms by element index
     """
 
     def __init__(self, filename) :
@@ -56,6 +58,7 @@ class xsf_info(object) :
         self.c_min = 0
         self.c_max = 0
         self.vol = 0
+        self.ind_swap_at = []
 
     def get_lat_vec(self) :
         """get lattice vectors attribute"""
@@ -131,7 +134,16 @@ class xsf_info(object) :
         self.vol = np.dot(np.cross(self.lat_vec[0], self.lat_vec[1]), (self.c_max - self.c_min) * c_unit)
         return self.vol
 
-    def pop_attr(self, buf_len) :
+    def get_ind_swap_at(self, el) :
+        """get list of indices of swappable atoms by element index"""
+        for iter in range(el.num_el) :
+            self.ind_swap_at.append([])
+        for at_ind in self.ind_rem_at :
+            el_ind = el.el_to_ind_dict[self.el_list[at_ind]]['el_ind']
+            self.ind_swap_at[el_ind].append(at_ind)
+        return self.ind_swap_at
+
+    def pop_attr(self, buf_len, el) :
         """populate attributes"""
         self.get_lat_vec()
         self.get_at_coord()
@@ -140,6 +152,7 @@ class xsf_info(object) :
         self.get_c_min_max(buf_len)
         self.get_vol()
         self.get_ind_rem_at()
+        self.get_ind_swap_at(el)
 
     def copy(self, xsf_new) :
         """copy attributes from xsf_new to this xsf"""
@@ -148,7 +161,6 @@ class xsf_info(object) :
         self.el_list = copy.copy(xsf_new.el_list)
         self.num_each_el = copy.copy(xsf_new.num_each_el)
         self.num_at = copy.copy(xsf_new.num_at)
-
 
 class qe_out_info(object) :
     """class for representing a QE output file
