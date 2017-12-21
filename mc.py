@@ -1,5 +1,8 @@
 """this module defines monte carlo objects and operations """
-
+##### : Need to implement/correct immediately
+####  : Need to implement/correct when switching to another function
+###   : A very rare case may cause error
+##    : Better implementation
 import random
 import copy
 import numpy as np
@@ -102,9 +105,8 @@ class mc :
 			act_p[3] = 0
 		# normalize act_p, and make it accumalate probability
 		act_p = act_p / np.sum(act_p)
-		act_p[1] += act_p[0]
-		act_p[2] += act_p[1]
-		act_p[3] += act_p[2]
+		for i in range(len(act_p) - 1) :
+			act_p[i + 1] += act_p[i]
 		# generate a random number between 0 and 1
 		cndt = np.random.rand()
 		# move atoms
@@ -120,21 +122,22 @@ class mc :
 		elif cndt < act_p[1] : 
 			self.uvt_act = 2
 			self.uvt_act_eff = 0
-			# element to be swapped, ### Need a check for number of atoms of each element. Also, need to find a way of avoiding unremovable atoms
+			# element to be swapped, ### Need a check that at least two elements list are not empty
 			swap_el_1 = np.random.randint(el.num_el)
+			while len(xsf.ind_swap_at[swap_el_1]) == 0 :
+				swap_el_1 = np.random.randint(el.num_el)
 			swap_el_2 = np.random.randint(el.num_el)
-			while swap_el_1 == swap_el_2 :
+			while swap_el_2 == swap_el_1 or len(xsf.ind_swap_at[swap_el_2]) == 0 :
 				swap_el_2 = np.random.randint(el.num_el)
-			##### atom to be swapped, need to create xsf.ind_at_el now
-			swap_ind_1 = random.choice(xsf.ind_at_el[swap_el_1])
-			swap_ind_2 = random.choice(xsf.ind_at_el[swap_el_2])
-			while swap_ind2 == swap_ind1 :
-				swap_ind2 = random.choice(xsf.ind_rem_at)
-			coord_tmp = copy.copy(xsf.at_coord[swap_ind1, :])
-			xsf.at_coord[swap_ind1, :] = copy.copy(xsf.at_coord[swap_ind2, :])
-			xsf.at_coord[swap_ind2, :] = copy.copy(coord_tmp)
+			# atom to be swapped
+			swap_ind_1 = random.choice(xsf.ind_swap_at[swap_el_1])
+			swap_ind_2 = random.choice(xsf.ind_swap_at[swap_el_2])
+			coord_tmp = copy.copy(xsf.at_coord[swap_ind_1, :])
+			xsf.at_coord[swap_ind_1, :] = copy.copy(xsf.at_coord[swap_ind_2, :])
+			xsf.at_coord[swap_ind_2, :] = copy.copy(coord_tmp)
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 		# add one atom
+		#### Need to update xsf.ind_swap_at, and return xsf.ind_swap_at
 		elif cndt < act_p[2] : 
 			dis = 0
 			trial = 0
