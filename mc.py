@@ -159,7 +159,7 @@ class mc :
 
 		#-------------swap atoms-------------
 		elif cndt < act_p[1] : 
-			self.uvt_act = 2
+			self.uvt_act = 1
 			self.uvt_act_eff = 0
 			# element to be swapped, ### Need a check that at least two elements list are not empty
 			swap_el_1 = np.random.randint(el.num_el)
@@ -178,10 +178,9 @@ class mc :
 
 		#-------------make atom jump, apply coord rule------------
 		elif cndt < act_p[2]:
+			self.uvt_act = 2
+			self.uvt_act_eff = 0
 			xsf.at_coord[jump_ind, :] = copy.copy(jump_vec[0])
-			print xsf.at_coord[jump_ind, 0] / xsf.lat_vec[0][0]
-			print xsf.at_coord[jump_ind, 1] / xsf.lat_vec[1][1]
-			print xsf.at_coord[jump_ind, 2] / xsf.lat_vec[2][2]
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 
 		#--------------------add one atom--------------------------------
@@ -189,7 +188,7 @@ class mc :
 		elif cndt < act_p[3] : 
 			dis = 0
 			trial = 0
-			self.uvt_act = 1
+			self.uvt_act = 3
 			self.uvt_act_eff = 1
 			self.uvt_ad_ind = xsf.num_at                            # creat the index of atom to be added
 			self.uvt_exc_el = np.random.randint(el.num_el)          # find the element index
@@ -212,7 +211,7 @@ class mc :
 
 		#-----------------------remove one atom----------------------------
 		else :             
-			self.uvt_act = -1
+			self.uvt_act = 4
 			self.uvt_act_eff = -1
 			self.uvt_rm_ind = random.choice(xsf.ind_rem_at)                   # index of atom to be removed
 			el_to_rm = xsf.el_list[self.uvt_rm_ind]                           # find the element symbol of the atom to be removed
@@ -319,9 +318,9 @@ class mc :
 			free_g_new -= mu_list[i] * xsf.num_each_el[el_sym]
 		exc_therm_db = el.ind_to_el_dict[self.uvt_exc_el]['therm_db']
 		exc_el_num = xsf.num_each_el[el_sym] - (self.uvt_act_eff - 1) / 2
-		if self.uvt_act == 0 or self.uvt_act == 2 :
+		if self.uvt_act <= 2 :
 			exp_coef = np.exp(-(free_g_new - self.g_curr) / (self.T * kb))
-		elif self.uvt_act == 1 or self.uvt_act == -1 :
+		elif self.uvt_act >=4 :
 			exp_coef = np.exp(-(free_g_new - self.g_curr) / (self.T_exc * kb))
 		else : 
 			print 'Wrong action number for get_free_g_p! Undefined action!'
@@ -367,7 +366,7 @@ class mc :
 				if self.nvt_run_cnt % self.check_acc == 0 :
 					self.update_pace()
 				return 0
-		elif self.uvt_act == 1 or self.uvt_act == -1 : # exchange
+		elif self.uvt_act == 3 or self.uvt_act == 4 : # exchange
 			if rand <= prob_acc : # accept
 				self.g_curr = free_g
 				if free_g < self.g_low : 
@@ -380,7 +379,7 @@ class mc :
 				return 1
 			else :
 				return 0
-		elif self.uvt_act == 2 : # swap
+		elif self.uvt_act == 1 or self.uvt_act == 2 : # swap & jump
 			if rand <= prob_acc : # accept
 				self.g_curr = free_g
 				if free_g < self.g_low : 

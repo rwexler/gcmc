@@ -13,7 +13,7 @@ do
 	fi
 	folder=$pre$j
 	mkdir -p $folder
-	cp -r bin el_list.txt io.py main.py mc.py plot PSPs structure.xsf templates $folder
+	cp -r bin el_list.txt *.py plot PSPs structure.xsf templates $folder
 	cd $folder
 	cat > runscript <<EOF
 #!/bin/bash
