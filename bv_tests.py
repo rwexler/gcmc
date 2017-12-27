@@ -4,7 +4,7 @@ from io import xsf_info
 from bv import bv
 import sys
 
-np.random.seed(42)
+#np.random.seed(42)
 
 # test settings
 T_exc = 1

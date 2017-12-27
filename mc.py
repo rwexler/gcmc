@@ -117,7 +117,7 @@ class mc :
 			el_ind = el.el_to_ind_dict[el_sym]['el_ind']
 			at_neighbor_pref[i] = el.pref_coord[el_ind]
 		weight = np.power((at_neighbor_list - at_neighbor_pref),4)
-		if np.sum(weight != 0) :
+		if np.sum(weight) != 0 :
 			weight /= np.sum(weight)
 			jump_ind = np.random.choice(range(xsf.num_at), 1, p=weight)[0]
 			jump_el_sym = xsf.el_list[jump_ind]
@@ -140,7 +140,7 @@ class mc :
 		if len(xsf.ind_rem_at) == 0 : 
 			act_p[4] = 0
 		# normalize act_p, and make it accumalate probability
-		act_p = act_p / np.sum(act_p)
+		act_p = act_p / float(np.sum(act_p))
 		for i in range(len(act_p) - 1) :
 			act_p[i + 1] += act_p[i]
 		#----------------------------------------end adjust act_p--------------------------------------------------------------
