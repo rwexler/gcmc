@@ -5,7 +5,7 @@ from io import el_info
 from io import xsf_info
 import sys
 
-np.random.seed(42)
+#np.random.seed(42)
 
 # global variable definitions
 
@@ -56,12 +56,14 @@ class bv(object) :
         for i in range(coord.shape[0]) :
             nn_cnt = 0
             for j in range(self.sc_num_at) :
-                bond_vec = self.sc_at_coord[i, :] - self.sc_at_coord[j, :]
+                bond_vec = coord[i, :] - self.sc_at_coord[j, :]
                 for row in range(bond_vec.shape[0]) :
                     bond_vec[row] -= self.sc_lat_vec[row, row] * \
                         int(bond_vec[row] / self.sc_lat_vec[row, row])
                 dist = np.linalg.norm(bond_vec)
                 if dist > rmin and dist < rmax :
                     nn_cnt += 1
+                elif 0 < dist and dist < rmin : # TQ: penalty for nonzero small value
+                    nn_cnt += 100
             self.nn[i] = nn_cnt
         return self.nn

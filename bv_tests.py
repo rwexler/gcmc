@@ -24,7 +24,7 @@ print bvo.sc_lat_vec
 print bvo.sc_at_coord
 
 print 'nn for a test position (need double brackets for this code to work)...'
-bvo.calc_nn(np.array([[0, 0, 0]]))
+bvo.calc_nn(np.array([[0, 0, 10]]))
 print bvo.nn
 
 print 'nn for several test positions...'

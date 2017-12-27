@@ -4,6 +4,7 @@ from io import xsf_info, el_info
 from io import qe_out_info, make_qe_in
 from io import init_log, upd_log
 from io import init_axsf, upd_axsf
+from bv import bv
 from mc import mc
 import os
 import numpy as np
@@ -20,7 +21,7 @@ ry_ev = 13.605693009
 bohr_ang = 0.52917721067
 buf_len = 2.0 # length above surface within which atoms can be added
 mu_list = [0, 0, 0] # sr, ti, o
-act_p = np.array([0.5,0.5,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
+act_p = np.array([1,1,1,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: add, [3]: remove
 
 # get element info
 el = el_info(el_filename) # instantiates el_info object
@@ -31,6 +32,9 @@ xsf = xsf_info(xsf_filename) # instantiate xsf_info objects
 xsf_old = xsf_info(xsf_filename)
 xsf_new = xsf_info(xsf_filename)
 xsf.pop_attr(buf_len, el) # populate attributes in xsf_info object
+
+# create bv object
+bvo = bv()
 
 # instantiate mc object
 mc_test = mc(T_move, T_exc, max_disp, xsf)
@@ -49,7 +53,7 @@ for i in range(niter) :
         xsf_new.ind_rem_at, \
         xsf_new.el_list, \
         xsf_new.num_each_el, \
-        xsf_new.num_at = mc_test.uvt_new_structure(xsf, el, act_p) 
+        xsf_new.num_at = mc_test.uvt_new_structure(xsf, el, act_p, bvo) 
     
     # copy xsf_new attributes to xsf, try to figure out a way around this
     xsf.copy(xsf_new)

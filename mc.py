@@ -8,6 +8,7 @@ import copy
 import numpy as np
 from io import xsf_info
 from io import el_info
+from bv import bv
 
 # set random seeds
 #rand_seed = 52
@@ -97,8 +98,8 @@ class mc :
 		atoms could only be added to / removed from the top of 
 		the initial geometry.
 	"""
-	def uvt_new_structure(self,xsf,el,act_p) : # el is of el_info class # act_p defines probability for different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
-		# adjust act_p-----------------------------------------------------------------
+	def uvt_new_structure(self,xsf,el,act_p,bvo) : # el is of el_info class # act_p defines probability for different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
+		#------------------------------------------adjust act_p-----------------------------------------------------------------
 		# avoid swapping action if only one element is removable(swappable)
 		el_swap_num = 0
 		for i in range(len(xsf.ind_swap_at)) :
@@ -106,6 +107,34 @@ class mc :
 				el_swap_num += 1
 		if el_swap_num <= 1 :
 			act_p[1] = 0
+		# avoid jumpping action if no appropriate site or no appropriate atom
+		"""choose atom to jump"""
+		bvo.make_sc(xsf)
+		at_neighbor_list = copy.copy(bvo.calc_nn(xsf.at_coord))
+		at_neighbor_pref = copy.copy(at_neighbor_list)
+		for i in range(xsf.num_at) :
+			el_sym = xsf.el_list[i]
+			el_ind = el.el_to_ind_dict[el_sym]['el_ind']
+			at_neighbor_pref[i] = el.pref_coord[el_ind]
+		weight = np.power((at_neighbor_list - at_neighbor_pref),4)
+		if np.sum(weight != 0) :
+			weight /= np.sum(weight)
+			jump_ind = np.random.choice(range(xsf.num_at), 1, p=weight)[0]
+			jump_el_sym = xsf.el_list[jump_ind]
+			jump_el_ind = el.el_to_ind_dict[jump_el_sym]['el_ind']
+			"""choose site to jump to"""
+			for i in np.arange(xsf.vol * 1000) : 
+				jump_vec = np.zeros((1,3)) # jupm_vec takes the format of [[]] in order to be compatible with bv.calc_nn()
+				jump_vec[0] += np.random.rand() * xsf.lat_vec[0]
+				jump_vec[0] += np.random.rand() * xsf.lat_vec[1]
+				jump_vec[0] += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
+				jump_neighbor = bvo.calc_nn(jump_vec)
+				if (jump_neighbor[0] == el.pref_coord[jump_el_ind]) : 
+					break
+			if i >= xsf.vol * 1000 - 1 :
+				act_p[2] = 0
+		else :
+			act_p[2] = 0
 		#### avoid adding action if too many atoms
 		# avoid removing action if no removable atoms
 		if len(xsf.ind_rem_at) == 0 : 
@@ -114,11 +143,11 @@ class mc :
 		act_p = act_p / np.sum(act_p)
 		for i in range(len(act_p) - 1) :
 			act_p[i + 1] += act_p[i]
-		# end adjust act_p--------------------------------------------------------------
+		#----------------------------------------end adjust act_p--------------------------------------------------------------
 		# generate a random number between 0 and 1
 		cndt = np.random.rand()
 
-		# move atoms
+		#-------------move atoms--------------
 		if cndt < act_p[0] :    
 			self.uvt_act = 0
 			self.uvt_act_eff = 0
@@ -128,7 +157,7 @@ class mc :
 				xsf.at_coord[ind, :] += self.mv_vec[i, :]
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 
-		# swap atoms
+		#-------------swap atoms-------------
 		elif cndt < act_p[1] : 
 			self.uvt_act = 2
 			self.uvt_act_eff = 0
@@ -147,26 +176,15 @@ class mc :
 			xsf.at_coord[swap_ind_2, :] = copy.copy(coord_tmp)
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 
-		# make atom jump
-		elif cndt < atc_p[2]:
-			# choose atom to jump
-			jump_ind = np.random.choice('choosing list', 1, p='weight array')
-			# choose site to jump to
-			for i in int(xsf.vol * 1000) : 
-				jump_vec = np.zeros(3)
-				jump_vec += np.random.rand() * xsf.lat_vec[0]
-				jump_vec += np.random.rand() * xsf.lat_vec[1]
-				jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
-				jump_neighbor = 'function return neighbor'(jump_vec)
-				if (np.random.rand() < 'p calculated with jump_neighbor and jump_neighbor_ideal') : 
-					break
-			# successfully find the site to jump to
-			##### need to put this in the act_p adjusting part at the very beginning
-			if i < int(xsf.vol * 1000) - 1 :
-				xsf.at_coord[jump_ind, :] = copy.copy(jump_vec)
+		#-------------make atom jump, apply coord rule------------
+		elif cndt < act_p[2]:
+			xsf.at_coord[jump_ind, :] = copy.copy(jump_vec[0])
+			print xsf.at_coord[jump_ind, 0] / xsf.lat_vec[0][0]
+			print xsf.at_coord[jump_ind, 1] / xsf.lat_vec[1][1]
+			print xsf.at_coord[jump_ind, 2] / xsf.lat_vec[2][2]
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 
-		# add one atom
+		#--------------------add one atom--------------------------------
 		#### Need to update xsf.ind_swap_at, and return xsf.ind_swap_at
 		elif cndt < act_p[3] : 
 			dis = 0
@@ -192,7 +210,7 @@ class mc :
 			xsf.num_at += 1                                         # increase the total number of atoms
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 
-		# remove one atom
+		#-----------------------remove one atom----------------------------
 		else :             
 			self.uvt_act = -1
 			self.uvt_act_eff = -1
