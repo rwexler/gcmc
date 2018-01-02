@@ -82,4 +82,4 @@ class bv(object) :
 		return at_nn
 
 
-""" could try to (1) define differen r_min, r_max for different elements. (2) add tolerance to nn"""
+""" could try to (1) define differen r_min, r_max between different elements(i.e. a matrix). (2) add tolerance to nn"""

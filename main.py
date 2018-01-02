@@ -51,9 +51,9 @@ for i in range(niter) :
 	make_qe_in('qe.in', xsf, el)
 	
 #	# calculate and get total energy
-#	if xsf.num_at <= 2 :
+#	if xsf.at_num <= 2 :
 #		os.system('mpiexec.hydra -np 4 ../bin/pw.x -i qe.in > qe.out') # execute qe
-#	elif xsf.num_at <= 6 :
+#	elif xsf.at_num <= 6 :
 #		os.system('mpiexec.hydra -np 9 ../bin/pw.x -i qe.in > qe.out')
 #	else :
 #		os.system('mpiexec.hydra -np 36 ../bin/pw.x -i qe.in > qe.out')
