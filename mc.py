@@ -134,25 +134,24 @@ class mc :
 		# avoid jumpping action if no appropriate site or no appropriate atom
 		if act_p[2] > 0 :
 			"""choose atom to jump"""
-			bvo.make_sc(xsf)
-			at_neighbor_list = copy.copy(bvo.calc_nn(xsf.at_coord))
-			at_neighbor_pref = copy.copy(at_neighbor_list)
+			at_neighbor_list = bvo.at_all_nn(xsf)
+			at_neighbor_pref = np.zeros(xsf.at_num).astype('int')
 			for i in range(xsf.at_num) :
 				el_ind = xsf.at_type[i]
 				at_neighbor_pref[i] = el.pref_coord[el_ind]
-			weight = np.power((at_neighbor_list - at_neighbor_pref),4)
+			weight = np.power((at_neighbor_list - at_neighbor_pref),4).astype('float')
 			if np.sum(weight) != 0 :
 				weight /= np.sum(weight)
 				jump_ind = np.random.choice(range(xsf.at_num), 1, p=weight)[0]
 				jump_el_ind = xsf.at_type[jump_ind]
 				"""choose site to jump to"""
 				for i in np.arange(xsf.vol * 1000) : 
-					jump_vec = np.zeros((1,3)) # jupm_vec takes the format of [[]] in order to be compatible with bv.calc_nn()
-					jump_vec[0] += np.random.rand() * xsf.lat_vec[0]
-					jump_vec[0] += np.random.rand() * xsf.lat_vec[1]
-					jump_vec[0] += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
-					jump_neighbor = bvo.calc_nn(jump_vec)
-					if (jump_neighbor[0] == el.pref_coord[jump_el_ind]) : 
+					jump_vec = np.zeros(3)
+					jump_vec += np.random.rand() * xsf.lat_vec[0]
+					jump_vec += np.random.rand() * xsf.lat_vec[1]
+					jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
+					jump_neighbor = bvo.at_single_nn(xsf, jump_ind, jump_vec)
+					if (jump_neighbor == el.pref_coord[jump_el_ind]) : 
 						break
 				if i >= xsf.vol * 1000 - 1 :
 					act_p[2] = 0
@@ -202,7 +201,7 @@ class mc :
 		elif cndt < act_p[2]:
 			self.uvt_act     = 2
 			self.uvt_act_eff = 0
-			self.new_xsf.at_coord[jump_ind, :] = np.array(jump_vec[0])
+			self.new_xsf.at_coord[jump_ind, :] = np.array(jump_vec)
 			return self.new_xsf.copy()
 
 		#--------------------add one atom--------------------------------

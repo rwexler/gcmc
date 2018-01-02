@@ -13,4 +13,11 @@ el.init(file1)
 xsf.init(file2, el)
 bv.init(xsf)
 
-print bv.lat_vec_sc
+for i in range(100) :
+	for j in range(100) :
+		for k in range(100) :
+			nn = bv.position_nn(xsf, (xsf.lat_vec[0]*i + xsf.lat_vec[0]*j + xsf.lat_vec[0]*k)/100)
+			if nn >6 and nn < 100 : 
+				print nn
+				print i, j, k
+	print i

@@ -20,7 +20,7 @@ ry_ev = 13.605693009
 bohr_ang = 0.52917721067
 buf_len = 2.0 # length above surface within which atoms can be added
 mu_list = [0, 0, 0] # sr, ti, o
-act_p = np.array([1,0,0,1,1]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
+act_p = np.array([1,1,1,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 
 # get element info
 el = el_info() # instantiates el_info object
@@ -32,6 +32,7 @@ xsf.pop_attr(xsf_filename, el, buf_len) # populate attributes in xsf_info object
 
 # create bv object
 bvo = bv()
+bvo.init(xsf)
 
 # instantiate mc object
 mc_run = mc()
