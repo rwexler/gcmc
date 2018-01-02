@@ -42,10 +42,11 @@ class mc :
 		self.opt_g          = 0.0                        # Lowest free energy?
 		self.uvt_at_rm      = 0                          # Grand canonical ensemble, index of the atom to be removed
 		self.uvt_at_ad      = 0                          # Grand canonical ensemble, index of the atom to be added
-		self.uvt_act        = 0                          # Grand canonical ensemble actions, 0: move atom, 1: add atom, -1: remove atom, 2: swap atoms
-		self.uvt_act_eff    = 0                          # Grand canonical ensemble effective actions, could only be 0, 1, -1
+		self.uvt_act        = 0                          # Grand canonical ensemble, 0: move, 1: swap, 2: jump, 3: add, 4: remove
+		self.uvt_at_exc_num = 0                          # Grand canonical ensemble, number of exchanged atoms, could only be 0, 1, -1
 		self.uvt_el_exc     = 0                          # Grand canonical ensemble, index of the element to be exchanged
-	
+
+	# enable explicit copy
 	def copy(self) :
 		cp_self = mc()
 		cp_self.T              = self.T            
@@ -69,7 +70,7 @@ class mc :
 		cp_self.uvt_at_rm      = self.uvt_at_rm 
 		cp_self.uvt_at_ad      = self.uvt_at_ad 
 		cp_self.uvt_act        = self.uvt_act       
-		cp_self.uvt_act_eff    = self.uvt_act_eff   
+		cp_self.uvt_at_exc_num = self.uvt_at_exc_num   
 		cp_self.uvt_el_exc     = self.uvt_el_exc
 		return cp_self
 	
@@ -172,17 +173,17 @@ class mc :
 
 		#-------------move atoms--------------
 		if cndt < act_p[0] :    
-			self.uvt_act     = 0
-			self.uvt_act_eff = 0
-			self.uvt_el_exc  = 0
+			self.uvt_act        = 0
+			self.uvt_at_exc_num = 0
+			self.uvt_el_exc     = 0
 			self.new_coords(xsf)
 			self.rand_mv(xsf)
 			return self.new_xsf.copy()
 
 		#-------------swap atoms-------------
 		elif cndt < act_p[1] : 
-			self.uvt_act     = 1
-			self.uvt_act_eff = 0
+			self.uvt_act        = 1
+			self.uvt_at_exc_num = 0
 			# element to be swapped
 			swap_el_1 = np.random.randint(el.num)
 			while len(xsf.at_swap[swap_el_1]) == 0 :
@@ -199,16 +200,16 @@ class mc :
 
 		#-------------make atom jump, apply coord rule------------
 		elif cndt < act_p[2]:
-			self.uvt_act     = 2
-			self.uvt_act_eff = 0
+			self.uvt_act        = 2
+			self.uvt_at_exc_num = 0
 			self.new_xsf.at_coord[jump_ind, :] = np.array(jump_vec)
 			return self.new_xsf.copy()
 
 		#--------------------add one atom--------------------------------
 		### Need to move site searching part into adjusting p part
 		elif cndt < act_p[3] : 
-			self.uvt_act     = 3
-			self.uvt_act_eff = 1
+			self.uvt_act        = 3
+			self.uvt_at_exc_num = 1
 			at_ad = xsf.at_num                             # index of atom to be added
 			self.uvt_el_exc  = np.random.randint(el.num)   # find the element index
 			dis = 0
@@ -232,8 +233,8 @@ class mc :
 
 		#-----------------------remove one atom----------------------------
 		else :             
-			self.uvt_act     = 4
-			self.uvt_act_eff = -1
+			self.uvt_act        = 4
+			self.uvt_at_exc_num = -1
 			at_rm = random.choice(xsf.at_rmb)                           # index of atom to be removed
 			self.uvt_el_exc = xsf.at_type[at_rm]                        # element index
 			self.new_xsf.at_coord = np.delete(xsf.at_coord, at_rm, 0)   # remove the coordinates
@@ -268,7 +269,7 @@ class mc :
 		cndt = np.random.rand()
 		if cndt < act_p[0] :    # move atoms
 			self.uvt_act = 0
-			self.uvt_act_eff = 0
+			self.uvt_at_exc_num = 0
 			self.uvt_exc_el = 0
 			self.rand_mv(xsf)
 			for i, ind in enumerate(self.mv_ind) :
@@ -280,7 +281,7 @@ class mc :
 			dis = 0
 			while dis < 1.5 or dis > 2.5 : # control atom distance
 				self.uvt_act = 1
-				self.uvt_act_eff = 1
+				self.uvt_at_exc_num = 1
 				self.uvt_ad_ind = xsf.num_at                            # creat the index of atom to be added
 				self.uvt_exc_el = np.random.randint(el.num_el)          # find the element index
 				el_to_ad = el.ind_to_el_dict[self.uvt_exc_el]['el_sym'] # find element symbol 
@@ -298,7 +299,7 @@ class mc :
 			return xsf.at_coord, xsf.ind_rem_at, xsf.el_list, xsf.num_each_el, xsf.num_at
 		else :             # remove one atom
 			self.uvt_act = -1
-			self.uvt_act_eff = -1
+			self.uvt_at_exc_num = -1
 			self.uvt_rm_ind = random.choice(xsf.ind_rem_at)                   # index of atom to be removed
 			el_to_rm = xsf.el_list[self.uvt_rm_ind]                           # find the element symbol of the atom to be removed
 			self.uvt_exc_el = el.el_to_ind_dict[el_to_rm]['el_ind']           # find the element index
@@ -345,13 +346,13 @@ class mc :
 		el.update_therm_db(self.T)
 		# get thermal de broglie wavelengths of exchange element
 		exc_therm_db = el.therm_db[self.uvt_el_exc]
-		exc_el_num = self.new_xsf.el_each_num[self.uvt_el_exc] - (self.uvt_act_eff - 1) / 2
+		exc_el_num = self.new_xsf.el_each_num[self.uvt_el_exc] - (self.uvt_at_exc_num - 1) / 2
 		if self.uvt_act <= 4 :
 			exp_coef = np.exp(-(free_g_new - self.curr_g) / (self.T * kb))
 		else : 
 			print 'Wrong action number for get_free_g_p! Undefined action!'
 			exit()
-		prob_acc = np.minimum(1, exp_coef * (self.new_xsf.vol / exc_therm_db**3 / exc_el_num )**self.uvt_act_eff)
+		prob_acc = np.minimum(1, exp_coef * (self.new_xsf.vol / exc_therm_db**3 / exc_el_num )**self.uvt_at_exc_num)
 		return free_g_new, prob_acc
 
 	# Adjust T

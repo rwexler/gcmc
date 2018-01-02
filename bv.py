@@ -20,11 +20,12 @@ class bv(object) :
 	"""
 
 	def __init__(self) :
-		self.at_nn      = np.array([]).astype('int')
-		self.r_min      = 0.0
-		self.r_max      = 0.0
-		self.lat_vec_sc = np.zeros((0,3))
-		
+		self.at_nn      = np.array([]).astype('int')   # number of neighbors for coordinate(s)
+		self.r_min      = 0.0                          # lower limit for neighbor
+		self.r_max      = 0.0                          # upper limit for neighbor
+		self.lat_vec_sc = np.zeros((0,3))              # 3 x 3 x 3 lattice point from (-1,-1,-1) to (1,1,1)
+
+	# enable explicit copy
 	def copy(self) :
 		cp_self = bv()
 		cp_self.at_nn      = np.array(self.at_nn)
@@ -42,7 +43,7 @@ class bv(object) :
 			for j in range :
 				for k in range :
 					self.lat_vec_sc = np.vstack((self.lat_vec_sc, i * xsf.lat_vec[0] + j * xsf.lat_vec[1] + k * xsf.lat_vec[2]))
-	
+	# get number of neighbors for each atom
 	def at_all_nn(self, xsf) :
 		self.at_nn = np.zeros(xsf.at_num).astype('int')
 		for i in range(xsf.at_num) :
@@ -54,7 +55,8 @@ class bv(object) :
 					else :
 						self.at_nn[i] += dis[dis < self.r_max].shape[0]
 		return np.array(self.at_nn)
-	
+
+	# get number of neighbors for a specific atom (at certain position, or at it's original position by default)
 	def at_single_nn(self, xsf, at_ind, *coord) : 
 		at_nn = 0
 		if len(coord) == 0 : 
@@ -67,7 +69,8 @@ class bv(object) :
 				else :
 					at_nn += dis[dis < self.r_max].shape[0]
 		return at_nn
-	
+
+	# get number of neighbors for a specific position
 	def position_nn(self, xsf, coord) :
 		at_nn = 0
 		for i in range(xsf.at_num) :
@@ -77,3 +80,6 @@ class bv(object) :
 			else :
 				at_nn += dis[dis < self.r_max].shape[0]
 		return at_nn
+
+
+""" could try to (1) define differen r_min, r_max for different elements. (2) add tolerance to nn"""

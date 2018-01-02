@@ -18,7 +18,8 @@ class el_info(object) :
 		self.wt         = np.array([]).astype('float')   # atomic weights
 		self.therm_db   = np.array([]).astype('float')   # thermal de broglie wavelengths
 		self.pref_coord = np.array([]).astype('int')     # preferred coordination numbers
-
+	
+	# enable explicit copy
 	def copy(self) :
 		cp_self = el_info()
 		cp_self.num        = self.num
@@ -64,6 +65,7 @@ class xsf_info(object) :
 		self.c_max       = 0                              # maximum allowed projection of atomic coordinates on c
 		self.vol         = 0                              # volume of variable composition region
 
+	# enable explicit copy
 	def copy(self) :
 		cp_self = xsf_info()
 		cp_self.lat_vec     = np.array(self.lat_vec)

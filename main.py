@@ -13,7 +13,7 @@ xsf_filename = sys.argv[1] # read xsf filename from command line
 el_filename = sys.argv[2] # read element list filename
 
 # set simulation parameters
-niter = 100
+niter = 1000
 max_disp = 0.05 # angstroms
 T_move = 1 # kelvin
 ry_ev = 13.605693009
