@@ -43,7 +43,7 @@ os.system('mkdir -p temp') # make temp directory for qe calculations
 os.chdir('temp') # enter temp
 log_file = init_log('log.dat') # initialize log file
 axsf_opt_file    = init_axsf('coord_opt.axsf', niter, xsf)    # initialize axsf file recording optimized structure
-axsf_curr_file   = init_axsf('coord_curr.axsf', niter, xsf)   # initialize axsf file recording structure created in current iteration
+axsf_new_file    = init_axsf('coord_new.axsf', niter, xsf)   # initialize axsf file recording structure created in current iteration
 axsf_accept_file = init_axsf('coord_accept.axsf', niter, xsf) # initialize axsf file recording structure accepted in current iteration
 i = 0
 while i < niter :
@@ -91,7 +91,7 @@ while i < niter :
 
 		# write atomic coordinates to axsf file
 		upd_axsf(axsf_opt_file, i, mc_run.opt_xsf, el)
-		upd_axsf(axsf_curr_file, i, mc_run.new_xsf, el)
+		upd_axsf(axsf_new_file, i, mc_run.new_xsf, el)
 		upd_axsf(axsf_accept_file, i, mc_run.old_xsf, el)
 	else :
 		i -= 1
