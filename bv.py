@@ -38,7 +38,7 @@ class bv(object) :
 		self.r_min = 1.0
 		self.r_max = 2.5
 		self.lat_vec_sc = np.zeros((0,3))
-		range = np.array([0, -1, 1])
+		range = np.array([-1, 0, 1])
 		for i in range :
 			for j in range :
 				for k in range :

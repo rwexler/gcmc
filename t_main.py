@@ -27,7 +27,7 @@ print xsf.vol
 print el.num
 print el.sym
 print el.wt
-print el.pref_coord
+print el.pref_nn
 print el.therm_db
 
 os.system('mkdir -p temp')

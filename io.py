@@ -17,7 +17,7 @@ class el_info(object) :
 		self.sym        = []                             # element symbols
 		self.wt         = np.array([]).astype('float')   # atomic weights
 		self.therm_db   = np.array([]).astype('float')   # thermal de broglie wavelengths
-		self.pref_coord = np.array([]).astype('int')     # preferred coordination numbers
+		self.pref_nn    = np.array([]).astype('int')     # preferred coordination numbers
 	
 	# enable explicit copy
 	def copy(self) :
@@ -26,7 +26,7 @@ class el_info(object) :
 		cp_self.sym        = copy.copy(self.sym)
 		cp_self.wt         = np.array(self.wt)
 		cp_self.therm_db   = np.array(self.therm_db)
-		cp_self.pref_coord = np.array(self.pref_coord)
+		cp_self.pref_nn    = np.array(self.pref_nn)
 		return cp_self
 
 	def init(self, filename) :
@@ -41,9 +41,9 @@ class el_info(object) :
 				# element symbol
 				self.sym.append(line.split()[1])
 				# atomic weight
-				self.wt         = np.append(self.wt, np.array(line.split()[2]).astype('float') * amu_kg)
+				self.wt = np.append(self.wt, np.array(line.split()[2]).astype('float') * amu_kg)
 				# preferred coordination number
-				self.pref_coord = np.append(self.pref_coord, np.array(line.split()[3]).astype('int'))
+				self.pref_nn = np.append(self.pref_nn, np.array(line.split()[3]).astype('int'))
 
 	def update_therm_db(self, T) :
 		"""function for updating thermal de broglie wavelengths"""
@@ -59,6 +59,7 @@ class xsf_info(object) :
 	def __init__(self) : 
 		self.lat_vec     = np.zeros((0, 3))               # lattice vectors
 		self.at_coord    = np.zeros((0, 3))               # atomic coordinates
+		self.at_force    = np.zeros((0, 3))               # forces on atoms
 		self.at_type     = np.array([]).astype('int')     # indices of of element symbols
 		self.el_each_num = np.array([]).astype('int')     # number of each unique element
 		self.at_rmb      = np.array([]).astype('int')     # indices of removable atoms
@@ -73,6 +74,7 @@ class xsf_info(object) :
 		cp_self = xsf_info()
 		cp_self.lat_vec     = np.array(self.lat_vec)
 		cp_self.at_coord    = np.array(self.at_coord)
+		cp_self.at_force    = np.array(self.at_force)
 		cp_self.at_type     = np.array(self.at_type)
 		cp_self.el_each_num = np.array(self.el_each_num)
 		cp_self.at_rmb      = np.array(self.at_rmb)
@@ -102,6 +104,8 @@ class xsf_info(object) :
 				for line in f :
 					self.lat_vec = np.vstack((self.lat_vec, np.array([line.split()[0:3]]).astype('float')))
 					break
+		# initialize forces
+		self.at_force = np.zeros((self.at_num, 3))
 		# get atom related attributes
 		self.el_each_num = np.zeros(el.num).astype('int')
 		for t1 in range(el.num) :
@@ -165,7 +169,7 @@ class qe_out_info(object) :
 	def __init__(self, filename) :
 		self.filename = filename
 		self.final_en = 0
-		self.forces = []
+		self.forces = np.zeros((0, 3))
 
 	def get_final_en(self) :
 		"""get final energy attribute"""
@@ -176,14 +180,16 @@ class qe_out_info(object) :
 					break
 		return self.final_en
 
-	def get_forces(self) :
+	def get_forces(self, at_num) :
 		"""get forces attribute"""
+		self.forces =  np.zeros((at_num, 3))
 		with open(self.filename, 'r') as f :
+			ind = 0
 			for line in f :
 				if '  force =' in line :
-					self.forces.append(line.split()[6:9])
-		self.forces = np.array(self.forces).astype(float)
-		return self.forces
+					self.forces[ind] = np.array(line.split()[6:9])
+					ind += 1
+		return np.array(self.forces)
 
 def make_qe_in(filename, xsf, el) :
 	"""function for making QE input file"""
@@ -247,7 +253,7 @@ def init_axsf(filename, niter, xsf) :
 						 str(xsf.lat_vec[row, 2]) + '\n')
 	return axsf_file
 
-def upd_axsf(axsf_file, iter, xsf, el, forces) :
+def upd_axsf(axsf_file, iter, xsf, el) :
 	"""function for updating axsf file"""
 	axsf_file.write('PRIMCOORD ' + str(iter + 1) + '\n')
 	axsf_file.write(str(xsf.at_num) + ' 1\n')
@@ -256,7 +262,7 @@ def upd_axsf(axsf_file, iter, xsf, el, forces) :
 						str(xsf.at_coord[row, 0]) + ' ' +
 						str(xsf.at_coord[row, 1]) + ' ' +
 						str(xsf.at_coord[row, 2]) + ' ' +
-						str(forces[row, 0]) + ' ' +
-						str(forces[row, 1]) + ' ' +
-						str(forces[row, 2]) + '\n')
+						str(xsf.at_force[row, 0]) + ' ' +
+						str(xsf.at_force[row, 1]) + ' ' +
+						str(xsf.at_force[row, 2]) + '\n')
 	axsf_file.flush()

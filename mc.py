@@ -22,28 +22,28 @@ kb = 8.6173303e-5 # ev / k
 class mc :
 	"""class for representing monte carlo operations"""
 	def __init__(self) :
-		self.T              = 0.0                        # System temperature # RBW: change to T_move
+		self.T              = 0.0                        # System temperature 
 		self.T_max          = 0.0                        # Max system temperature
-		self.pace           = 0.0                        # Max displacement # RBW : change to curr_max_disp
-		self.pace_max       = 0.0                        # Max displacement limit # RBW : change to max_disp
-		self.nvt_run_cnt    = 0                          # Canonical ensemble running count
-		self.uvt_run_cnt    = 0                          # Grand canonical ensemble running count
+		self.pace           = 0.0                        # Max displacement 
+		self.pace_max       = 0.0                        # Max displacement limit 
+		self.nvt_run_cnt    = 0                          # Canonical ensemble, running count
+		self.uvt_run_cnt    = 0                          # Grand canonical ensemble, ensemble running count
 		self.check_acc      = 0                          # Max displacement update rate
-		self.nvt_acc        = 0                          # Number of acceptance
+		self.nvt_acc        = 0                          # Canonical ensemble, number of acceptance
 		self.at_mv_num      = 0                          # Number of atoms to move
 		self.at_mv_ind      = np.array([]).astype('int') # Indices of atoms to move
 		self.at_mv_vec      = np.zeros((0, 3))           # Displacement of atoms
-		self.old_xsf        = xsf_info()                 # xsf in last iteration
+		self.old_xsf        = xsf_info()                 # xsf in previous iteration
 		self.new_xsf        = xsf_info()                 # xsf in this iteration
 		self.opt_xsf        = xsf_info()                 # xsf associated with the lowest energy
-		self.curr_en        = 0.0                        # Energy in this (previous) iteration
-		self.curr_g         = 0.0                        # Free energy in this (previous) iteration
+		self.curr_en        = 0.0                        # Energy in current iteration
+		self.curr_g         = 0.0                        # Free energy in current iteration
 		self.opt_en         = 0.0                        # Lowest energy
-		self.opt_g          = 0.0                        # Lowest free energy?
+		self.opt_g          = 0.0                        # Lowest free energy
 		self.uvt_at_rm      = 0                          # Grand canonical ensemble, index of the atom to be removed
 		self.uvt_at_ad      = 0                          # Grand canonical ensemble, index of the atom to be added
 		self.uvt_act        = 0                          # Grand canonical ensemble, 0: move, 1: swap, 2: jump, 3: add, 4: remove
-		self.uvt_at_exc_num = 0                          # Grand canonical ensemble, number of exchanged atoms, could only be 0, 1, -1
+		self.uvt_at_exc_num = 0                          # Grand canonical ensemble, number of exchanged atoms, can only be 0, 1, -1
 		self.uvt_el_exc     = 0                          # Grand canonical ensemble, index of the element to be exchanged
 
 	# enable explicit copy
@@ -134,25 +134,25 @@ class mc :
 				act_p[1] = 0
 		# avoid jumpping action if no appropriate site or no appropriate atom
 		if act_p[2] > 0 :
-			"""choose atom to jump"""
+			# choose atom to jump
 			at_neighbor_list = bvo.at_all_nn(xsf)
 			at_neighbor_pref = np.zeros(xsf.at_num).astype('int')
 			for i in range(xsf.at_num) :
 				el_ind = xsf.at_type[i]
-				at_neighbor_pref[i] = el.pref_coord[el_ind]
+				at_neighbor_pref[i] = el.pref_nn[el_ind]
 			weight = np.power((at_neighbor_list - at_neighbor_pref),4).astype('float')
 			if np.sum(weight) != 0 :
 				weight /= np.sum(weight)
-				jump_ind = np.random.choice(range(xsf.at_num), 1, p=weight)[0]
-				jump_el_ind = xsf.at_type[jump_ind]
+				jump_at_ind = np.random.choice(range(xsf.at_num), 1, p=weight)[0]
+				jump_el_ind = xsf.at_type[jump_at_ind]
 				"""choose site to jump to"""
 				for i in np.arange(xsf.vol * 1000) : 
 					jump_vec = np.zeros(3)
 					jump_vec += np.random.rand() * xsf.lat_vec[0]
 					jump_vec += np.random.rand() * xsf.lat_vec[1]
 					jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
-					jump_neighbor = bvo.at_single_nn(xsf, jump_ind, jump_vec)
-					if (jump_neighbor == el.pref_coord[jump_el_ind]) : 
+					jump_neighbor = bvo.at_single_nn(xsf, jump_at_ind, jump_vec)
+					if (jump_neighbor == el.pref_nn[jump_el_ind]) : 
 						break
 				if i >= xsf.vol * 1000 - 1 :
 					act_p[2] = 0
@@ -202,7 +202,7 @@ class mc :
 		elif cndt < act_p[2]:
 			self.uvt_act        = 2
 			self.uvt_at_exc_num = 0
-			self.new_xsf.at_coord[jump_ind, :] = np.array(jump_vec)
+			self.new_xsf.at_coord[jump_at_ind, :] = np.array(jump_vec)
 			return self.new_xsf.copy()
 
 		#--------------------add one atom--------------------------------
@@ -378,6 +378,7 @@ class mc :
 			if rand <= prob_acc : # accept
 				self.nvt_acc += 1
 				self.curr_g = free_g
+				self.old_xsf = self.new_xsf.copy()
 				if free_g < self.opt_g : 
 					self.opt_g = free_g
 					self.opt_xsf = self.new_xsf.copy()
@@ -392,6 +393,7 @@ class mc :
 		elif self.uvt_act == 1 or self.uvt_act == 2 : # swap & jump
 			if rand <= prob_acc : # accept
 				self.curr_g = free_g
+				self.old_xsf = self.new_xsf.copy()
 				if free_g < self.opt_g : 
 					self.opt_g = free_g
 					self.opt_xsf = self.new_xsf.copy()
@@ -401,6 +403,7 @@ class mc :
 		elif self.uvt_act == 3 or self.uvt_act == 4 : # exchange
 			if rand <= prob_acc : # accept
 				self.curr_g = free_g
+				self.old_xsf = self.new_xsf.copy()
 				if free_g < self.opt_g : 
 					self.opt_g = free_g
 					self.opt_xsf = self.new_xsf.copy()
