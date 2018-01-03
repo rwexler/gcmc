@@ -38,8 +38,11 @@ class el_info(object) :
 		# get element info
 		with open(filename, 'r') as f :
 		 	for line in f :
+				# element symbol
 				self.sym.append(line.split()[1])
+				# atomic weight
 				self.wt         = np.append(self.wt, np.array(line.split()[2]).astype('float') * amu_kg)
+				# preferred coordination number
 				self.pref_coord = np.append(self.pref_coord, np.array(line.split()[3]).astype('int'))
 
 	def update_therm_db(self, T) :
@@ -90,6 +93,7 @@ class xsf_info(object) :
 				self.at_num = np.array(line.split())[0].astype('int')
 				break
 		# get lattice vectors
+		self.lat_vec = np.zeros((0, 3))
 		with open(filename, 'r') as f :
 			for line in f :
 				if 'PRIMVEC' in line :
