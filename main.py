@@ -43,10 +43,12 @@ os.system('mkdir -p temp') # make temp directory for qe calculations
 os.chdir('temp') # enter temp
 log_file = init_log('log.dat') # initialize log file
 axsf_opt_file    = init_axsf('coord_opt.axsf', niter, xsf)    # initialize axsf file recording optimized structure
-axsf_new_file    = init_axsf('coord_new.axsf', niter, xsf)   # initialize axsf file recording structure created in current iteration
+axsf_new_file    = init_axsf('coord_new.axsf', niter, xsf)    # initialize axsf file recording structure created in current iteration
 axsf_accept_file = init_axsf('coord_accept.axsf', niter, xsf) # initialize axsf file recording structure accepted in current iteration
-i = 0
-while i < niter :
+axsf_failed_file = init_axsf('coord_failed.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
+axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
+failed_cnt = 0
+for i in range(niter) :
 	# attempt uvt action and store xsf attributes in xsf_new
 	if i == 0 : 
 		# alway start with moving
@@ -72,7 +74,7 @@ while i < niter :
 	xsf.at_force = np.array(mc_run.new_xsf.at_force)
 
 	# update T
-	mc_run.update_T_const(i, 3000)
+	mc_run.update_T_const(i - failed_cnt, 3000)
 
 	# decide whether or not to accept uvt action, 
 	accept = mc_run.uvt_mc(new_en, el, mu_list)
@@ -87,17 +89,21 @@ while i < niter :
 	# update logs if no errors in qe running
 	if new_en != 0.0 :
 		# write energies, number of accepted steps, and acceptance rate to log file
-		upd_log(log_file, i, free_en, mc_run)
+		upd_log(log_file, i - failed_cnt, free_en, mc_run)
 
 		# write atomic coordinates to axsf file
-		upd_axsf(axsf_opt_file, i, mc_run.opt_xsf, el)
-		upd_axsf(axsf_new_file, i, mc_run.new_xsf, el)
-		upd_axsf(axsf_accept_file, i, mc_run.old_xsf, el)
+		upd_axsf(axsf_opt_file, i - failed_cnt, mc_run.opt_xsf, el)
+		upd_axsf(axsf_new_file, i - failed_cnt, mc_run.new_xsf, el)
+		upd_axsf(axsf_accept_file, i - failed_cnt, mc_run.old_xsf, el)
 	else :
-		i -= 1
-	
-	i += 1
+		failed_cnt += 1
+		upd_axsf(axsf_failed_file, failed_cnt, mc_run.new_xsf, el)
+		upd_axsf(axsf_failed_iter_file, i, mc_run.new_xsf, el)
 
 log_file.close()
-axsf_file.close()
+axsf_opt_file.close()
+axsf_new_file.close()
+axsf_accept_file.close()
+axsf_failed_file.close()
+axsf_failed_iter_file.close()
 os.chdir('../')
