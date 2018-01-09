@@ -32,7 +32,7 @@ xsf.pop_attr(xsf_filename, el, buf_len) # populate attributes in xsf_info object
 
 # create bv object
 bvo = bv()
-bvo.init(xsf)
+bvo.init(xsf, el)
 
 # instantiate mc object
 mc_run = mc()

@@ -18,6 +18,8 @@ class el_info(object) :
 		self.wt         = np.array([]).astype('float')   # atomic weights
 		self.therm_db   = np.array([]).astype('float')   # thermal de broglie wavelengths
 		self.pref_nn    = np.array([]).astype('int')     # preferred coordination numbers
+		self.r_min      = np.array([]).astype('float')   # minimum neighbor distance
+		self.r_max      = np.array([]).astype('float')   # maximum neighbor distance
 	
 	# enable explicit copy
 	def copy(self) :
@@ -27,6 +29,8 @@ class el_info(object) :
 		cp_self.wt         = np.array(self.wt)
 		cp_self.therm_db   = np.array(self.therm_db)
 		cp_self.pref_nn    = np.array(self.pref_nn)
+		cp_self.r_min      = np.array(self.r_min)
+		cp_self.r_max      = np.array(self.r_max)
 		return cp_self
 
 	def init(self, filename) :
@@ -44,6 +48,10 @@ class el_info(object) :
 				self.wt = np.append(self.wt, np.array(line.split()[2]).astype('float') * amu_kg)
 				# preferred coordination number
 				self.pref_nn = np.append(self.pref_nn, np.array(line.split()[3]).astype('int'))
+				# minimum neighbor distance
+				self.r_min = np.append(self.r_min, np.array(line.split()[4]).astype('float'))
+				# maximum neighbor distance
+				self.r_max = np.append(self.r_max, np.array(line.split()[5]).astype('float'))
 
 	def update_therm_db(self, T) :
 		"""function for updating thermal de broglie wavelengths"""
