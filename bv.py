@@ -71,17 +71,3 @@ class bv(object) :
 				else :
 					at_nn += dis[dis < self.r_max[at_type]].shape[0]
 		return at_nn
-
-#	# get number of neighbors for a specific position
-#	def position_nn(self, xsf, coord) :
-#		at_nn = 0
-#		for i in range(xsf.at_num) :
-#			dis = np.linalg.norm(self.lat_vec_sc + (xsf.at_coord[i] - coord), axis = 1)
-#			if (dis < self.r_min).any() :
-#				at_nn += 100
-#			else :
-#				at_nn += dis[dis < self.r_max].shape[0]
-#		return at_nn
-
-
-""" could try to (1) define differen r_min, r_max between different elements(i.e. a matrix). (2) add tolerance to nn"""
