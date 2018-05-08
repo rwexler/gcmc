@@ -1,32 +1,45 @@
 &CONTROL
-calculation = 'scf',
-tprnfor = .true.,
-prefix = 'qe',
-pseudo_dir = '../PSPs/'
+  calculation = 'scf',
+  tprnfor = .true.,
+  prefix = 'qe',
+  etot_conv_thr = 1.0D-2,
+  forc_conv_thr = 1.0D-1,
+  pseudo_dir = '../PSPs/'
+  tefield = .true.,
+  dipfield = .true.,
 /
 
 &SYSTEM
-ibrav = 0,
-ntyp = 3,
-ecutwfc = 50,
-!nosym = .true.,
-occupations = 'smearing',
-degauss = 0.001,
-smearing = 'gaussian',
+  ibrav = 0,
+  ntyp = 4,
+  ecutwfc = 50,
+!  nosym = .true.,
+  occupations = 'smearing',
+  degauss = 0.001,
+  smearing = 'gaussian',
+  edir = 3,
+  emaxpos = 0.657920,
+!  vdw_corr = 'TS',
 /
 
 &ELECTRONS
-conv_thr = 1.0D-4,
-mixing_mode = 'local-TF',
+  electron_maxstep = 200,
+  conv_thr = 1.D-3,
+  mixing_mode = 'local-TF',
+  startingwfc = 'atomic',
+/
+
+&IONS
 /
 
 ATOMIC_SPECIES
-O  15.9994 o.upf 
-Ti 47.88   ti.upf
-Sr 87.62   sr.upf
+ Ag  196.966543  ag.upf
+ O  15.9994  o.upf
+ Cs  132.9054  cs.upf
+ Cl  35.4527  cl.upf
 
-K_POINTS (automatic)
-1 2 1 0 1 0
+K_POINTS automatic
+2 2 1 1 1 0
 
 CELL_PARAMETERS (angstrom)
 

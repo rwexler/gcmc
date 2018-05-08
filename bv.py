@@ -52,7 +52,7 @@ class bv(object) :
 				if i != j :
 					dis = np.linalg.norm(self.lat_vec_sc + (xsf.at_coord[i] - xsf.at_coord[j]), axis = 1)
 					if (dis < self.r_min[at_type]).any() :
-						self.at_nn[i] += 100
+						self.at_nn[i] += 999
 					else :
 						self.at_nn[i] += dis[dis < self.r_max[at_type]].shape[0]
 		return np.array(self.at_nn)
@@ -67,7 +67,7 @@ class bv(object) :
 			if i != at_ind :
 				dis = np.linalg.norm(self.lat_vec_sc + (xsf.at_coord[i] - coord), axis = 1)
 				if (dis < self.r_min[at_type]).any() :
-					at_nn += 100
+					at_nn += 999
 				else :
 					at_nn += dis[dis < self.r_max[at_type]].shape[0]
 		return at_nn
