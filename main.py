@@ -15,12 +15,12 @@ el_filename = sys.argv[2] # read element list filename
 # set simulation parameters
 niter = 1000
 max_disp = 0.05 # angstroms
-T_move = 1 # kelvin
+T_move = 1000 # kelvin
 ry_ev = 13.605693009
 bohr_ang = 0.52917721067
-buf_len = 2.0 # length above surface within which atoms can be added
-mu_list = [0, 0, 0] # sr, ti, o
-act_p = np.array([1,1,1,0,0]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
+buf_len = 3.5 # length above surface within which atoms can be added
+mu_list = [0, -428, -553, -411] # ag, o, cs, cl
+act_p = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 
 # get element info
 el = el_info() # instantiates el_info object
@@ -58,6 +58,10 @@ for i in range(niter) :
 
 	# make input file
 	make_qe_in('qe.in', xsf, el)
+
+	# if it is not move, then replace scf with relax
+	if mc_run.uvt_act != 0 :
+		os.system('sed -i "s/scf/relax/g" qe.in')
 	
 	# calculate and get total energy
 	if xsf.at_num <= 2 :
@@ -65,13 +69,20 @@ for i in range(niter) :
 	elif xsf.at_num <= 6 :
 		os.system('mpiexec.hydra -np 9 ../bin/pw.x -i qe.in > qe.out')
 	else :
-		os.system('mpiexec.hydra -np 36 ../bin/pw.x -i qe.in > qe.out')
+		os.system('mpiexec.hydra -np 72 ../bin/pw.x -nk 2 -i qe.in > qe.out')
 	qe_out = qe_out_info('qe.out')
 	# get energy from qe
-	new_en = qe_out.get_final_en() * ry_ev # convert final energy from ry to ev
-	# get forces from qe
-	mc_run.new_xsf.at_force = qe_out.get_forces(mc_run.new_xsf.at_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
-	xsf.at_force = np.array(mc_run.new_xsf.at_force)
+	#new_en = qe_out.get_final_en() * ry_ev # convert final energy from ry to ev
+	if os.popen('grep ! qe.out').read() == '' :
+		new_en = 0
+		mc_run.new_xsf.at_force = np.zeros((mc_run.new_xsf.at_num, 3))
+
+	else :
+        	new_en = float(os.popen("grep ! qe.out | tail -1 | cut -d '=' -f 2 | cut -d 'R' -f 1").read()) * ry_ev
+
+		# get forces from qe
+		mc_run.new_xsf.at_force = qe_out.get_forces(mc_run.new_xsf.at_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
+		xsf.at_force = np.array(mc_run.new_xsf.at_force)
 
 	# update T
 	mc_run.update_T_const(i - failed_cnt, 3000)
@@ -85,6 +96,10 @@ for i in range(niter) :
 	# if step not accepted, copy attributes from old (previous) xsf to xsf
 	if accept == 0 :
 		xsf = mc_run.old_xsf.copy()
+
+	# if step accepted and not move, then use final relaxed coordinates
+	if (accept == 1 and mc_run.uvt_act != 0) :
+		xsf.at_coord = np.array(os.popen("grep 'End final' -B " + str(xsf.at_num) + " qe.out | grep -v 'End final' | sed 's/^..//g'").read().split()).reshape((xsf.at_num, 3)).astype(float)
 
 	# update logs if no errors in qe running
 	if new_en != 0.0 :

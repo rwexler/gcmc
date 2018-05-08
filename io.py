@@ -20,6 +20,7 @@ class el_info(object) :
 		self.pref_nn    = np.array([]).astype('int')     # preferred coordination numbers
 		self.r_min      = np.array([]).astype('float')   # minimum neighbor distance
 		self.r_max      = np.array([]).astype('float')   # maximum neighbor distance
+        	self.p_add      = np.array([]).astype('float')   # probablity of choosing elements to add
 	
 	# enable explicit copy
 	def copy(self) :
@@ -31,16 +32,19 @@ class el_info(object) :
 		cp_self.pref_nn    = np.array(self.pref_nn)
 		cp_self.r_min      = np.array(self.r_min)
 		cp_self.r_max      = np.array(self.r_max)
+        	cp_self.p_add      = np.array(self.p_add)
 		return cp_self
 
 	def init(self, filename) :
 		# get number of elements
 		self.num = 0
 		with open(filename, 'r') as f :
+			next(f)
 			for line in f :
 				self.num += 1
 		# get element info
 		with open(filename, 'r') as f :
+			next(f)
 		 	for line in f :
 				# element symbol
 				self.sym.append(line.split()[1])
@@ -52,6 +56,9 @@ class el_info(object) :
 				self.r_min = np.append(self.r_min, np.array(line.split()[4]).astype('float'))
 				# maximum neighbor distance
 				self.r_max = np.append(self.r_max, np.array(line.split()[5]).astype('float'))
+                		# probablity of choosing elements to add
+                		self.p_add = np.append(self.p_add, np.array(line.split()[6]).astype('float'))
+		self.p_add = self.p_add / np.sum(self.p_add)
 
 	def update_therm_db(self, T) :
 		"""function for updating thermal de broglie wavelengths"""
@@ -86,7 +93,7 @@ class xsf_info(object) :
 		cp_self.at_type     = np.array(self.at_type)
 		cp_self.el_each_num = np.array(self.el_each_num)
 		cp_self.at_rmb      = np.array(self.at_rmb)
-		cp_self.at_swap     = copy.copy(self.at_swap)
+		cp_self.at_swap     = copy.deepcopy(self.at_swap)
 		cp_self.at_num      = self.at_num
 		cp_self.c_min       = self.c_min
 		cp_self.c_max       = self.c_max
@@ -145,7 +152,9 @@ class xsf_info(object) :
 		c_proj = np.dot(self.at_coord, c_unit)
 		perp = np.cross(self.lat_vec[0], self.lat_vec[1])
 		perp_unit = perp / np.linalg.norm(perp)
-		self.c_min = np.min(c_proj) - buf_len / np.dot(c_unit, perp_unit)
+		#self.c_min = np.min(c_proj) - buf_len / np.dot(c_unit, perp_unit) # exchange on both top and bottom surfaces
+		#self.c_min = np.max(c_proj) - buf_len / np.dot(c_unit, perp_unit) # exchance only on top surface + a little bulk
+		self.c_min = np.max(c_proj) # exchance only on top surface
 		self.c_max = np.max(c_proj) + buf_len / np.dot(c_unit, perp_unit)
 		return self.c_min, self.c_max
 
@@ -190,13 +199,14 @@ class qe_out_info(object) :
 
 	def get_forces(self, at_num) :
 		"""get forces attribute"""
-		self.forces =  np.zeros((at_num, 3))
-		with open(self.filename, 'r') as f :
-			ind = 0
-			for line in f :
-				if '  force =' in line :
-					self.forces[ind] = np.array(line.split()[6:9])
-					ind += 1
+#		self.forces =  np.zeros((at_num, 3))
+#		with open(self.filename, 'r') as f :
+#			ind = 0
+#			for line in f :
+#				if '  force =' in line :
+#					self.forces[ind] = np.array(line.split()[6:9])
+#					ind += 1
+		self.forces = np.array(os.popen("grep '  force = ' qe.out | tail -" + str(at_num) + " | cut -d '=' -f 2").read().split()).astype(float).reshape((at_num, 3))
 		return np.array(self.forces)
 
 def make_qe_in(filename, xsf, el) :
