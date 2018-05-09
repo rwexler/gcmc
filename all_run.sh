@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -A ONRDC17423173
-#PBS -l select=20:ncpus=36:mpiprocs=36
-#PBS -l walltime=24:00:00
+#PBS -l select=2:ncpus=36:mpiprocs=36
+#PBS -l walltime=01:00:00
 #PBS -q standard
 #PBS -j oe
 #PBS -V
@@ -15,7 +15,7 @@ cat $PBS_NODEFILE > nodes
 num_per_job=72
 pre="A_"
 
-for (( i=1 ; i<5 ; i++ ))
+for (( i=1 ; i<2 ; i++ ))
 do
 	n1=$( expr $num_per_job \* \( $i + 1 \) )  #specify lines
 	if (( $i <= 9 )) ; then

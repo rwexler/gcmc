@@ -13,21 +13,23 @@ do
 	fi
 	folder=$pre$j
 	mkdir -p $folder
-	cp -r bin el_list.txt *.py plot PSPs structure.xsf templates $folder
+	cp -r bin  bv.py el_list.txt  io.py  main.py  mc.py  PSPs  structure.xsf  templates $folder
 	cd $folder
 	cat > runscript <<EOF
 #!/bin/bash
 #PBS -A ONRDC17423173
-#PBS -l select=1:ncpus=36:mpiprocs=36
-#PBS -l walltime=24:00:00
-#PBS -q standard
+#PBS -l select=2:ncpus=36:mpiprocs=36
+#PBS -l walltime=1:00:00
+#PBS -q debug
 #PBS -j oe
 #PBS -V
 #PBS -N gcmc-$i
 
+module swap mpi/sgimpt/2.15 mpi/intelmpi/17.0.1
+
 cd \$PBS_O_WORKDIR
 sleep ${wait_time}s
-python main.py structure.xsf el_list.txt
+python main.py structure.xsf el_list.txt >& err_info.log
 EOF
 	qsub runscript
 	cd ../

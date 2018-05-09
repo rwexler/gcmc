@@ -87,7 +87,7 @@ for i in range(niter) :
 
 	# if action is not moving and QE does not fail at the first step, update coordinates of atoms
 	if ( os.popen('grep ! qe.out').read() != '' and mc_run.uvt_act != 0 ) :
-		mc_run.new_xsf.at_coord = np.array(os.popen("grep 'ATOMIC_POSITIONS' -A " + str(xsf.at_num) + " qe.out | tail -n " + str(xsf.at_num) + " | sed 's/^..//g'").read().split()).reshape((xsf.at_num, 3)).astype(float)
+		mc_run.new_xsf.at_coord = qe_out.get_coord(mc_run.new_xsf.at_num)
 
 	# update T
 	mc_run.update_T_const(i - failed_cnt, 3000)

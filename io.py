@@ -187,29 +187,29 @@ class qe_out_info(object) :
 		self.filename = filename
 		self.final_en = 0
 		self.forces = np.zeros((0, 3))
+		self.coord = np.zeros((0, 3))
 
 	def get_final_en(self) :
 		"""get final energy attribute"""
-#		with open(self.filename, 'r') as f :
-#			for line in f :
-#				if '!' in line :
-#					self.final_en = np.asarray(line.split())[4].astype('float')
-#					break
-#		return self.final_en
 		self.final_en = float(os.popen("grep ! " + self.filename + " | tail -1 | cut -d '=' -f 2 | cut -d 'R' -f 1").read()) * ry_ev
 		return self.final_en
 
 	def get_forces(self, at_num) :
 		"""get forces attribute"""
-#		self.forces =  np.zeros((at_num, 3))
-#		with open(self.filename, 'r') as f :
-#			ind = 0
-#			for line in f :
-#				if '  force =' in line :
-#					self.forces[ind] = np.array(line.split()[6:9])
-#					ind += 1
 		self.forces = np.array(os.popen("grep '  force = ' " + self.filename + " | tail -" + str(at_num) + " | cut -d '=' -f 2").read().split()).astype(float).reshape((at_num, 3))
 		return np.array(self.forces)
+
+	def get_coord(self, at_num) :
+		""" get atomic coordinates attribute """
+
+		nsteps = int(os.popen("grep ! " + self.filename + " | wc -l").read())
+		# when relaxation proceeds more than one step
+		if nsteps > 1 :
+			self.coord = np.array(os.popen("grep 'ATOMIC_POSITIONS' -A " + str(at_num) + " " + self.filename  + " | tail -n " + str(2*at_num+2) + " | head -n " + str(at_num) + " | sed 's/^..//g'").read().split()).reshape((at_num, 3)).astype(float)
+		# when relaxation only takes one step; possible when energy/force thresholds are large
+		else :
+			self.coord = np.array(os.popen("grep 'ATOMIC_POSITIONS' -A " + str(at_num) + " " + self.filename + " | grep -v 'ATOMIC_POSITIONS' | sed 's/^..//g'").read().split()).reshape((at_num, 3)).astype(float)
+		return np.array(self.coord)
 
 def make_qe_in(filename, xsf, el) :
 	"""function for making QE input file"""
