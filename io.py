@@ -190,11 +190,13 @@ class qe_out_info(object) :
 
 	def get_final_en(self) :
 		"""get final energy attribute"""
-		with open(self.filename, 'r') as f :
-			for line in f :
-				if '!' in line :
-					self.final_en = np.asarray(line.split())[4].astype('float')
-					break
+#		with open(self.filename, 'r') as f :
+#			for line in f :
+#				if '!' in line :
+#					self.final_en = np.asarray(line.split())[4].astype('float')
+#					break
+#		return self.final_en
+		self.final_en = float(os.popen("grep ! " + self.filename + " | tail -1 | cut -d '=' -f 2 | cut -d 'R' -f 1").read()) * ry_ev
 		return self.final_en
 
 	def get_forces(self, at_num) :
@@ -206,7 +208,7 @@ class qe_out_info(object) :
 #				if '  force =' in line :
 #					self.forces[ind] = np.array(line.split()[6:9])
 #					ind += 1
-		self.forces = np.array(os.popen("grep '  force = ' qe.out | tail -" + str(at_num) + " | cut -d '=' -f 2").read().split()).astype(float).reshape((at_num, 3))
+		self.forces = np.array(os.popen("grep '  force = ' " + self.filename + " | tail -" + str(at_num) + " | cut -d '=' -f 2").read().split()).astype(float).reshape((at_num, 3))
 		return np.array(self.forces)
 
 def make_qe_in(filename, xsf, el) :

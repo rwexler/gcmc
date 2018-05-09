@@ -71,23 +71,29 @@ for i in range(niter) :
 	else :
 		os.system('mpiexec.hydra -np 72 ../bin/pw.x -nk 2 -i qe.in > qe.out')
 	qe_out = qe_out_info('qe.out')
-	# get energy from qe
-	#new_en = qe_out.get_final_en() * ry_ev # convert final energy from ry to ev
+
+	# get energy and forces from qe
 	if os.popen('grep ! qe.out').read() == '' :
+		# QE failed at first scf step
 		new_en = 0
 		mc_run.new_xsf.at_force = np.zeros((mc_run.new_xsf.at_num, 3))
 
 	else :
-        	new_en = float(os.popen("grep ! qe.out | tail -1 | cut -d '=' -f 2 | cut -d 'R' -f 1").read()) * ry_ev
+		# get energy from QE
+		new_en = qe_out.get_final_en()
 
-		# get forces from qe
+		# get forces from QE
 		mc_run.new_xsf.at_force = qe_out.get_forces(mc_run.new_xsf.at_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
-		xsf.at_force = np.array(mc_run.new_xsf.at_force)
+
+	# if action is not moving and QE does not fail at the first step, update coordinates of atoms
+	if ( os.popen('grep ! qe.out').read() != '' and mc_run.uvt_act != 0 ) :
+		mc_run.new_xsf.at_coord = np.array(os.popen("grep 'ATOMIC_POSITIONS' -A " + str(xsf.at_num) + " qe.out | tail -n " + str(xsf.at_num) + " | sed 's/^..//g'").read().split()).reshape((xsf.at_num, 3)).astype(float)
 
 	# update T
 	mc_run.update_T_const(i - failed_cnt, 3000)
 
 	# decide whether or not to accept uvt action, 
+	# Notice that old_xsf is changed to new_xsf if accepted
 	accept = mc_run.uvt_mc(new_en, el, mu_list)
 
 	# calculate free energy 
@@ -96,12 +102,11 @@ for i in range(niter) :
 	# if step not accepted, copy attributes from old (previous) xsf to xsf
 	if accept == 0 :
 		xsf = mc_run.old_xsf.copy()
+	# othewise copy new xsf to xsf
+	else :
+		xsf = mc_run.new_xsf.copy()
 
-	# if step accepted and not move, then use final relaxed coordinates
-	if (accept == 1 and mc_run.uvt_act != 0) :
-		xsf.at_coord = np.array(os.popen("grep 'End final' -B " + str(xsf.at_num) + " qe.out | grep -v 'End final' | sed 's/^..//g'").read().split()).reshape((xsf.at_num, 3)).astype(float)
-
-	# update logs if no errors in qe running
+	# update logs if no errors in QE running
 	if new_en != 0.0 :
 		# write energies, number of accepted steps, and acceptance rate to log file
 		upd_log(log_file, i - failed_cnt, free_en, mc_run)
