@@ -15,11 +15,12 @@ el_filename = sys.argv[2] # read element list filename
 # set simulation parameters
 niter = 1000
 max_disp = 0.05 # angstroms
-T_move = 1000 # kelvin
+T_move = 300 # kelvin
 ry_ev = 13.605693009
 bohr_ang = 0.52917721067
 buf_len = 3.5 # length above surface within which atoms can be added
-mu_list = [0, -428, -553, -411] # ag, o, cs, cl
+mu_list = [-989.689, -427.831] # ag, o
+#mu_list = [-989.705, -427.798] # ag, o
 act_p = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en = 999.
 
