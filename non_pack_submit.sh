@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pre="B_"
-for (( i=1 ; i<=$1 ; i++ ))
+for (( i=$1 ; i<=$2 ; i++ ))
 do
 	wait_time=$( expr $i \* 2 )
 	if (( $i <= 9 )) ; then

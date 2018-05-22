@@ -21,6 +21,7 @@ bohr_ang = 0.52917721067
 buf_len = 3.5 # length above surface within which atoms can be added
 mu_list = [0, -428, -553, -411] # ag, o, cs, cl
 act_p = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
+fail_en = 999.
 
 # get element info
 el = el_info() # instantiates el_info object
@@ -75,7 +76,7 @@ for i in range(niter) :
 	# get energy and forces from qe
 	if os.popen('grep ! qe.out').read() == '' :
 		# QE failed at first scf step
-		new_en = 0
+		new_en = fail_en
 		mc_run.new_xsf.at_force = np.zeros((mc_run.new_xsf.at_num, 3))
 
 	else :
@@ -107,7 +108,7 @@ for i in range(niter) :
 		xsf = mc_run.new_xsf.copy()
 
 	# update logs if no errors in QE running
-	if new_en != 0.0 :
+	if new_en != fail_en :
 		# write energies, number of accepted steps, and acceptance rate to log file
 		upd_log(log_file, i - failed_cnt, free_en, mc_run)
 

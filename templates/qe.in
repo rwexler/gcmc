@@ -11,14 +11,14 @@
 
 &SYSTEM
   ibrav = 0,
-  ntyp = 4,
+  ntyp = 2,
   ecutwfc = 50,
 !  nosym = .true.,
   occupations = 'smearing',
   degauss = 0.001,
   smearing = 'gaussian',
   edir = 3,
-  emaxpos = 0.657920,
+  emaxpos = 0.62373,
 !  vdw_corr = 'TS',
 /
 
@@ -35,8 +35,6 @@
 ATOMIC_SPECIES
  Ag  196.966543  ag.upf
  O  15.9994  o.upf
- Cs  132.9054  cs.upf
- Cl  35.4527  cl.upf
 
 K_POINTS automatic
 2 2 1 1 1 0
