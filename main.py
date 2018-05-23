@@ -8,6 +8,7 @@ from mc import mc
 from bv import bv
 import os
 import numpy as np
+import subprocess
 
 xsf_filename = sys.argv[1] # read xsf filename from command line
 el_filename = sys.argv[2] # read element list filename
@@ -23,6 +24,8 @@ mu_list = [-989.689, -427.831] # ag, o
 #mu_list = [-989.705, -427.798] # ag, o
 act_p = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en = 999.
+nproc = 72
+nkdiv = 2
 
 # get element info
 el = el_info() # instantiates el_info object
@@ -66,12 +69,8 @@ for i in range(niter) :
 		os.system('sed -i "s/scf/relax/g" qe.in')
 	
 	# calculate and get total energy
-	if xsf.at_num <= 2 :
-		os.system('mpiexec.hydra -np 4 ../bin/pw.x -i qe.in > qe.out') # execute qe
-	elif xsf.at_num <= 6 :
-		os.system('mpiexec.hydra -np 9 ../bin/pw.x -i qe.in > qe.out')
-	else :
-		os.system('mpiexec.hydra -np 72 ../bin/pw.x -nk 2 -i qe.in > qe.out')
+	call_qe = 'mpiexec.hydra -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -i qe.in > qe.out'
+	subprocess.call(call_qe, shell = True)
 	qe_out = qe_out_info('qe.out')
 
 	# get energy and forces from qe

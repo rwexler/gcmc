@@ -19,8 +19,8 @@ do
 #!/bin/bash
 #PBS -A ONRDC17423173
 #PBS -l select=2:ncpus=36:mpiprocs=36
-#PBS -l walltime=01:00:00
-#PBS -q debug
+#PBS -l walltime=24:00:00
+#PBS -q standard
 #PBS -j oe
 #PBS -V
 #PBS -N gcmc-$i
