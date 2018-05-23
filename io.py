@@ -205,10 +205,11 @@ class qe_out_info(object) :
 		nsteps = int(os.popen("grep ! " + self.filename + " | wc -l").read())
 		# when relaxation proceeds more than one step
 		if nsteps > 1 :
-			self.coord = np.array(os.popen("grep 'ATOMIC_POSITIONS' -A " + str(at_num) + " " + self.filename  + " | tail -n " + str(2*at_num+2) + " | head -n " + str(at_num) + " | sed 's/^..//g'").read().split()).reshape((at_num, 3)).astype(float)
+			command = "grep 'ATOMIC_POSITIONS' -A " + str(at_num) + " " + self.filename  + " | tail -n " + str(2*at_num+2) + " | head -n " + str(at_num) + " | sed 's/^..//g' | cut -b -50"
 		# when relaxation only takes one step; possible when energy/force thresholds are large
 		else :
-			self.coord = np.array(os.popen("grep 'ATOMIC_POSITIONS' -A " + str(at_num) + " " + self.filename + " | grep -v 'ATOMIC_POSITIONS' | sed 's/^..//g'").read().split()).reshape((at_num, 3)).astype(float)
+			command = "grep 'ATOMIC_POSITIONS' -A " + str(at_num) + " " + self.filename + " | grep -v 'ATOMIC_POSITIONS' | sed 's/^..//g' | cut -b -50"
+		self.coord = np.array(os.popen(command).read().split()).reshape((at_num, 3)).astype(float)
 		return np.array(self.coord)
 
 def make_qe_in(filename, xsf, el) :
@@ -240,10 +241,14 @@ def make_qe_in(filename, xsf, el) :
 				else :
 					f_new.write(line)
 			for row in range(xsf.at_num) :
+				if row in xsf.at_rmb :
+					fix_str = ' 1 1 1'
+				else :
+					fix_str = ' 0 0 0'
 				f_new.write(el.sym[xsf.at_type[row]] + ' ' +
 							str(xsf.at_coord[row, 0]) + ' ' +
 							str(xsf.at_coord[row, 1]) + ' ' +
-							str(xsf.at_coord[row, 2]) + '\n')
+							str(xsf.at_coord[row, 2]) + fix_str + '\n')
 
 def init_log(filename) :
 	"""function for initializing log file"""

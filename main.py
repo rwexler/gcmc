@@ -15,7 +15,7 @@ el_filename = sys.argv[2] # read element list filename
 # set simulation parameters
 niter = 1000
 max_disp = 0.05 # angstroms
-T_move = 300 # kelvin
+T_move = 500 # kelvin
 ry_ev = 13.605693009
 bohr_ang = 0.52917721067
 buf_len = 3.5 # length above surface within which atoms can be added
