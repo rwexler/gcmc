@@ -70,6 +70,12 @@ for i in range(niter) :
 	if mc_run.uvt_act != 0 :
 		os.system('sed -i "s/scf/relax/g" qe.in')
 	
+	# if number of atoms is smaller or equal to 6, make sure it has 36 bands, 
+	# note that in the future it should be evaluated based on number of electrons, 
+	# and threshold of number of bands should be -ndiag in qe
+	if xsf.at_num <= 6 :
+		os.system('sed -i "/&SYSTEM/a nbnd = 36" qe.in')
+	
 	# calculate and get total energy
 	call_qe = 'mpiexec.hydra -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -i qe.in > qe.out'
 	subprocess.call(call_qe, shell = True)

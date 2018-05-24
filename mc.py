@@ -163,7 +163,23 @@ class mc :
         if act_pp[3] > 0 :
             if np.sum(el.p_add) == 0 :
                 act_pp[3] = 0
-        #### also need to avoid adding action if too many atoms
+        # also avoid adding if could not find a site based on coordination rule
+        if act_pp[3] > 0 :
+            at_ad = xsf.at_num # index of atom to be added
+            self.uvt_el_exc  = np.random.choice(range(el.num), 1, p=el.p_add)[0]   # find the element index
+            dis = 0
+            trial = 0
+            while dis < el.r_min[self.uvt_el_exc] or dis > el.r_max[self.uvt_el_exc] : # control atom distance
+                at_ad_coord  = np.zeros(3)
+                at_ad_coord += np.random.rand() * xsf.lat_vec[0] 
+                at_ad_coord += np.random.rand() * xsf.lat_vec[1]
+                at_ad_coord += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
+                dis = min([np.linalg.norm(at_ad_coord - xsf.at_coord[ind]) for ind in range(xsf.at_num)])
+                trial += 1
+                if trial >= 100000 :
+                    break
+            if trial >= 100000 and (dis > el.r_min[self.uvt_el_exc] or dis > el.r_max[self.uvt_el_exc]) :
+                act_pp[3] = 0
         # avoid removing action if no removable atoms
         if act_pp[4] > 0 :
             if len(xsf.at_rmb) == 0 : 
@@ -215,19 +231,6 @@ class mc :
         elif cndt < act_pp[3] : 
             self.uvt_act        = 3
             self.uvt_at_exc_num = 1
-            at_ad = xsf.at_num                             # index of atom to be added
-            self.uvt_el_exc  = np.random.choice(range(el.num), 1, p=el.p_add)[0]   # find the element index
-            dis = 0
-            trial = 0
-            while dis < el.r_min[self.uvt_el_exc] or dis > el.r_max[self.uvt_el_exc] : # control atom distance
-                at_ad_coord  = np.zeros(3)
-                at_ad_coord += np.random.rand() * xsf.lat_vec[0] 
-                at_ad_coord += np.random.rand() * xsf.lat_vec[1]
-                at_ad_coord += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
-                dis = min([np.linalg.norm(at_ad_coord - xsf.at_coord[ind]) for ind in range(xsf.at_num)])
-                trial += 1
-                if trial >= 100000 :
-                    break
             self.new_xsf.at_coord = np.vstack((xsf.at_coord, at_ad_coord))   # add coordinates to xsf
             self.new_xsf.at_type  = np.append(xsf.at_type, self.uvt_el_exc)  # add atom to the atom list
             self.new_xsf.at_rmb   = np.append(xsf.at_rmb, at_ad)             # add atom to removable atom array
