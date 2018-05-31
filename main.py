@@ -1,6 +1,6 @@
 import sys
 import copy
-from io import xsf_info, el_info, therm_info
+from io import xsf_info, el_info
 from io import qe_out_info, make_qe_in
 from io import init_log, upd_log
 from io import init_axsf, upd_axsf
