@@ -2,8 +2,8 @@
   calculation = 'scf',
   tprnfor = .true.,
   prefix = 'qe',
-  etot_conv_thr = 1.0D-2,
-  forc_conv_thr = 1.0D-1,
+  etot_conv_thr = 0.00073496986,  ! 0.01 eV / slab
+  forc_conv_thr = 0.003889380791, ! 0.1 eV/Angstrom
   pseudo_dir = '../PSPs/'
   tefield = .true.,
   dipfield = .true.,
@@ -19,12 +19,11 @@
   smearing = 'gaussian',
   edir = 3,
   emaxpos = 0.7,
-!  vdw_corr = 'TS',
 /
 
 &ELECTRONS
   electron_maxstep = 200,
-  conv_thr = 1.D-3,
+  conv_thr = 0.000073496986,      ! 0.001 eV / slab
   mixing_mode = 'local-TF',
   startingwfc = 'atomic',
 /
@@ -34,10 +33,10 @@
 
 ATOMIC_SPECIES
  Ag  196.966543  ag.upf
- O  15.9994  o.upf
+ O    15.9994     o.upf
 
 K_POINTS automatic
-2 2 1 1 1 0
+4 4 1 1 1 0
 
 CELL_PARAMETERS (angstrom)
 
