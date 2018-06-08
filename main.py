@@ -27,7 +27,9 @@ bohr_ang = 0.52917721067
 buf_len  = 3.5                                # length above surface within which atoms can be added
 mu_list  = [-989.926, -428.350]               # ag, o - ag/ag2o
 #mu_list  = [-989.866, -428.468]               # ag, o - ag-rich
-#mu_list  = [-989.985, -428.231]               # ag, o - o-rich
+#mu_list  = [-989.985, -428.231]               # ag, o -  o-rich
+#mu_list  = [-989.748, -428.705]               # ag, o - ag-richer
+#mu_list  = [-990.103, -427.995]               # ag. o -  o-richer
 act_p    = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions
 					      # [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en  = 999.

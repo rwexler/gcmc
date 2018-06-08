@@ -1,4 +1,5 @@
-B_001-5  : Ag/Ag2O
-B_005-10 : Ag2O/AgO
-B_010-15 : Ag-rich
-B_015-20 :  O-rich
+B_001-003 : Ag/Ag2O
+B_004-006 : Ag-rich
+B_007-009 :  O-rich
+B_010-012 : Ag-richer
+B_013-015 :  O-richer
