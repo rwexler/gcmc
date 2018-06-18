@@ -18,7 +18,7 @@ do
 	cat > runscript <<EOF
 #!/bin/bash
 #PBS -A ONRDC17423173
-#PBS -l select=8:ncpus=36:mpiprocs=36
+#PBS -l select=8:ncpus=40:mpiprocs=36
 #PBS -l walltime=24:00:00
 #PBS -q standard
 #PBS -j oe
