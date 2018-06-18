@@ -33,8 +33,9 @@ mu_list  = [-989.926, -428.350]               # ag, o - ag/ag2o
 act_p    = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions
 					      # [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en  = 999.
-nproc    = 72
+nproc    = 288
 nkdiv    = 2
+ndiag    = 144
 
 ###########################
 # GET ELEMENT INFORMATION #
@@ -94,7 +95,7 @@ for i in range(niter) :
 		os.system('sed -i "/&SYSTEM/a nbnd = 36" qe.in')
 	
 	# calculate and get total energy
-	call_qe = 'mpiexec.hydra -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -i qe.in > qe.out'
+	call_qe = 'mpiexec_mpt -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -ndiag ' + str(ndiag) + ' -i qe.in > qe.out'
 	subprocess.call(call_qe, shell = True)
 	qe_out = qe_out_info('qe.out')
 

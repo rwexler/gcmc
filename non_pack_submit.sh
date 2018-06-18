@@ -18,14 +18,12 @@ do
 	cat > runscript <<EOF
 #!/bin/bash
 #PBS -A ONRDC17423173
-#PBS -l select=2:ncpus=36:mpiprocs=36
+#PBS -l select=8:ncpus=36:mpiprocs=36
 #PBS -l walltime=24:00:00
 #PBS -q standard
 #PBS -j oe
 #PBS -V
 #PBS -N gcmc-$i
-
-module swap mpi/sgimpt/2.15 mpi/intelmpi/17.0.1
 
 cd \$PBS_O_WORKDIR
 sleep ${wait_time}s

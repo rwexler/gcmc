@@ -5,7 +5,7 @@ import numpy as np
 
 # parameters
 EbulkAgO = -2407.209
-EbulkO = -428.065
+EbulkO = -426.863
 x = 2
 y = 1
 
@@ -67,7 +67,9 @@ for dir in dirs :
 	# get muAg and muO
 	with open('../main.py', 'r') as main :
 		for line in main :
-			if 'mu_list' in line :
+			if '#mu_list' in line :
+				continue
+			elif 'mu_list' in line :
 				muAg = float(line.split()[2][1:-1])
 				muO = float(line.split()[3][:-1])
 				break
