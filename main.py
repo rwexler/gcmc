@@ -25,7 +25,11 @@ T_move   = 500                                # kelvin
 ry_ev    = 13.605693009
 bohr_ang = 0.52917721067
 buf_len  = 3.5                                # length above surface within which atoms can be added
-mu_list  = [mu_ag, mu_o]                      # ag, o
+mu_list  = [-989.926, -428.156]               # ag, o - p/p0 = 1.e+0
+#mu_list  = [-989.926, -428.451]               # ag, o - p/p0 = 1.e-10
+#mu_list  = [-989.926, -428.333]               # ag, o - p/p0 = 1.e-6
+#mu_list  = [-989.926, -428.215]               # ag, o - p/p0 = 1.e-2
+#mu_list  = [-989.926, -428.096]               # ag, o - p/p0 = 1.e+2
 act_p    = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions
 					      # [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en  = 999.
