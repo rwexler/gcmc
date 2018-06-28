@@ -14,8 +14,8 @@
   ntyp = 2,
   ecutwfc = 50,
   occupations = 'smearing',
-  degauss = 0.001,
-  smearing = 'gaussian',
+  degauss = 0.00734986449,
+  smearing = 'methfessel-paxton',
   edir = 3,
   emaxpos = 0.7,
 /
@@ -23,7 +23,7 @@
 &ELECTRONS
   electron_maxstep = 200,
   conv_thr = 0.000073496986,      ! 0.001 eV / slab
-  mixing_mode = 'local-TF',
+  startingwfc = 'atomic',
 /
 
 &IONS
@@ -34,7 +34,7 @@ ATOMIC_SPECIES
  O    15.9994     o.upf
 
 K_POINTS automatic
-2 2 1 1 1 0
+3 3 1 0 0 0
 
 CELL_PARAMETERS (angstrom)
 
