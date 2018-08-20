@@ -82,6 +82,8 @@ class xsf_info(object) :
 		self.at_num      = 0                              # number of atoms
 		self.c_min       = 0                              # minimum allowed projection of atomic coordinates on c
 		self.c_max       = 0                              # maximum allowed projection of atomic coordinates on c
+		self.r_min       = 0                              # minimum allowed distance to origin
+		self.r_max       = 0                              # maximum allowed distance to origin
 		self.vol         = 0                              # volume of variable composition region
 
 	# enable explicit copy
@@ -97,6 +99,8 @@ class xsf_info(object) :
 		cp_self.at_num      = self.at_num
 		cp_self.c_min       = self.c_min
 		cp_self.c_max       = self.c_max
+		cp_self.r_min       = self.r_min
+		cp_self.r_max       = self.r_max
 		cp_self.vol         = self.vol
 		return cp_self
 
@@ -157,6 +161,12 @@ class xsf_info(object) :
 		self.c_min = np.max(c_proj) # exchance only on top surface
 		self.c_max = np.max(c_proj) + buf_len / np.dot(c_unit, perp_unit)
 		return self.c_min, self.c_max
+	
+	def get_r_min_max(self, buf_len) :
+		"""get minimum and maximum allowed r distance for NP growth"""
+		r_surf = np.max(np.linalg.norm(self.at_coord, axis=1))
+		self.r_min = r_surf - buf_len / 2
+		self.r_max = r_surf + buf_len / 2
 
 	def get_vol(self) :
 		"""get volume of variable composition region"""
@@ -168,6 +178,7 @@ class xsf_info(object) :
 		"""populate attributes"""
 		self.init(filename, el)
 		self.get_c_min_max(buf_len)
+		self.get_r_min_max(buf_len)
 		self.get_vol()
 
 class qe_out_info(object) :
