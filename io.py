@@ -165,8 +165,8 @@ class xsf_info(object) :
 	def get_r_min_max(self, buf_len) :
 		"""get minimum and maximum allowed r distance for NP growth"""
 		r_surf = np.max(np.linalg.norm(self.at_coord, axis=1))
-		self.r_min = r_surf - buf_len / 2
-		self.r_max = r_surf + buf_len / 2
+		self.r_min = 0.0
+		self.r_max = r_surf + buf_len
 
 	def get_vol(self) :
 		"""get volume of variable composition region"""
@@ -174,12 +174,18 @@ class xsf_info(object) :
 		self.vol = np.dot(np.cross(self.lat_vec[0], self.lat_vec[1]), (self.c_max - self.c_min) * c_unit)
 		return self.vol
 
+	def get_vol_np(self) :
+		"""get volume of variable composition region for nanoparticle"""
+		self.vol = 4.0 / 3 * np.pi * (self.r_max**3 - self.r_min**3)
+		return self.vol
+		
 	def pop_attr(self, filename, el, buf_len) :
 		"""populate attributes"""
 		self.init(filename, el)
 		self.get_c_min_max(buf_len)
 		self.get_r_min_max(buf_len)
 		self.get_vol()
+		self.get_vol_np()
 
 class qe_out_info(object) :
 	"""class for representing a QE output file

@@ -24,7 +24,7 @@ max_disp = 0.0                                # angstroms
 T_move   = 500                                # kelvin
 ry_ev    = 13.605693009
 bohr_ang = 0.52917721067
-buf_len  = 4.5                                # length above surface within which atoms can be added
+buf_len  = 2.5                                # length above surface within which atoms can be added
 #mu_list  = [-989.926, -428.156]               # ag, o - p/p0 = 1.e+0
 #mu_list  = [-989.926, -428.451]               # ag, o - p/p0 = 1.e-10
 #mu_list  = [-989.926, -428.333]               # ag, o - p/p0 = 1.e-6
@@ -74,6 +74,8 @@ axsf_failed_file      = init_axsf('coord_failed.axsf', niter, xsf)      # initia
 axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
 failed_cnt = 0
 for i in range(niter) :
+	xsf.get_r_min_max(buf_len)
+	xsf.get_vol_np()
 	# attempt uvt action and store xsf attributes in xsf_new
 	if i == 0 : 
 		# alway start with move

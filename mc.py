@@ -309,11 +309,9 @@ class mc :
             trial = 0
             while dis < el.r_min[self.uvt_el_exc] or dis > el.r_max[self.uvt_el_exc] : # control atom distance
                 at_ad_coord  = np.random.rand(3) * 2 - 1
-                while np.linalg.norm(at_ad_coord) > 1 :
+                while np.linalg.norm(at_ad_coord) > 1 or np.linalg.norm(at_ad_coord) < xsf.r_min/xsf.r_max :
                     at_ad_coord  = np.random.rand(3) * 2 - 1
-                at_ad_coord /= np.linalg.norm(at_ad_coord)
-                rr = np.random.rand() * (xsf.r_max - xsf.r_min) + xsf.r_min
-                at_ad_coord *= rr
+                at_ad_coord *= xsf.r_max
                 dis = min([np.linalg.norm(at_ad_coord - xsf.at_coord[ind]) for ind in range(xsf.at_num)])
                 trial += 1
                 if trial >= 100000 :
