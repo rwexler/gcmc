@@ -1,5 +1,22 @@
-B_001-003 : p/p0 = 1.e+0
-B_004-006 : p/p0 = 1.e-10
-B_007-009 : p/p0 = 1.e-6
-B_010-012 : p/p0 = 1.e-2
-B_013-015 : p/p0 = 1.e+2
+Ab initio grand canonical Monte Carlo simulation of surfaces and nanoparticles.
+
+E-mail: 
+        Robert Wexler : rwexler@sas.upenn.edu
+        Tian Qiu      : tianq@sas.upenn.edu
+
+These python scripts simulate the structural evolution of surfaces or nanopartcles in the grand canonical ensemble. 
+Quantum Espresso (QE) is launched to perform the structural relaxation and the total energy calculation.
+
+Dependencies:
+Python 2.6.9
+MPI launcher (optional but strongly suggested)
+
+Usage:
+1. Prepare the QE pw executable file pw.x in the directory "bin"
+2. Prepare the QE input file template in the directory "templates"
+3. Prepare pseudopotential files for DFT calculations in the directroy "PSPs"
+4. Prepare information of elements in "el_list.txt"
+5. Set up the buffer length `buf_len` in "main.py"
+6. Set up the chemical potential `mu_list` in "main.py"
+7. Set up the QE launcher `call_qe` based on the MPI launcher in "main.py"
+8. Run the command `python main.py structure.xsf el_list.txt`
