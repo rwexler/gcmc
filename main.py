@@ -24,17 +24,17 @@ max_disp = 0.0                                # angstroms
 T_move   = 500                                # kelvin
 ry_ev    = 13.605693009
 bohr_ang = 0.52917721067
-buf_len  = 3.5                                # length above surface within which atoms can be added
-mu_list  = [-989.926, -428.156]               # ag, o - p/p0 = 1.e+0
+buf_len  = 2.5                                # length above surface within which atoms can be added
+#mu_list  = [-989.926, -428.156]               # ag, o - p/p0 = 1.e+0
 #mu_list  = [-989.926, -428.451]               # ag, o - p/p0 = 1.e-10
 #mu_list  = [-989.926, -428.333]               # ag, o - p/p0 = 1.e-6
 #mu_list  = [-989.926, -428.215]               # ag, o - p/p0 = 1.e-2
-#mu_list  = [-989.926, -428.096]               # ag, o - p/p0 = 1.e+2
-act_p    = np.array([1e-5, 1e-5, 1e-5, 1, 1]) # probablity of taking different actions
+mu_list  = [-989.926, -428.096]               # ag, o - p/p0 = 1.e+2
+act_p    = np.array([1e-5, 0, 0, 1, 1]) # probablity of taking different actions
 					      # [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en  = 999.
-nproc    = 720
-nkdiv    = 5
+nproc    = 144
+nkdiv    = 1
 ndiag    = 144
 
 ###########################
@@ -74,12 +74,14 @@ axsf_failed_file      = init_axsf('coord_failed.axsf', niter, xsf)      # initia
 axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
 failed_cnt = 0
 for i in range(niter) :
+	xsf.get_r_min_max(buf_len)
+	xsf.get_vol_np()
 	# attempt uvt action and store xsf attributes in xsf_new
 	if i == 0 : 
 		# alway start with move
-		xsf = mc_run.uvt_new_structure(xsf, el, np.array([1,0,0,0,0]), bvo) 
+		xsf = mc_run.uvt_new_structure_np(xsf, el, np.array([1,0,0,0,0]), bvo) 
 	else :
-		xsf = mc_run.uvt_new_structure(xsf, el, act_p, bvo) 
+		xsf = mc_run.uvt_new_structure_np(xsf, el, act_p, bvo) 
 
 	# make input file
 	make_qe_in('qe.in', xsf, el)

@@ -5,8 +5,8 @@
   etot_conv_thr = 0.00073496986,  ! 0.01 eV / slab
   forc_conv_thr = 0.003889380791, ! 0.1 eV/Angstrom
   pseudo_dir = '../PSPs/'
-  tefield = .true.,
-  dipfield = .true.,
+!  tefield = .true.,
+!  dipfield = .true.,
 /
 
 &SYSTEM
@@ -16,8 +16,8 @@
   occupations = 'smearing',
   degauss = 0.00734986449,
   smearing = 'methfessel-paxton',
-  edir = 3,
-  emaxpos = 0.7,
+!  edir = 3,
+!  emaxpos = 0.7,
 /
 
 &ELECTRONS
