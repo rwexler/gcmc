@@ -19,19 +19,15 @@ el_filename    = sys.argv[2] # read element list filename
 #############################
 # SET SIMULATION PARAMETERS #
 #############################
-niter    = 1000
-max_disp = 0.0                                # angstroms
-T_move   = 500                                # kelvin
+niter    = 100
+max_disp = 0.0                          # angstroms
+T_move   = 500                          # kelvin
 ry_ev    = 13.605693009
 bohr_ang = 0.52917721067
-buf_len  = 2.5                                # length above surface within which atoms can be added
-#mu_list  = [-989.926, -428.156]               # ag, o - p/p0 = 1.e+0
-#mu_list  = [-989.926, -428.451]               # ag, o - p/p0 = 1.e-10
-#mu_list  = [-989.926, -428.333]               # ag, o - p/p0 = 1.e-6
-#mu_list  = [-989.926, -428.215]               # ag, o - p/p0 = 1.e-2
-mu_list  = [-989.926, -428.096]               # ag, o - p/p0 = 1.e+2
-act_p    = np.array([1e-5, 0, 0, 1, 1]) # probablity of taking different actions
-					      # [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
+buf_len  = 2.5                          # length above surface within which atoms can be added
+mu_list  = [-989.926, -428.156]         # ag, o - p/p0 = 1.e+0
+act_p    = np.array([1e-0, 1, 1, 1, 1]) # probablity of taking different actions
+					                    # [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove
 fail_en  = 999.
 nproc    = 144
 nkdiv    = 1
@@ -48,6 +44,7 @@ el.pop_attr(el_filename,T_move)
 ##############################
 xsf = xsf_info()
 xsf.pop_attr(xsf_filename, el, buf_len)
+xsf.get_c_min_max(buf_len) # for slab
 
 ####################################
 # GET NEAREST NEIGHBOR INFORMATION #
@@ -67,21 +64,27 @@ mc_run.init(T_move, max_disp, xsf)
 os.system('mkdir -p temp')                                              # make temp directory for qe calculations
 os.chdir('temp')                                                        # enter temp
 log_file              = init_log('log.dat')                             # initialize log file
-axsf_opt_file         = init_axsf('coord_opt.axsf', niter, xsf)         # "        " axsf file recording optimized structure
-axsf_new_file         = init_axsf('coord_new.axsf', niter, xsf)         # "                            " structure created in current iteration
-axsf_accept_file      = init_axsf('coord_accept.axsf', niter, xsf)      # "                                      " accepted in current iteration
-axsf_failed_file      = init_axsf('coord_failed.axsf', niter, xsf)      # initialize axsf file recording structure failed in qe
+axsf_opt_file         = init_axsf('coord_opt.axsf',         niter, xsf) # "        " axsf file recording optimized structure
+axsf_new_file         = init_axsf('coord_new.axsf',         niter, xsf) # "                            " structure created in current iteration
+axsf_accept_file      = init_axsf('coord_accept.axsf',      niter, xsf) # "                                      " accepted in current iteration
+axsf_failed_file      = init_axsf('coord_failed.axsf',      niter, xsf) # initialize axsf file recording structure failed in qe
 axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
 failed_cnt = 0
 for i in range(niter) :
-	xsf.get_r_min_max(buf_len)
-	xsf.get_vol_np()
+
+	xsf.get_vol() # for surface
+
+#	xsf.get_r_min_max(buf_len) # for np
+#	xsf.get_vol_np() # for np
+
 	# attempt uvt action and store xsf attributes in xsf_new
 	if i == 0 : 
 		# alway start with move
-		xsf = mc_run.uvt_new_structure_np(xsf, el, np.array([1,0,0,0,0]), bvo) 
+		xsf = mc_run.uvt_new_structure(xsf, el, np.array([1,0,0,0,0]), bvo) # for slab
+#		xsf = mc_run.uvt_new_structure_np(xsf, el, np.array([1,0,0,0,0]), bvo) # for np
 	else :
-		xsf = mc_run.uvt_new_structure_np(xsf, el, act_p, bvo) 
+		xsf = mc_run.uvt_new_structure(xsf, el, act_p, bvo) # for slab
+#		xsf = mc_run.uvt_new_structure_np(xsf, el, act_p, bvo) # for np
 
 	# make input file
 	make_qe_in('qe.in', xsf, el)
@@ -98,23 +101,26 @@ for i in range(niter) :
 	
 	# calculate and get total energy
 	call_qe = 'mpiexec_mpt -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -ndiag ' + str(ndiag) + ' -i qe.in > qe.out'
-	subprocess.call(call_qe, shell = True)
-	qe_out = qe_out_info('qe.out')
+#	subprocess.call(call_qe, shell = True) # comment out for test
+#	qe_out = qe_out_info('qe.out') # comment out for test
 
 	# get energy and forces from qe
-	if os.popen('grep ! qe.out').read() == '' :
-		# qe failed at first scf step
-		new_en = fail_en
-		mc_run.new_xsf.at_force = np.zeros((mc_run.new_xsf.at_num, 3))
-	else :
+#	if os.popen('grep ! qe.out').read() == '' :
+#		# qe failed at first scf step
+#		new_en = fail_en
+#		mc_run.new_xsf.at_force = np.zeros((mc_run.new_xsf.at_num, 3))
+#	else :
 		# get energy from qe
-		new_en = qe_out.get_final_en()
+#		new_en = qe_out.get_final_en()
 		# get forces from qe
-		mc_run.new_xsf.at_force = qe_out.get_forces(mc_run.new_xsf.at_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
+#		mc_run.new_xsf.at_force = qe_out.get_forces(mc_run.new_xsf.at_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
+	new_en = -i * 10000
+	mc_run.new_xsf.at_force = np.zeros((mc_run.new_xsf.at_num, 3))
 
 	# if not move step and qe does not fail at first step, update atomic coordinates
-	if ( os.popen('grep ! qe.out').read() != '' and mc_run.uvt_act != 0 ) :
-		mc_run.new_xsf.at_coord = qe_out.get_coord(mc_run.new_xsf.at_num)
+#	if ( os.popen('grep ! qe.out').read() != '' and mc_run.uvt_act != 0 ) :
+#		mc_run.new_xsf.at_coord = qe_out.get_coord(mc_run.new_xsf.at_num)
+	mc_run.new_xsf.at_coord = xsf.at_coord.copy()
 
 	# update T
 	mc_run.update_T_const(i - failed_cnt, 3000)

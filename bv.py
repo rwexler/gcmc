@@ -6,27 +6,16 @@ from io import xsf_info
 import sys
 
 class bv(object) :
-	"""class for representing bv objects and operations
-
-	parameters :
-	sc_num_at : float
-		number of atoms in 3x3x3 supercell
-	sc_lat_vec : 3 x 3 numpy array of floats
-		lattice vectors of 3x3x3 supercell
-	sc_at_coord : sc_num_at x 3 numpy array of floats
-		atomic coordinates for 3x3x3 supercell
-	nn : numpy array of ints
-		number of neighbors for coordinate(s)
-	"""
-
+	"""class for representing bv objects and operations"""
+	
 	def __init__(self) :
 		self.at_nn      = np.array([]).astype('int')   # number of neighbors for coordinate(s)
 		self.r_min      = np.array([]).astype('float') # lower limit for neighbor
 		self.r_max      = np.array([]).astype('float') # upper limit for neighbor
 		self.lat_vec_sc = np.zeros((0,3))              # 3 x 3 x 3 lattice point from (-1,-1,-1) to (1,1,1)
-
-	# enable explicit copy
+		
 	def copy(self) :
+		"""perform explicit copy"""
 		cp_self = bv()
 		cp_self.at_nn      = np.array(self.at_nn)
 		cp_self.r_min      = np.array(self.r_min)
@@ -35,6 +24,7 @@ class bv(object) :
 		return cp_self
 	
 	def init(self, xsf, el) :
+		"""initialize bv"""
 		self.r_min = np.array(el.r_min)
 		self.r_max = np.array(el.r_max)
 		self.lat_vec_sc = np.zeros((0,3))
@@ -43,8 +33,9 @@ class bv(object) :
 			for j in range :
 				for k in range :
 					self.lat_vec_sc = np.vstack((self.lat_vec_sc, i * xsf.lat_vec[0] + j * xsf.lat_vec[1] + k * xsf.lat_vec[2]))
-	# get number of neighbors for each atom
+
 	def at_all_nn(self, xsf) :
+		"""calculate number of neighbors for each atom"""
 		self.at_nn = np.zeros(xsf.at_num).astype('int')
 		for i in range(xsf.at_num) :
 			at_type = xsf.at_type[i]
@@ -57,8 +48,8 @@ class bv(object) :
 						self.at_nn[i] += dis[dis < self.r_max[at_type]].shape[0]
 		return np.array(self.at_nn)
 
-	# get number of neighbors for a specific atom (at certain position, or at it's original position by default)
 	def at_single_nn(self, xsf, at_ind, *coord) : 
+		"""calculate number of neighbors for a specific atom or position"""
 		at_nn = 0
 		at_type = xsf.at_type[at_ind]
 		if len(coord) == 0 : 
