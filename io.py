@@ -12,7 +12,7 @@ ry_ev = 13.605693009 # ev / ry
 
 class el_info(object) :
 	"""class for representing element information file"""
-	def __init__(self) :
+	def __init__(self, filename = None, T = 0) :
 		self.num        = 0                              # number of elements
 		self.sym        = []                             # element symbols
 		self.wt         = np.array([]).astype('float')   # atomic weights
@@ -20,58 +20,66 @@ class el_info(object) :
 		self.pref_nn    = np.array([]).astype('int')     # preferred coordination numbers
 		self.r_min      = np.array([]).astype('float')   # minimum neighbor distance
 		self.r_max      = np.array([]).astype('float')   # maximum neighbor distance
-        	self.p_add      = np.array([]).astype('float')   # probablity of choosing elements to add
-	
-	# enable explicit copy
+        self.p_add      = np.array([]).astype('float')   # probablity of choosing elements to add
+        
+        if filename is not None:
+            # get number of elements
+            with open(filename, 'r') as f :
+                next(f)
+                for line in f :
+                    self.num += 1
+            # get element info
+            with open(filename, 'r') as f :
+                next(f)
+                for line in f :
+                    # element symbol
+                    self.sym.append(line.split()[1])
+                    # atomic weight
+                    self.wt = np.append(self.wt, np.array(line.split()[2]).astype('float') * amu_kg)
+                    # preferred coordination number
+                    self.pref_nn = np.append(self.pref_nn, np.array(line.split()[3]).astype('int'))
+                    # minimum neighbor distance
+                    self.r_min = np.append(self.r_min, np.array(line.split()[4]).astype('float'))
+                    # maximum neighbor distance
+                    self.r_max = np.append(self.r_max, np.array(line.split()[5]).astype('float'))
+                            # probablity of choosing elements to add
+                            self.p_add = np.append(self.p_add, np.array(line.split()[6]).astype('float'))
+            self.p_add = self.p_add / np.sum(self.p_add)
+
+        self.update_therm_db(T)
+
+    # enable explicit copy
 	def copy(self) :
-		cp_self = el_info()
-		cp_self.num        = self.num
+		"""
+        cp_self = el_info()
+        cp_self.num        = self.num
 		cp_self.sym        = copy.copy(self.sym)
 		cp_self.wt         = np.array(self.wt)
 		cp_self.therm_db   = np.array(self.therm_db)
 		cp_self.pref_nn    = np.array(self.pref_nn)
 		cp_self.r_min      = np.array(self.r_min)
 		cp_self.r_max      = np.array(self.r_max)
-        	cp_self.p_add      = np.array(self.p_add)
-		return cp_self
-
-	def init(self, filename) :
-		# get number of elements
-		self.num = 0
-		with open(filename, 'r') as f :
-			next(f)
-			for line in f :
-				self.num += 1
-		# get element info
-		with open(filename, 'r') as f :
-			next(f)
-		 	for line in f :
-				# element symbol
-				self.sym.append(line.split()[1])
-				# atomic weight
-				self.wt = np.append(self.wt, np.array(line.split()[2]).astype('float') * amu_kg)
-				# preferred coordination number
-				self.pref_nn = np.append(self.pref_nn, np.array(line.split()[3]).astype('int'))
-				# minimum neighbor distance
-				self.r_min = np.append(self.r_min, np.array(line.split()[4]).astype('float'))
-				# maximum neighbor distance
-				self.r_max = np.append(self.r_max, np.array(line.split()[5]).astype('float'))
-                		# probablity of choosing elements to add
-                		self.p_add = np.append(self.p_add, np.array(line.split()[6]).astype('float'))
-		self.p_add = self.p_add / np.sum(self.p_add)
+        cp_self.p_add      = np.array(self.p_add)
+        return cp_self
+        """
+        return copy.deepcopy(self)
 
 	def update_therm_db(self, T) :
 		"""function for updating thermal de broglie wavelengths"""
-		self.therm_db = np.sqrt(h ** 2 / (2 * np.pi * self.wt * kb * T)) * 1e10
+        if T is not 0:
+            self.therm_db = np.sqrt(h ** 2 / (2 * np.pi * self.wt * kb * T)) * 1e10
+        else:
+            print("Temperature equal to zero! Thermal de Brogle wavelength calculation would cause division by zero")
 
-	def pop_attr(self, filename, T) :
+    # deprecated the use of this function with _, not necesssary
+    def _pop_attr(self, filename, T) :
 		"""populate attributes"""
 		self.init(filename)
 		self.update_therm_db(T)
 
 class xsf_info(object) :
 	"""class for representing an xsf file"""
-	def __init__(self) : 
+	def __init__(self, filename = None, el = None) : 
 		self.lat_vec     = np.zeros((0, 3))               # lattice vectors
 		self.at_coord    = np.zeros((0, 3))               # atomic coordinates
 		self.at_force    = np.zeros((0, 3))               # forces on atoms
@@ -86,8 +94,24 @@ class xsf_info(object) :
 		self.r_max       = 0                              # maximum allowed distance to origin
 		self.vol         = 0                              # volume of variable composition region
 
-	# enable explicit copy
-	def copy(self) :
+        if filename is not None:
+            # get number of atoms
+            self.set_num_atoms(self, filename)
+            # get lattice vectors
+            self.set_lat_vecs(self, filename)
+		# initialize forces
+		self.at_force = np.zeros((self.at_num, 3))
+        if el is not None:    
+            # get atom related attributes
+            self.set_atom_attrs(self, el)        
+        
+        self.get_c_min_max(buf_len)
+		self.get_r_min_max(buf_len)
+		self.get_vol()
+		self.get_vol_np()
+        
+    def copy(self) :
+    '''
 		cp_self = xsf_info()
 		cp_self.lat_vec     = np.array(self.lat_vec)
 		cp_self.at_coord    = np.array(self.at_coord)
@@ -103,9 +127,11 @@ class xsf_info(object) :
 		cp_self.r_max       = self.r_max
 		cp_self.vol         = self.vol
 		return cp_self
+    '''
+        return copy.deepcopy(self)
 
-	def init(self, filename, el) :
-		# get number of atoms
+    def set_num_atoms(self, filename):
+        # get number of atoms
 		with open(filename, 'r') as f :
 			for line in f :
 				if 'PRIMCOORD' in line :
@@ -113,7 +139,9 @@ class xsf_info(object) :
 			for line in f :
 				self.at_num = np.array(line.split())[0].astype('int')
 				break
-		# get lattice vectors
+                
+    def set_lat_vecs(self, filename):
+        # get lattice vectors
 		self.lat_vec = np.zeros((0, 3))
 		with open(filename, 'r') as f :
 			for line in f :
@@ -123,9 +151,9 @@ class xsf_info(object) :
 				for line in f :
 					self.lat_vec = np.vstack((self.lat_vec, np.array([line.split()[0:3]]).astype('float')))
 					break
-		# initialize forces
-		self.at_force = np.zeros((self.at_num, 3))
-		# get atom related attributes
+                    
+    def set_atom_attrs(self, el):
+        # get atom related attributes
 		self.el_each_num = np.zeros(el.num).astype('int')
 		for t1 in range(el.num) :
 			self.at_swap.append([])
@@ -149,7 +177,7 @@ class xsf_info(object) :
 					if line.split()[4] != '0' :
 						self.at_swap[el.sym.index(line.split()[0])].append(at)
 					break
-
+                    
 	def get_c_min_max(self, buf_len) :
 		"""get minimum and maximum projection of atomic coordinates along c"""
 		c_unit = self.lat_vec[2] / np.linalg.norm(self.lat_vec[2])
@@ -179,7 +207,8 @@ class xsf_info(object) :
 		self.vol = 4.0 / 3 * np.pi * (self.r_max**3 - self.r_min**3)
 		return self.vol
 		
-	def pop_attr(self, filename, el, buf_len) :
+    # deprecated the use of this function with _, not necesssary        
+	def _pop_attr(self, filename, el, buf_len) :
 		"""populate attributes"""
 		self.init(filename, el)
 		self.get_c_min_max(buf_len)

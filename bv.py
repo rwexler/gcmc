@@ -19,30 +19,32 @@ class bv(object) :
 		number of neighbors for coordinate(s)
 	"""
 
-	def __init__(self) :
+	def __init__(self, xsf = None, el = None) :
 		self.at_nn      = np.array([]).astype('int')   # number of neighbors for coordinate(s)
-		self.r_min      = np.array([]).astype('float') # lower limit for neighbor
-		self.r_max      = np.array([]).astype('float') # upper limit for neighbor
 		self.lat_vec_sc = np.zeros((0,3))              # 3 x 3 x 3 lattice point from (-1,-1,-1) to (1,1,1)
+        
+        if el is None:
+            self.r_min      = np.array([]).astype('float') # lower limit for neighbor
+            self.r_max      = np.array([]).astype('float') # upper limit for neighbor
+        else:
+            self.r_min = np.array(el.r_min)                 # should this have the .astype('float') to be type-safe?
+            self.r_max = np.array(el.r_max)
+		if xsf is not None:
+            range = np.array([-1, 0, 1])
+            for i in range :
+                for j in range :
+                    for k in range :
+                        self.lat_vec_sc = np.vstack((self.lat_vec_sc, i * xsf.lat_vec[0] + j * xsf.lat_vec[1] + k * xsf.lat_vec[2]))
 
-	# enable explicit copy
 	def copy(self) :
-		cp_self = bv()
-		cp_self.at_nn      = np.array(self.at_nn)
-		cp_self.r_min      = np.array(self.r_min)
-		cp_self.r_max      = np.array(self.r_max)
-		cp_self.lat_vec_sc = np.array(self.lat_vec_sc)
-		return cp_self
-	
-	def init(self, xsf, el) :
-		self.r_min = np.array(el.r_min)
-		self.r_max = np.array(el.r_max)
-		self.lat_vec_sc = np.zeros((0,3))
-		range = np.array([-1, 0, 1])
-		for i in range :
-			for j in range :
-				for k in range :
-					self.lat_vec_sc = np.vstack((self.lat_vec_sc, i * xsf.lat_vec[0] + j * xsf.lat_vec[1] + k * xsf.lat_vec[2]))
+		#cp_self = bv()
+		#cp_self.at_nn      = np.array(self.at_nn)
+		#cp_self.r_min      = np.array(self.r_min)
+		#cp_self.r_max      = np.array(self.r_max)
+		#cp_self.lat_vec_sc = np.array(self.lat_vec_sc)
+		#return cp_self
+        return copy.deepcopy(self)
+			
 	# get number of neighbors for each atom
 	def at_all_nn(self, xsf) :
 		self.at_nn = np.zeros(xsf.at_num).astype('int')

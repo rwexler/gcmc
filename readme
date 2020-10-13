@@ -1,8 +1,10 @@
 Ab initio grand canonical Monte Carlo simulation of surfaces and nanoparticles.
+New working branch LAMMPS plans to add classical potential energy calculations for the GCMC simulation.
 
 E-mail: 
-        Robert Wexler : rwexler@sas.upenn.edu
-        Tian Qiu      : tianq@sas.upenn.edu
+        Robert Wexler   : rwexler@sas.upenn.edu
+        Tian Qiu        : tianq@sas.upenn.edu
+        William Watkins : wwatk@sas.upenn.edu
 
 These python scripts simulate the structural evolution of surfaces or nanopartcles in the grand canonical ensemble. 
 Quantum Espresso (QE) is launched to perform the structural relaxation and the total energy calculation.
@@ -10,6 +12,7 @@ Quantum Espresso (QE) is launched to perform the structural relaxation and the t
 Dependencies:
 Python 2.6.9
 MPI launcher (optional but strongly suggested)
+LAMMPS (optional and not yet implemented)
 
 Usage:
 1. Prepare the QE pw executable file pw.x in the directory "bin"

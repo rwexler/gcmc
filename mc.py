@@ -21,75 +21,50 @@ kb = 8.6173303e-5 # ev / k
 
 class mc :
     """class for representing monte carlo operations"""
-    def __init__(self) :
-        self.T              = 0.0                        # System temperature 
-        self.T_max          = 0.0                        # Max system temperature
-        self.pace           = 0.0                        # Max displacement 
-        self.pace_max       = 0.0                        # Max displacement limit 
-        self.nvt_run_cnt    = 0                          # Canonical ensemble, running count
-        self.uvt_run_cnt    = 0                          # Grand canonical ensemble, ensemble running count
-        self.check_acc      = 0                          # Max displacement update rate
+    def __init__(self, T = 0, pace = 0, xsf = None) :
+        # the original __init__ defaulted everything to zero why?
+        # then there was another init() which WASN'T a constructor
+        self.T              = T                            # System temperature 
+        self.T_max          = T                            # Max system temperature
+        self.pace           = pace                       # Max displacement 
+        self.pace_max       = 0.3                        # Max displacement limit    
+        self.nvt_run_cnt    = 1                          # Canonical ensemble, running count, originally 0
+        self.uvt_run_cnt    = 1                          # Grand canonical ensemble, ensemble running count, originally 0
+        self.check_acc      = 25                          # Max displacement update rate, originally 0
         self.nvt_acc        = 0                          # Canonical ensemble, number of acceptance
         self.at_mv_num      = 0                          # Number of atoms to move
         self.at_mv_ind      = np.array([]).astype('int') # Indices of atoms to move
         self.at_mv_vec      = np.zeros((0, 3))           # Displacement of atoms
-        self.old_xsf        = xsf_info()                 # xsf in previous iteration
-        self.new_xsf        = xsf_info()                 # xsf in this iteration
-        self.opt_xsf        = xsf_info()                 # xsf associated with the lowest energy
-        self.curr_en        = 0.0                        # Energy in current iteration
-        self.curr_g         = 0.0                        # Free energy in current iteration
-        self.opt_en         = 0.0                        # Lowest energy
-        self.opt_g          = 0.0                        # Lowest free energy
+        if xsf is None:
+            self.old_xsf        = xsf_info()                 # xsf in previous iteration
+            self.new_xsf        = xsf_info()                 # xsf in this iteration
+            self.opt_xsf        = xsf_info()                 # xsf associated with the lowest energy
+        else:
+            self.old_xsf     = xsf.copy()
+            self.new_xsf     = xsf.copy()
+            self.opt_xsf     = xsf.copy()
+        self.curr_en        = 100.0                        # Energy in current iteration
+        self.curr_g         = 100.0                        # Free energy in current iteration
+        self.opt_en         = 100.0                        # Lowest energy
+        self.opt_g          = 100.0                        # Lowest free energy
         self.uvt_at_rm      = 0                          # Grand canonical ensemble, index of the atom to be removed
         self.uvt_at_ad      = 0                          # Grand canonical ensemble, index of the atom to be added
         self.uvt_act        = 0                          # Grand canonical ensemble, 0: move, 1: swap, 2: jump, 3: add, 4: remove
         self.uvt_at_exc_num = 0                          # Grand canonical ensemble, number of exchanged atoms, can only be 0, 1, -1
         self.uvt_el_exc     = 0                          # Grand canonical ensemble, index of the element to be exchanged
-
-    # enable explicit copy
+        
+    # python module copy contains functions for the shallow copy copy(x) and deep copy deepcopy(x) of an object x
     def copy(self) :
         cp_self = mc()
-        cp_self.T              = self.T            
-        cp_self.T_max          = self.T_max
-        cp_self.pace           = self.pace          
-        cp_self.pace_max       = self.pace_max      
-        cp_self.nvt_run_cnt    = self.nvt_run_cnt   
-        cp_self.uvt_run_cnt    = self.uvt_run_cnt   
-        cp_self.check_acc      = self.check_acc     
-        cp_self.nvt_acc        = self.nvt_acc       
-        cp_self.at_mv_num      = self.at_mv_num
-        cp_self.at_mv_ind      = np.array(self.at_mv_ind)     
-        cp_self.at_mv_vec      = np.array(self.at_mv_vec)     
+        # enable explicit copy that copies the dictionary of members from self to cp_self; it even works for numpy arrays
+        cp_self.__dict__ = self.__dict__.copy()
+        # keep these since they are deep copies  
         cp_self.old_xsf        = self.old_xsf.copy()       
         cp_self.new_xsf        = self.new_xsf.copy()       
-        cp_self.opt_xsf        = self.opt_xsf.copy()       
-        cp_self.curr_en        = self.curr_en       
-        cp_self.curr_g         = self.curr_g        
-        cp_self.opt_en         = self.opt_en        
-        cp_self.opt_g          = self.opt_g         
-        cp_self.uvt_at_rm      = self.uvt_at_rm 
-        cp_self.uvt_at_ad      = self.uvt_at_ad 
-        cp_self.uvt_act        = self.uvt_act       
-        cp_self.uvt_at_exc_num = self.uvt_at_exc_num   
-        cp_self.uvt_el_exc     = self.uvt_el_exc
+        cp_self.opt_xsf        = self.opt_xsf.copy()
+        # return copy.deepcopy(self)
         return cp_self
     
-    def init(self, T, pace, xsf) :
-        self.T           = T
-        self.T_max       = T
-        self.pace        = pace
-        self.pace_max    = 0.3
-        self.nvt_run_cnt = 1
-        self.uvt_run_cnt = 1
-        self.check_acc   = 25
-        self.old_xsf     = xsf.copy()
-        self.new_xsf     = xsf.copy()
-        self.opt_xsf     = xsf.copy()
-        self.curr_en     = 100.0
-        self.curr_g      = 100.0
-        self.opt_en      = 100.0
-        self.opt_g       = 100.0
-
     # determine atoms to mv and step 
     def rand_mv(self, xsf) :
         # number of atoms to move
