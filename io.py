@@ -79,7 +79,7 @@ class el_info(object) :
 
 class xsf_info(object) :
 	"""class for representing an xsf file"""
-	def __init__(self, filename = None, el = None) : 
+	def __init__(self, filename = None, el = None, buf_len = 0) : 
 		self.lat_vec     = np.zeros((0, 3))               # lattice vectors
 		self.at_coord    = np.zeros((0, 3))               # atomic coordinates
 		self.at_force    = np.zeros((0, 3))               # forces on atoms

@@ -40,26 +40,22 @@ ndiag    = 144
 ###########################
 # GET ELEMENT INFORMATION #
 ###########################
-el = el_info() 
-el.pop_attr(el_filename,T_move)
+el = el_info(el_filename, T_move) 
 
 ##############################
 # GET STRUCTURAL INFORMATION #
 ##############################
-xsf = xsf_info()
-xsf.pop_attr(xsf_filename, el, buf_len)
+xsf = xsf_info(xsf_filename, el, buf_len)
 
 ####################################
 # GET NEAREST NEIGHBOR INFORMATION #
 ####################################
 bvo = bv()
-bvo.init(xsf, el)
 
 ###################################
 # INSTANTIATE MONTE CARLO ROUTINE #
 ###################################
-mc_run = mc()
-mc_run.init(T_move, max_disp, xsf)
+mc_run = mc(T_move, max_disp, xsf)
 
 ###################################
 # RUN GRAND CANONICAL MONTE CARLO #
