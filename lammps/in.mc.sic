@@ -1,0 +1,44 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+#	Monte Carlo Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p p
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.5 0.0 0.5 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25  &
+basis 0.75 0.25 0.75  &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.75 0.25 & 
+orient x 1 0 0	&
+orient y 0 1 0 &
+orient z 0 0 1
+
+region simBox block 0 5 0 5 0 5 units lattice
+region atomBox block 0 5 0 5 0 2.5 units lattice
+
+create_box 2 simBox
+mass 1  12.011150	# Carbon
+mass 2  28.086000	# Silicon
+
+create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style tersoff
+pair_coeff * * SiC.tersoff C Si
+neighbor	5 bin
+neigh_modify	delay 0 every 1 check yes
+
+dump		dumpID all atom 10 dumpSiC_MC.lammpstrj
