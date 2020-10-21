@@ -12,7 +12,7 @@ import sys,random,math
 # set these parameters
 # make sure neigh skin (in in.mc) > 2*deltamove
 
-kb = 8.617e-5			# ev / k
+kb = 8.6173303e-5			# ev / k
 
 nloop = 5000
 deltaperturb = 0.5

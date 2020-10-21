@@ -1,0 +1,81 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p fm
+
+variable			si_mu equal -0.6
+variable			c_mu equal -0.6
+variable			temp equal 500
+variable			disp equal 0.5
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.5 0.0 0.5 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25  &
+basis 0.75 0.25 0.75  &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.75 0.25 & 
+orient x 0 0 1 &
+orient y 1 2 0 &
+orient z -2 1 0
+
+#orient x 1 0 0	&
+#orient y 0 1 0 &
+#orient z 0 0 1
+
+region simBox block 0 10 0 10 0 5 units lattice
+region atomBox block 0 10 0 10 0 2.5 units lattice
+region edgeBlock block 0 10 0 10 0 1.0 units lattice
+region gcmcBlock block 0 10 0 10 1.0 5 units lattice
+
+create_box 2 simBox
+mass 1  12.011150	# Carbon
+mass 2  28.086000	# Silicon
+
+create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+
+group				edge region edgeBlock
+group				Si type 1 
+group				C type 2 
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style tersoff
+pair_coeff * * SiC.tersoff C Si
+neighbor	3.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${temp} 12345
+velocity			edge set 0.0 0.0 0.0
+
+thermo			10
+thermo_style	custom step temp etotal pe atoms
+thermo_modify	lost warn
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+dump				mydump all xyz 10 dump_gcmc_210.xyz
+
+timestep			0.0001
+
+fix					mynvt all nvt temp 500 500 100
+fix					freeze edge setforce 0.0 0.0 0.0
+
+# M the average number of MC moves should be the on the order of the number of atoms in cell
+# so that on an average cycle each atom moves per MC cycle
+# full_energy is needed to include the total energy calculation since it is a many-body pair style
+fix					1 Si gcmc 10 10 10 1 101 ${temp} ${c_mu} ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					2 C gcmc 10 10 10 2 107 ${temp} ${c_mu} ${disp} full_energy pressure 0.001 region gcmcBlock
+
+run					1000

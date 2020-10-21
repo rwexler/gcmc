@@ -27,3 +27,10 @@ It all worked! Next I will try to run the mc.py code and in.mc to test it all to
 means that it does not create an executable, so I ran it again without that mode.
 # to disable track pad scrolling in bash
 xinput set-prop 6 "Device Enabled" 0
+
+## 10 / 20/ 20
+I found that 'fix gcmc' is by far the simplest way to implement a LAMMPS GCMC algorithm.
+I'll have to figure out later how to mix that with Rob's DFT code. Maybe I'll do 'fix gcmc; run 1'
+I found that lammps trajectories don't work in VMD when the number of particles change.
+Use Axel's topotools command
+topo readvarxyz file.xyz

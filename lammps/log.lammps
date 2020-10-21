@@ -1,0 +1,228 @@
+LAMMPS (3 Mar 2020)
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p fm
+
+variable			si_mu equal -0.6
+variable			c_mu equal -0.6
+variable			temp equal 500
+variable			disp equal 0.5
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 0 0 1 orient y 1 2 0 orient z -2 1 0
+Lattice spacing in x,y,z = 4.36 5.84955 5.84955
+
+#orient x 1 0 0	#orient y 0 1 0 #orient z 0 0 1
+
+region simBox block 0 10 0 10 0 5 units lattice
+region atomBox block 0 10 0 10 0 2.5 units lattice
+region edgeBlock block 0 10 0 10 0 1.0 units lattice
+region gcmcBlock block 0 10 0 10 1.0 5 units lattice
+
+create_box 2 simBox
+Created orthogonal box = (0 0 0) to (43.6 58.4955 29.2478)
+  1 by 1 by 1 MPI processor grid
+mass 1  12.011150	# Carbon
+mass 2  28.086000	# Silicon
+
+create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+Created 3720 atoms
+  create_atoms CPU = 0.00503993 secs
+
+group				edge region edgeBlock
+1550 atoms in group edge
+group				Si type 1
+1800 atoms in group Si
+group				C type 2
+1920 atoms in group C
+
+# ---------- Define Interatomic Potential ---------------------
+pair_style tersoff
+pair_coeff * * SiC.tersoff C Si
+Reading potential file SiC.tersoff with DATE: 2011-04-26
+neighbor	3.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${temp} 12345
+velocity			all create 500 12345
+velocity			edge set 0.0 0.0 0.0
+
+thermo			10
+thermo_style	custom step temp etotal pe atoms
+thermo_modify	lost warn
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+dump				mydump all xyz 10 dump_gcmc_210.xyz
+
+timestep			0.0001
+
+fix					mynvt all nvt temp 500 500 100
+fix					freeze edge setforce 0.0 0.0 0.0
+
+# M the average number of MC moves should be the on the order of the number of atoms in cell
+# so that on an average cycle each atom moves per MC cycle
+# full_energy is needed to include the total energy calculation since it is a many-body pair style
+fix					1 Si gcmc 10 10 10 1 101 ${temp} ${c_mu} ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					1 Si gcmc 10 10 10 1 101 500 ${c_mu} ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					1 Si gcmc 10 10 10 1 101 500 -0.6 ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					1 Si gcmc 10 10 10 1 101 500 -0.6 0.5 full_energy pressure 0.001 region gcmcBlock
+fix					2 C gcmc 10 10 10 2 107 ${temp} ${c_mu} ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					2 C gcmc 10 10 10 2 107 500 ${c_mu} ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					2 C gcmc 10 10 10 2 107 500 -0.6 ${disp} full_energy pressure 0.001 region gcmcBlock
+fix					2 C gcmc 10 10 10 2 107 500 -0.6 0.5 full_energy pressure 0.001 region gcmcBlock
+
+run					1000
+0 atoms in group FixGCMC:gcmc_exclusion_group:1
+0 atoms in group FixGCMC:gcmc_exclusion_group:2
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 15 20 10
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 5.271 | 5.271 | 5.271 Mbytes
+Step Temp TotEng PotEng Atoms 
+       0    289.74064   -21475.971   -21615.255     3720 
+      10    286.84261   -21477.274   -21615.164     3721 
+      20    277.54973   -21477.273   -21610.697     3721 
+      30    263.42859   -21480.604   -21607.239     3722 
+      40    245.49824   -21480.603   -21598.619     3722 
+      50    226.10036   -21480.603   -21589.293     3722 
+      60     207.3814   -21480.602   -21580.294     3722 
+      70    191.57485   -21483.595   -21575.689     3724 
+      80    179.72906   -21483.595   -21569.994     3724 
+      90    173.34102   -21487.107   -21570.436     3725 
+     100    173.78555   -21489.809   -21573.351     3726 
+     110    182.94396   -21493.366    -21581.31     3727 
+     120    200.48878   -21493.366   -21589.745     3727 
+     130    224.78457   -21494.953   -21603.011     3728 
+     140    251.57778   -21494.954   -21615.892     3728 
+     150    277.17625   -21497.009   -21630.253     3729 
+     160    298.79705   -21501.734   -21645.371     3731 
+     170    314.90024   -21503.495   -21654.873     3732 
+     180      322.588   -21503.495   -21658.569     3732 
+     190    321.84631   -21503.481   -21658.199     3732 
+     200    313.71657   -21506.478   -21657.288     3733 
+     210    298.78168   -21506.478   -21650.108     3733 
+     220    279.05463   -21506.477   -21640.624     3733 
+     230    256.72288   -21506.477   -21629.888     3733 
+     240    234.25806   -21506.476   -21619.088     3733 
+     250    214.15798   -21506.475   -21609.425     3733 
+     260    198.32716   -21506.475   -21601.815     3733 
+     270    188.37918   -21507.976   -21598.533     3734 
+     280    184.48727   -21510.298   -21598.984     3735 
+     290    186.34713     -21512.4   -21601.981     3736 
+     300    192.68525   -21512.401   -21605.028     3736 
+     310    202.74538   -21514.701   -21612.164     3737 
+     320      214.549   -21515.939   -21619.077     3738 
+     330    226.69177   -21515.939   -21624.914     3738 
+     340    239.17265   -21516.278   -21631.253     3738 
+     350    250.44865   -21516.278   -21636.674     3738 
+     360     258.9717   -21516.278   -21640.771     3738 
+     370    264.47716   -21516.279   -21643.418     3738 
+     380    266.60439   -21516.279    -21644.44     3738 
+     390    265.35781    -21516.93   -21644.492     3739 
+     400    260.32502    -21516.93   -21642.073     3739 
+     410    252.94764    -21517.65   -21639.247     3740 
+     420    244.52284    -21517.65   -21635.196     3740 
+     430    236.78744   -21519.228   -21633.056     3741 
+     440    231.05396   -21519.228     -21630.3     3741 
+     450    228.75145   -21523.622   -21633.587     3742 
+     460    229.58875   -21531.842   -21642.209     3745 
+     470    235.40179   -21534.463   -21647.625     3746 
+     480    246.60416   -21536.692   -21655.239     3747 
+     490    261.75389   -21536.693   -21662.523     3747 
+     500       279.41   -21536.693   -21671.011     3747 
+     510    298.43904   -21541.086   -21684.551     3749 
+     520    316.92428   -21543.004   -21695.356     3750 
+     530    334.15912   -21543.683   -21704.319     3751 
+     540    347.97031   -21547.182   -21714.458     3752 
+     550    356.79847   -21547.183   -21718.702     3752 
+     560    359.88887   -21547.183   -21720.188     3752 
+     570    357.36751   -21553.309   -21725.103     3753 
+     580    349.61964    -21555.42   -21723.489     3754 
+     590    337.57892   -21558.772   -21721.052     3755 
+     600    323.44297   -21558.772   -21714.257     3755 
+     610    308.42592   -21558.771   -21707.037     3755 
+     620    293.88972   -21560.735   -21702.013     3756 
+     630    281.91764   -21562.478   -21698.001     3757 
+     640    273.18852   -21563.941   -21695.268     3758 
+     650    268.12944   -21566.173   -21695.068     3759 
+     660    266.36792   -21566.173   -21694.221     3759 
+     670    267.90686   -21566.891   -21695.678     3759 
+     680    272.53261   -21566.891   -21697.902     3759 
+     690    279.78712   -21569.305   -21703.804     3760 
+     700    288.53495   -21569.306    -21708.01     3760 
+     710    297.57583   -21570.176   -21713.226     3761 
+     720    306.79294   -21571.435   -21718.916     3761 
+     730    314.12923   -21571.435   -21722.443     3761 
+     740    318.69634   -21571.436   -21724.639     3761 
+     750    319.04962   -21573.827     -21727.2     3762 
+     760    316.69408   -21573.826   -21726.067     3762 
+     770    313.63541   -21578.363   -21729.134     3764 
+     780    309.20375   -21578.363   -21727.003     3764 
+     790    305.07052   -21580.101   -21726.754     3765 
+     800    302.53603   -21580.175    -21725.61     3765 
+     810    302.38151   -21580.175   -21725.536     3765 
+     820    304.74929   -21580.175   -21726.674     3765 
+     830    309.60026   -21583.581   -21732.411     3766 
+     840    315.87861   -21583.581    -21735.43     3766 
+     850    322.19062   -21583.582   -21738.465     3766 
+     860    328.61551   -21584.874   -21742.845     3767 
+     870    337.12667    -21587.68   -21749.743     3768 
+     880    345.28238   -21591.149   -21757.133     3769 
+     890    353.72576   -21599.905   -21769.948     3772 
+     900    360.02518   -21599.905   -21772.976     3772 
+     910    364.22119   -21599.906   -21774.994     3772 
+     920    366.19085   -21599.905    -21775.94     3772 
+     930     366.4738   -21599.793   -21775.964     3772 
+     940    365.83542   -21602.647   -21778.511     3773 
+     950    364.07243   -21602.648   -21777.664     3773 
+     960    361.32959   -21610.634   -21784.332     3776 
+     970    357.60749   -21613.425   -21785.333     3777 
+     980    354.54561   -21613.707   -21784.144     3777 
+     990    352.38022   -21613.707   -21783.103     3777 
+    1000    351.49824   -21617.318    -21786.29     3778 
+Loop time of 246.088 on 1 procs for 1000 steps with 3778 atoms
+
+Performance: 0.035 ns/day, 683.579 hours/ns, 4.064 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 23.568     | 23.568     | 23.568     |   0.0 |  9.58
+Neigh   | 2.794      | 2.794      | 2.794      |   0.0 |  1.14
+Comm    | 0.033705   | 0.033705   | 0.033705   |   0.0 |  0.01
+Output  | 0.61524    | 0.61524    | 0.61524    |   0.0 |  0.25
+Modify  | 219.04     | 219.04     | 219.04     |   0.0 | 89.01
+Other   |            | 0.03666    |            |       |  0.01
+
+Nlocal:    3778 ave 3778 max 3778 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    2046 ave 2046 max 2046 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    0 ave 0 max 0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  277184 ave 277184 max 277184 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 277184
+Ave neighs/atom = 73.3679
+Neighbor list builds = 4300
+Dangerous builds = 0
+Total wall time: 0:04:06
