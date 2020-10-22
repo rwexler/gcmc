@@ -14,10 +14,10 @@ import sys,random,math
 
 kb = 8.6173303e-5			# ev / k
 
-nloop = 5000
+nloop = 10000
 deltaperturb = 0.5
 deltamove = 0.1
-T  = 500
+T  = 1000
 kT = kb*T
 random.seed(27848)
 
@@ -52,12 +52,12 @@ lmp.command("variable emin equal $e")
 # estart = initial energy
 
 x = lmp.extract_atom("x",3)
-
+"""
 for i in range(natoms):
   x[i][0] += deltaperturb * (2*random.random()-1)
   x[i][1] += deltaperturb * (2*random.random()-1)
   x[i][2] += deltaperturb * (2*random.random()-1)
-
+"""
 lmp.command("variable elast equal $e")
 lmp.command("thermo_style custom step v_emin v_elast pe")
 lmp.command("run 0")
