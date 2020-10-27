@@ -1,0 +1,145 @@
+LAMMPS (30 Jun 2020)
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p p
+
+# -11.25 means that the minimal energy is to pull out all the atoms
+# -10.5 will eventually pull out all atoms
+# -10 kills all atoms
+# -9.75 atom number doesn't change
+variable			si_mu equal -9.875
+variable			c_mu equal -9.875
+variable			temp equal 500
+variable			disp equal 0.5
+variable			lbox equal 4.0
+
+variable			etol equal 1.0e-8
+variable			ftol equal 1.0e-8
+variable			maxiter equal 500
+variable 			maxeval equal 500
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
+Lattice spacing in x,y,z = 4.3600000 4.3600000 4.3600000
+
+region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
+region whole block 0 4 0 ${lbox} 0 ${lbox} units lattice
+region whole block 0 4 0 4 0 ${lbox} units lattice
+region whole block 0 4 0 4 0 4 units lattice
+create_box 2 whole
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.440000 17.440000 17.440000)
+  1 by 1 by 1 MPI processor grid
+
+mass 1  28.086000	# Silicon
+mass 2  12.011150	# Carbon
+
+create_atoms 2 region whole basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+Created 512 atoms
+  create_atoms CPU = 0.001 seconds
+
+group				groupSi type 1
+256 atoms in group groupSi
+group				groupC type 2
+256 atoms in group groupC
+
+variable			nSi equal count(groupSi)
+variable			nC equal count(groupC)
+
+# ---------- Define Interatomic Potential ---------------------
+pair_style tersoff
+pair_coeff * * SiC.tersoff Si C
+Reading tersoff potential file SiC.tersoff with DATE: 2011-04-26
+neighbor	3.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${temp} 12345
+velocity			all create 500 12345
+
+dump				mydump all xyz 1 bulk_gcmc.xyz
+
+timestep			0.0001
+
+fix					mynvt all nvt temp ${temp} ${temp} 100
+fix					mynvt all nvt temp 500 ${temp} 100
+fix					mynvt all nvt temp 500 500 100
+
+#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
+
+fix					widomSi groupSi widom 1 0 256 1 12345 ${temp} full_energy
+fix					widomSi groupSi widom 1 0 256 1 12345 500 full_energy
+fix					widomC groupC widom 1 0 256 2 98765 ${temp} full_energy
+fix					widomC groupC widom 1 0 256 2 98765 500 full_energy
+
+# M the average number of MC moves should be the on the order of the number of atoms in cell
+# so that on an average cycle each atom moves per MC cycle
+# full_energy is needed to include the total energy calculation since it is a many-body pair style
+#fix					1 groupSi gcmc 1 100 0 1 101 ${temp} ${c_mu} ${disp} full_energy
+#fix					2 groupC gcmc 1 100 0 2 107 ${temp} ${c_mu} ${disp} full_energy
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+thermo_modify	lost warn
+
+run					1000
+0 atoms in group FixWidom:widom_exclusion_group:widomSi
+0 atoms in group FixWidom:widom_exclusion_group:widomC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 6 6 6
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.185 | 4.185 | 4.185 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       0          500   -3153.3063          256          256            0            0            0            0 
+      10    491.54293   -3152.7477          256          256   -10.822989 1.2325423e+109   -11.691566 7.0091446e+117 
+      20    466.96361   -3151.1241          256          256   -10.891671 6.0686536e+109   -11.691423 6.9859931e+117 
+      30    428.56602   -3148.5877          256          256    -10.97671 4.3675561e+110   -11.690547 6.8453229e+117 
+      40     379.9398   -3145.3756          256          256   -11.015493 1.0743863e+111   -11.691331 6.9709912e+117 
+      50    325.59595   -3141.7859          256          256   -11.059964 3.0158442e+111   -11.694345 7.4760382e+117 
+      60    270.45823   -3138.1438          256          256   -11.104052 8.3904827e+111   -11.710805 1.0954358e+118 
+      70    218.89333   -3134.7378          256          256   -11.111905 1.0068015e+112   -11.697168 7.9822787e+117 
+      80    173.60973   -3131.7466          256          256   -11.229857 1.5554262e+113   -11.696939 7.9401102e+117 
+      90    138.18022   -3129.4062          256          256   -11.241319 2.0294788e+113   -11.678099 5.1277628e+117 
+     100    117.27968   -3128.0256          256          256   -11.136298 1.7734535e+112   -11.692032 7.0853684e+117 
+     110    114.06152    -3127.813          256          256   -11.153145 2.6219785e+112   -11.701205 8.7664003e+117 
+     120    128.23081   -3128.7491          256          256   -11.182138 5.1388132e+112   -11.688702 6.5583272e+117 
+     130    155.83824   -3130.5729          256          256   -11.131353 1.5811621e+112   -11.700781 8.6804923e+117 
+     140    190.39229   -3132.8556          256          256   -11.075174 4.2925698e+111   -11.707076 1.0046107e+118 
+     150    224.91644    -3135.136          256          256   -11.047451 2.2556714e+111    -11.71946 1.3391308e+118 
+     160    256.27856   -3137.2077          256          256   -10.984845 5.2752487e+110   -11.709706 1.067834e+118 
+     170     281.8792   -3138.8987          256          256   -10.928153 1.4151839e+110   -11.699235 8.3745896e+117 
+     180    299.05641   -3140.0334          256          256   -10.868065 3.5087196e+109   -11.700508 8.6257148e+117 
+     190    306.37292   -3140.5166          256          256   -10.837474 1.7250886e+109   -11.702539 9.0421623e+117 
+     200    303.56701   -3140.3313          256          256    -10.83295 1.5531189e+109   -11.693702 7.3654319e+117 
+     210    291.53763   -3139.5366          256          256   -10.841152 1.8787917e+109   -11.689792 6.7264967e+117 
+     220    272.15244   -3138.2561          256          256    -10.90957 9.1938689e+109   -11.680248 5.3898927e+117 
+     230    248.02302   -3136.6621          256          256   -10.895314 6.6039805e+109   -11.692932 7.234846e+117 
+     240    222.42231    -3134.971          256          256   -10.958409 2.8560881e+110   -11.702446 9.0225475e+117 
+     250    198.80837   -3133.4111          256          256   -10.992493 6.2998567e+110   -11.672576 4.5108163e+117 
+     260    180.34658   -3132.1916          256          256   -11.149581 2.4137894e+112   -11.685439 6.0800418e+117 
+     270    169.85544   -3131.4986          256          256   -11.187173 5.775801e+112   -11.681993 5.6127158e+117 
+     280    168.85041   -3131.4322          256          256   -11.197355 7.3154812e+112    -11.67998 5.3565794e+117 
+     290    177.53317   -3132.0057          256          256   -11.182961 5.2379228e+112   -11.670477 4.2963234e+117 
+     300    194.76135   -3133.1438          256          256   -11.112102 1.0114265e+112   -11.701987 8.9269735e+117 
+     310     218.8715   -3134.7364          256          256   -11.126808 1.4228423e+112   -11.690393 6.8208787e+117 
+     320    247.60682   -3136.6345          256          256   -11.125472 1.3794303e+112   -11.675062 4.7787556e+117 
+     330    277.91417   -3138.6365          256          256   -11.117459 1.1453223e+112   -11.697351 8.0163744e+117 
+     340    306.46181   -3140.5223          256          256   -11.121831 1.267631e+112   -11.689211 6.6363516e+117 
+     350     330.1499    -3142.087          256          256   -11.082374 5.073211e+111   -11.693436 7.3200021e+117 
+     360    346.42576   -3143.1622          256          256   -11.058033 2

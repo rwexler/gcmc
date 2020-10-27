@@ -1,0 +1,119 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p p
+
+# -11.25 means that the minimal energy is to pull out all the atoms
+# -10.5 and -10 will eventually pull out all atoms
+# -9.75 atom number doesn't change
+# average excess mu_si = -10.9
+# average excess mu_c = -11.69
+variable			si_mu_ex equal -9.9
+variable			c_mu_ex equal -10.69
+
+variable			massSi equal 28.086000
+variable			massC equal 12.011150
+variable			myTemp equal 500
+variable			myPress equal 1.0
+variable			disp equal 0.5
+variable			lbox equal 4.0
+
+variable			h equal 4.135667e-3				# in eV*ps
+variable			kT equal "8.617333e-5*v_myTemp"
+variable			broglieSi equal "sqrt( v_h^2 /(2*PI*v_massSi*v_kT) )"
+variable			broglieC equal "sqrt( v_h^2 /(2*PI*v_massC*v_kT) )"
+variable			si_mu_id equal "v_kT*ln( v_myPress*v_broglieSi^3/v_kT )"
+variable			c_mu_id equal "v_kT*ln( v_myPress*v_broglieC^3/v_kT )"
+
+variable			etol equal 1.0e-8
+variable			ftol equal 1.0e-8
+variable			maxiter equal 500
+variable 			maxeval equal 500
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.5 0.0 0.5 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25  &
+basis 0.75 0.25 0.75  &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.75 0.25 & 
+orient x 1 0 0	&
+orient y 0 1 0 &
+orient z 0 0 1
+
+region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
+create_box 2 whole
+
+mass 1  28.086000	# Silicon
+mass 2  12.011150	# Carbon
+
+create_atoms 2 region whole basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+
+delete_atoms	porosity whole $(5.0/atoms) 101
+
+group				groupSi type 1 
+group				groupC type 2 
+
+variable			nSi equal count(groupSi)
+variable			nC equal count(groupC)
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style 		tersoff
+pair_coeff		 * * SiC.tersoff Si C
+neighbor			5.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${myTemp} 12345
+
+dump				mydump all xyz 1 bulk_gcmc.xyz
+
+timestep			0.0001
+
+print					"Ideal Gas Chemical Potentials"
+print					${si_mu_id}
+print					${c_mu_id}
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt) 
+#fix_modify		mynvt temp mdtemp
+
+#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
+
+#fix					widomSi groupSi widom 1 0 256 1 12345 ${temp} full_energy
+#fix					widomC groupC widom 1 0 256 2 98765 ${temp} full_energy
+
+# M the average number of MC moves should be the on the order of the number of atoms in cell
+# so that on an average cycle each atom moves per MC cycle
+# full_energy is needed to include the total energy calculation since it is a many-body pair style
+fix					gcmcSi groupSi gcmc 1 550 0 1 12345 ${myTemp} $(v_si_mu_id + v_si_mu_ex) ${disp} full_energy min 255
+fix					gcmcC groupC gcmc 1 550 0 2 98765 ${myTemp} $(v_c_mu_id + v_c_mu_ex) ${disp} full_energy min 255
+
+# how about fix atom/swap?
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			1
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] v_daccSi f_gcmcC[4] v_daccC
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+thermo_modify	lost warn
+
+run					20

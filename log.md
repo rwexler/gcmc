@@ -62,3 +62,57 @@ driven by molecular mechanics.
 ## 10/ 22/ 20
 I have just remembered that aiGCMC does no translations! That is why the structures look so perfect, essentially the temperature is zero, but there is a finite energy to
 add or remove atoms. Also Vignesh uses VESTA to get his ball and stick image structures from an xsf.
+
+I've been experimenting with different values of the chemical potential. I was surprised to see that for anything < -6 ev for mu_c and mu_si
+the surface "sublimates" or "evaporates". For > -3 eV, many more atoms are added, so I think that I want the chemical potentials
+to be somewhere in between those values.
+
+Nat and I were discussing what we are trying to do in this project: to find surface reconstructions. It is interesting to consider that when a surface
+is heated up, a "eutectic" or meltly surface forms before the bulk melting point, because the free energy landscape for surface atoms will become
+non-convex at lower temperatures. Could we look at the dynamics of raising the temperature to this point and cooling to see the true surface
+free energy minima?
+
+I want to see what happens when I run "minimize" for a bulk SiC lattice and amorphous bulk SiC. For the first I should expect that the tersoff potential is
+at a critical point already with the correct lattice constants. For amorphous bulk SiC, will a minimize schema, such as conjugate gradient or 
+dampened dynamics allow the bulk to crystallize into the correct lattice structure?
+
+Then I want to try similar experiments with a surface of crystal and amorphous SiC. What happens when I do dynamics for elevated temperatures for these systems?
+
+I want to talk to Rappe about how the long scale thermodynamics of a molecular dynamic system and an MC system differ. For long scales or averages, I think they will be the same.
+
+## 10/ 23/ 20
+Rob and I talked today about the way that I'm getting the wrong chemical potential, because the surface is condensing atoms rapidly. He recommends that I
+read Frenkel Smit "Understanding Molecular Simulations" since they have a few chapters on Monte Carlo simulations.
+He explained that elements in bulk, like silver, have a non-zero standard gibbs free energy of formation because it is elemental ideal gases, which don't interact, set the formation to zero.
+It takes energy to form the bulk lattice, so that of course has an associated chemical potential that's nonzero at STP. 
+I could also think about it as the vacancy chemical potential, there is an energy associated with the formation of a vacancy which is of course non zero. 
+The Universitaet Kiel Professor has an interesting analogy to help illuminate the meaning of the chemical potential.
+Chemical potential is the derivative of a potential (free energies) with respect to a generalized coordinate (number) so it is a generalized force.
+Das macht Sinn. The equilibrium condition for chemical potentials is NOT that they are minimized ( like with the real thermodynamic potentials), instead it is
+A + B -> C + D has the equilibrium condition: mu_A + mu_B = mu_C + mu_D. It the like the equilibrium of physical forces!
+
+I should read Mathias Schaeffler's paper on Replica Exchange, he cites Rob's paper, and attempts to use ab initio dynamics for the reconstruction of surfaces, like what we are doing.
+
+Rob recommended that a try an insertion / deletion method for an npt equilibrated lattice of SiC. That is to say measure the bulk energy per atom and see how it
+changes for an identical system with one less or one more Carbon or Silicon atom. That sets up a difference quotient for a calculation of the chemical potential.
+
+Once I get the right chemical potential, I should be able to do a lattice simulation with a high silicon chemical potential ( low carbon mu for equilibrium) and see domains of 
+pure silicon form out of the SiC lattice.
+## 10/26/20
+I was researching this insertion method and I found it is called the Widom Insertion Method. 
+The Hemholtz Free Energy is proportional to the logarithm of the partition function, A = -kT ln Q(N,V,T). Q(N,V,T) = V^N/(Lambda^(3N)*N!) * Integral{ds^N * exp[-U(s^N)/kT]},
+s^N are scaled parameters. A = -kT ln V^N/(Lambda^(3N)*N!) - kT ln Integral{ds^N * exp[-U(s^N)/kT]}, so
+mu = mu_ideal + mu_excess, since the first term is the ideal gas chemical potential and the excess arises from interactions.
+
+Over the weekend I ran experiments in GCMC just to see what the "threshold" chemical potentials were for a bulk SiC lattice. That is to say, I did a binary search of mu from [-20, -5] and moved
+through the interval looking for the point from which nothing happens to the lattice (because the chemical potential is too small to overcome the vacancy energy with a mild temperature of 500 K)
+and when the lattice quickly sublimates (recall that is should be easier as more atoms are removed creating a cascade to zero atoms in the simulation)
+Using this search I found that the critical point is between -10 eV and -9 eV. Now I realized this doesn't mean that the chemical potential of equilibrium are in that range, because even at
+-10 eV it is only sometimes probable an atom is removed, but over the course of a 1000 timesteps, enough deletions occur to create a cascade. This is simply setting a 
+metric for the range at which the chemical potential and vacancy formation energy on are the same order to occur with some non negible probability.
+
+I found out that someone in July created a fix widom for LAMMPS! I tried it out and unfortnately it gave me a chemical potential of +20 eV for Si and ~ +3 eV for C. I realized it is 
+because the energy of insertion is very high in a filled lattice! I needed to change the source code to add a number of attempts of deletion. I was able to stitch together
+the fix widom and fix gcmc code (since fix widom is based on gcmc) and create a FixWidom::attempt_atom_deletion_full() for the full_energy calculation. I recomplied the 
+code and it seems to work! I get an average chemical potential estimator of -11.15 eV for Si and -11.7 eV for C which is roughly what I expected! 
+This is the excess chemical potential, while LAMMPS requires that mu = mu_ideal + mu_excess
