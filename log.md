@@ -125,3 +125,23 @@ the boon deletions had near chemical potential equilibrium.
 pbc set {17.44 17.44 17.44} -all
 This command combined with the gui allows one to set periodic images of the simulation.
 I got a pretty simulation of a surface with sterically correct added monolayer of inhomogeneous SiC. That was with mu_si_ex  = -5 and mu_c_ex = -11.69
+
+The following results are from over the weekend when I was messing around with tuning the chemical potential in in.bulk.gcmc.sic. I am putting these here for posterity.
+-11.25 means that the minimal energy is to pull out all the atoms
+-10.5 and -10 will eventually pull out all atoms
+-9.75 atom number doesn't change
+average excess mu_si = -10.9
+average excess mu_c = -11.69
+# M the average number of MC moves should be the on the order of the number of atoms in cell
+# so that on an average cycle each atom moves per MC cycle
+# full_energy is needed to include the total energy calculation since it is a many-body pair style
+
+Today I finally did what Rob originally recommended, to take many npt simulations with different particle numbers and compare their potential energies.
+I first started with 256 and 256 atoms and actually just used the porosity command to slowly remove atoms and then requilibrate for 1000 steps.
+
+This meant I could analyze the potential energy for variable nSi and nC and create difference quotients for the chemical potential.
+That worked fine and I got answer in the vicinity I expected. -7.9 for Si and -10 for C.
+
+I tried Widom Insertion Method with 2048 insert attempts and I slowly made the system more porous. Interestingly the chemical potential for Si is 20 (very high since it is hard for SIlicon
+to go in the interstitial spaces) but for C it is ~ 0 eV (Carbon interstices are a common defect in SiC) and as I decrease the number of atoms, 
+the chemical potentials stabilize to be -8 to -6 eV for Si and -10 to -7 eV for C. I should plot that.

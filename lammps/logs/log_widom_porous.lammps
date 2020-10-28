@@ -1,0 +1,733 @@
+
+timestep			0.0001
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+#fix_modify		mynvt temp mdtemp
+
+fix					widomSi groupSi widom 1 2048 0 1 12345 ${myTemp} full_energy
+fix					widomSi groupSi widom 1 2048 0 1 12345 500 full_energy
+fix					widomC groupC widom 1 2048 0 2 98765 ${myTemp} full_energy
+fix					widomC groupC widom 1 2048 0 2 98765 500 full_energy
+
+thermo			1
+thermo_style	custom step temp pe v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+
+run					20 every 1 "delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101"
+0 atoms in group FixWidom:widom_exclusion_group:widomSi
+0 atoms in group FixWidom:widom_exclusion_group:widomC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.205 | 3.205 | 3.205 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       0          500   -3153.3063          256          256            0            0            0            0 
+       1          500   -3153.3063          256          256    20.668754 4.6597993e-209  -0.58153454    727115.79 
+Loop time of 64.0868 on 1 procs for 1 steps with 512 atoms
+
+Performance: 0.000 ns/day, 178018.983 hours/ns, 0.016 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.003793   | 0.003793   | 0.003793   |   0.0 |  0.01
+Neigh   | 0.01151    | 0.01151    | 0.01151    |   0.0 |  0.02
+Comm    | 8.5354e-05 | 8.5354e-05 | 8.5354e-05 |   0.0 |  0.00
+Output  | 6.6042e-05 | 6.6042e-05 | 6.6042e-05 |   0.0 |  0.00
+Modify  | 64.071     | 64.071     | 64.071     |   0.0 | 99.98
+Other   |            | 1.764e-05  |            |       |  0.00
+
+Nlocal:        512.000 ave         512 max         512 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3223.00 ave        3223 max        3223 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      97280.0 ave       97280 max       97280 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 97280
+Ave neighs/atom = 190.00000
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0050000000000000001041 101
+Deleted 4 atoms, new total = 508
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       1    500.45428    -3109.212          253          255            0            0            0            0 
+       2    500.45428    -3109.212          253          255    3.8314139 2.4048702e-39    -7.196926 3.4812829e+72 
+Loop time of 63.2354 on 1 procs for 1 steps with 508 atoms
+
+Performance: 0.000 ns/day, 175653.972 hours/ns, 0.016 timesteps/s
+99.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00385    | 0.00385    | 0.00385    |   0.0 |  0.01
+Neigh   | 0.011355   | 0.011355   | 0.011355   |   0.0 |  0.02
+Comm    | 8.297e-05  | 8.297e-05  | 8.297e-05  |   0.0 |  0.00
+Output  | 5.6028e-05 | 5.6028e-05 | 5.6028e-05 |   0.0 |  0.00
+Modify  | 63.22      | 63.22      | 63.22      |   0.0 | 99.98
+Other   |            | 1.717e-05  |            |       |  0.00
+
+Nlocal:        508.000 ave         508 max         508 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3199.00 ave        3199 max        3199 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      95764.0 ave       95764 max       95764 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 95764
+Ave neighs/atom = 188.51181
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0050393700787401572369 101
+Deleted 4 atoms, new total = 504
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       2    498.36358   -3067.2825          250          254            0            0            0            0 
+       3    498.36358   -3067.2825          250          254   -1.0809867 7.8678058e+10   -7.6678165 1.9413401e+77 
+Loop time of 62.2783 on 1 procs for 1 steps with 504 atoms
+
+Performance: 0.000 ns/day, 172995.234 hours/ns, 0.016 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0036631  | 0.0036631  | 0.0036631  |   0.0 |  0.01
+Neigh   | 0.011243   | 0.011243   | 0.011243   |   0.0 |  0.02
+Comm    | 8.2016e-05 | 8.2016e-05 | 8.2016e-05 |   0.0 |  0.00
+Output  | 6.1035e-05 | 6.1035e-05 | 6.1035e-05 |   0.0 |  0.00
+Modify  | 62.263     | 62.263     | 62.263     |   0.0 | 99.98
+Other   |            | 1.597e-05  |            |       |  0.00
+
+Nlocal:        504.000 ave         504 max         504 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3171.00 ave        3171 max        3171 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      94264.0 ave       94264 max       94264 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 94264
+Ave neighs/atom = 187.03175
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0050793650793650793607 101
+Deleted 4 atoms, new total = 500
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       3    497.55244   -3024.4636          248          252            0            0            0            0 
+       4    497.55244   -3024.4636          248          252   -1.7435716 3.7532588e+17   -7.2130762 5.0643783e+72 
+Loop time of 61.3414 on 1 procs for 1 steps with 500 atoms
+
+Performance: 0.000 ns/day, 170392.820 hours/ns, 0.016 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0036008  | 0.0036008  | 0.0036008  |   0.0 |  0.01
+Neigh   | 0.010975   | 0.010975   | 0.010975   |   0.0 |  0.02
+Comm    | 8.297e-05  | 8.297e-05  | 8.297e-05  |   0.0 |  0.00
+Output  | 5.9843e-05 | 5.9843e-05 | 5.9843e-05 |   0.0 |  0.00
+Modify  | 61.327     | 61.327     | 61.327     |   0.0 | 99.98
+Other   |            | 1.526e-05  |            |       |  0.00
+
+Nlocal:        500.000 ave         500 max         500 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3147.00 ave        3147 max        3147 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      92774.0 ave       92774 max       92774 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 92774
+Ave neighs/atom = 185.54800
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0051200000000000004188 101
+Deleted 4 atoms, new total = 496
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       4     499.1509   -2981.5563          246          250            0            0            0            0 
+       5     499.1509   -2981.5563          246          250   -7.2368328 8.7898549e+72   -9.3504182 1.7699485e+94 
+Loop time of 60.2827 on 1 procs for 1 steps with 496 atoms
+
+Performance: 0.000 ns/day, 167451.880 hours/ns, 0.017 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0035379  | 0.0035379  | 0.0035379  |   0.0 |  0.01
+Neigh   | 0.010861   | 0.010861   | 0.010861   |   0.0 |  0.02
+Comm    | 8.1062e-05 | 8.1062e-05 | 8.1062e-05 |   0.0 |  0.00
+Output  | 6.0081e-05 | 6.0081e-05 | 6.0081e-05 |   0.0 |  0.00
+Modify  | 60.268     | 60.268     | 60.268     |   0.0 | 99.98
+Other   |            | 1.693e-05  |            |       |  0.00
+
+Nlocal:        496.000 ave         496 max         496 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3123.00 ave        3123 max        3123 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      91302.0 ave       91302 max       91302 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 91302
+Ave neighs/atom = 184.07661
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0051612903225806451568 101
+Deleted 4 atoms, new total = 492
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       5    499.42766   -2943.2256          245          247            0            0            0            0 
+       6    499.42766   -2943.2256          245          247   -8.1397203 1.1083492e+82   -10.258429 2.513589e+103 
+Loop time of 59.3131 on 1 procs for 1 steps with 492 atoms
+
+Performance: 0.000 ns/day, 164758.592 hours/ns, 0.017 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0035331  | 0.0035331  | 0.0035331  |   0.0 |  0.01
+Neigh   | 0.010695   | 0.010695   | 0.010695   |   0.0 |  0.02
+Comm    | 8.2016e-05 | 8.2016e-05 | 8.2016e-05 |   0.0 |  0.00
+Output  | 6.1035e-05 | 6.1035e-05 | 6.1035e-05 |   0.0 |  0.00
+Modify  | 59.299     | 59.299     | 59.299     |   0.0 | 99.98
+Other   |            | 1.669e-05  |            |       |  0.00
+
+Nlocal:        492.000 ave         492 max         492 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3095.00 ave        3095 max        3095 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      89842.0 ave       89842 max       89842 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 89842
+Ave neighs/atom = 182.60569
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0052032520325203251987 101
+Deleted 4 atoms, new total = 488
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       6     497.5719    -2909.312          242          246            0            0            0            0 
+       7     497.5719    -2909.312          242          246   -5.6614418 1.1608005e+57   -7.3715806 2.0052934e+74 
+Loop time of 58.4564 on 1 procs for 1 steps with 488 atoms
+
+Performance: 0.000 ns/day, 162378.886 hours/ns, 0.017 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0034668  | 0.0034668  | 0.0034668  |   0.0 |  0.01
+Neigh   | 0.011681   | 0.011681   | 0.011681   |   0.0 |  0.02
+Comm    | 8.3208e-05 | 8.3208e-05 | 8.3208e-05 |   0.0 |  0.00
+Output  | 6.485e-05  | 6.485e-05  | 6.485e-05  |   0.0 |  0.00
+Modify  | 58.441     | 58.441     | 58.441     |   0.0 | 99.97
+Other   |            | 1.812e-05  |            |       |  0.00
+
+Nlocal:        488.000 ave         488 max         488 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3067.00 ave        3067 max        3067 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      88406.0 ave       88406 max       88406 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 88406
+Ave neighs/atom = 181.15984
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0052459016393442622905 101
+Deleted 4 atoms, new total = 484
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       7    496.89473    -2862.194          242          242            0            0            0            0 
+       8    496.89473    -2862.194          242          242   -8.1164067 6.4518848e+81   -8.5272959 8.9384673e+85 
+Loop time of 57.4778 on 1 procs for 1 steps with 484 atoms
+
+Performance: 0.000 ns/day, 159660.611 hours/ns, 0.017 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0033522  | 0.0033522  | 0.0033522  |   0.0 |  0.01
+Neigh   | 0.010376   | 0.010376   | 0.010376   |   0.0 |  0.02
+Comm    | 7.8917e-05 | 7.8917e-05 | 7.8917e-05 |   0.0 |  0.00
+Output  | 6.6996e-05 | 6.6996e-05 | 6.6996e-05 |   0.0 |  0.00
+Modify  | 57.464     | 57.464     | 57.464     |   0.0 | 99.98
+Other   |            | 1.478e-05  |            |       |  0.00
+
+Nlocal:        484.000 ave         484 max         484 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3043.00 ave        3043 max        3043 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      86972.0 ave       86972 max       86972 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 86972
+Ave neighs/atom = 179.69421
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0052892561983471078277 101
+Deleted 4 atoms, new total = 480
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       8    498.31605   -2830.2015          240          240            0            0            0            0 
+       9    498.31605   -2830.2015          240          240   -4.1789448 1.3239204e+42   -8.2484023 1.3808341e+83 
+Loop time of 56.6209 on 1 procs for 1 steps with 480 atoms
+
+Performance: 0.000 ns/day, 157280.286 hours/ns, 0.018 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0033119  | 0.0033119  | 0.0033119  |   0.0 |  0.01
+Neigh   | 0.010269   | 0.010269   | 0.010269   |   0.0 |  0.02
+Comm    | 7.7963e-05 | 7.7963e-05 | 7.7963e-05 |   0.0 |  0.00
+Output  | 5.6982e-05 | 5.6982e-05 | 5.6982e-05 |   0.0 |  0.00
+Modify  | 56.607     | 56.607     | 56.607     |   0.0 | 99.98
+Other   |            | 1.502e-05  |            |       |  0.00
+
+Nlocal:        480.000 ave         480 max         480 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        3015.00 ave        3015 max        3015 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      85568.0 ave       85568 max       85568 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 85568
+Ave neighs/atom = 178.26667
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0053333333333333331552 101
+Deleted 4 atoms, new total = 476
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+       9    499.13152   -2793.4475          237          239            0            0            0            0 
+      10    499.13152   -2793.4475          237          239    -9.218806 8.3439039e+92   -8.9180811 7.7660398e+89 
+Loop time of 55.7675 on 1 procs for 1 steps with 476 atoms
+
+Performance: 0.000 ns/day, 154909.739 hours/ns, 0.018 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.003269   | 0.003269   | 0.003269   |   0.0 |  0.01
+Neigh   | 0.010049   | 0.010049   | 0.010049   |   0.0 |  0.02
+Comm    | 8.0824e-05 | 8.0824e-05 | 8.0824e-05 |   0.0 |  0.00
+Output  | 5.9843e-05 | 5.9843e-05 | 5.9843e-05 |   0.0 |  0.00
+Modify  | 55.754     | 55.754     | 55.754     |   0.0 | 99.98
+Other   |            | 1.645e-05  |            |       |  0.00
+
+Nlocal:        476.000 ave         476 max         476 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2991.00 ave        2991 max        2991 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      84184.0 ave       84184 max       84184 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 84184
+Ave neighs/atom = 176.85714
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0053781512605042018291 101
+Deleted 4 atoms, new total = 472
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      10    499.24826    -2759.338          234          238            0            0            0            0 
+      11    499.24826    -2759.338          234          238   -8.5964958 4.4541607e+86   -9.7737089 3.2699265e+98 
+Loop time of 54.9238 on 1 procs for 1 steps with 472 atoms
+
+Performance: 0.000 ns/day, 152565.995 hours/ns, 0.018 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0032549  | 0.0032549  | 0.0032549  |   0.0 |  0.01
+Neigh   | 0.0098889  | 0.0098889  | 0.0098889  |   0.0 |  0.02
+Comm    | 7.8917e-05 | 7.8917e-05 | 7.8917e-05 |   0.0 |  0.00
+Output  | 6.4135e-05 | 6.4135e-05 | 6.4135e-05 |   0.0 |  0.00
+Modify  | 54.91      | 54.91      | 54.91      |   0.0 | 99.98
+Other   |            | 1.645e-05  |            |       |  0.00
+
+Nlocal:        472.000 ave         472 max         472 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2963.00 ave        2963 max        2963 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      82812.0 ave       82812 max       82812 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 82812
+Ave neighs/atom = 175.44915
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0054237288135593223967 101
+Deleted 4 atoms, new total = 468
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      11    498.84271   -2721.5178          232          236            0            0            0            0 
+      12    498.84271   -2721.5178          232          236   -7.7863968 3.0432464e+78   -7.4506052 1.2551927e+75 
+Loop time of 53.9501 on 1 procs for 1 steps with 468 atoms
+
+Performance: 0.000 ns/day, 149861.433 hours/ns, 0.019 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.003139   | 0.003139   | 0.003139   |   0.0 |  0.01
+Neigh   | 0.0097289  | 0.0097289  | 0.0097289  |   0.0 |  0.02
+Comm    | 7.6056e-05 | 7.6056e-05 | 7.6056e-05 |   0.0 |  0.00
+Output  | 5.8889e-05 | 5.8889e-05 | 5.8889e-05 |   0.0 |  0.00
+Modify  | 53.937     | 53.937     | 53.937     |   0.0 | 99.98
+Other   |            | 1.717e-05  |            |       |  0.00
+
+Nlocal:        468.000 ave         468 max         468 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2935.00 ave        2935 max        2935 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      81446.0 ave       81446 max       81446 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 81446
+Ave neighs/atom = 174.02991
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0054700854700854700807 101
+Deleted 4 atoms, new total = 464
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      12    497.62738   -2683.5966          230          234            0            0            0            0 
+      13    497.62738   -2683.5966          230          234   -8.5181198 7.2238922e+85   -8.7166765 7.2465821e+87 
+Loop time of 53.097 on 1 procs for 1 steps with 464 atoms
+
+Performance: 0.000 ns/day, 147491.675 hours/ns, 0.019 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.003098   | 0.003098   | 0.003098   |   0.0 |  0.01
+Neigh   | 0.0095758  | 0.0095758  | 0.0095758  |   0.0 |  0.02
+Comm    | 7.6056e-05 | 7.6056e-05 | 7.6056e-05 |   0.0 |  0.00
+Output  | 5.8889e-05 | 5.8889e-05 | 5.8889e-05 |   0.0 |  0.00
+Modify  | 53.084     | 53.084     | 53.084     |   0.0 | 99.98
+Other   |            | 1.502e-05  |            |       |  0.00
+
+Nlocal:        464.000 ave         464 max         464 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2911.00 ave        2911 max        2911 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      80090.0 ave       80090 max       80090 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 80090
+Ave neighs/atom = 172.60776
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0055172413793103452714 101
+Deleted 4 atoms, new total = 460
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      13    498.62507   -2642.6339          229          231            0            0            0            0 
+      14    498.62507   -2642.6339          229          231    -10.70177 7.3956193e+107   -10.750655 2.2999329e+108 
+Loop time of 52.258 on 1 procs for 1 steps with 460 atoms
+
+Performance: 0.000 ns/day, 145160.992 hours/ns, 0.019 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.003032   | 0.003032   | 0.003032   |   0.0 |  0.01
+Neigh   | 0.009444   | 0.009444   | 0.009444   |   0.0 |  0.02
+Comm    | 7.6056e-05 | 7.6056e-05 | 7.6056e-05 |   0.0 |  0.00
+Output  | 6.485e-05  | 6.485e-05  | 6.485e-05  |   0.0 |  0.00
+Modify  | 52.245     | 52.245     | 52.245     |   0.0 | 99.98
+Other   |            | 1.407e-05  |            |       |  0.00
+
+Nlocal:        460.000 ave         460 max         460 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2887.00 ave        2887 max        2887 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      78732.0 ave       78732 max       78732 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 78732
+Ave neighs/atom = 171.15652
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0055652173913043482059 101
+Deleted 4 atoms, new total = 456
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      14    499.96161   -2606.0759          226          230            0            0            0            0 
+      15    499.96161   -2606.0759          226          230   -6.9100679 4.4703372e+69   -7.6633002 1.7481518e+77 
+Loop time of 51.3801 on 1 procs for 1 steps with 456 atoms
+
+Performance: 0.000 ns/day, 142722.470 hours/ns, 0.019 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0029831  | 0.0029831  | 0.0029831  |   0.0 |  0.01
+Neigh   | 0.009284   | 0.009284   | 0.009284   |   0.0 |  0.02
+Comm    | 7.4863e-05 | 7.4863e-05 | 7.4863e-05 |   0.0 |  0.00
+Output  | 6.2227e-05 | 6.2227e-05 | 6.2227e-05 |   0.0 |  0.00
+Modify  | 51.368     | 51.368     | 51.368     |   0.0 | 99.98
+Other   |            | 1.574e-05  |            |       |  0.00
+
+Nlocal:        456.000 ave         456 max         456 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2859.00 ave        2859 max        2859 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      77378.0 ave       77378 max       77378 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 77378
+Ave neighs/atom = 169.68860
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0056140350877192986973 101
+Deleted 4 atoms, new total = 452
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      15    501.03032   -2558.8694          226          226            0            0            0            0 
+      16    501.03032   -2558.8694          226          226   -9.6341551 1.2820348e+97   -8.3629347 1.9704986e+84 
+Loop time of 50.3533 on 1 procs for 1 steps with 452 atoms
+
+Performance: 0.000 ns/day, 139870.181 hours/ns, 0.020 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0029242  | 0.0029242  | 0.0029242  |   0.0 |  0.01
+Neigh   | 0.0091181  | 0.0091181  | 0.0091181  |   0.0 |  0.02
+Comm    | 0.00015998 | 0.00015998 | 0.00015998 |   0.0 |  0.00
+Output  | 7.4863e-05 | 7.4863e-05 | 7.4863e-05 |   0.0 |  0.00
+Modify  | 50.341     | 50.341     | 50.341     |   0.0 | 99.98
+Other   |            | 2.003e-05  |            |       |  0.00
+
+Nlocal:        452.000 ave         452 max         452 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2835.00 ave        2835 max        2835 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      76020.0 ave       76020 max       76020 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 76020
+Ave neighs/atom = 168.18584
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0056637168141592921303 101
+Deleted 4 atoms, new total = 448
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      16    502.10254   -2529.5088          224          224            0            0            0            0 
+      17    502.10254   -2529.5088          224          224   -8.3510396 1.4951295e+84   -8.3435418 1.2563322e+84 
+Loop time of 49.6349 on 1 procs for 1 steps with 448 atoms
+
+Performance: 0.000 ns/day, 137874.672 hours/ns, 0.020 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0028729  | 0.0028729  | 0.0028729  |   0.0 |  0.01
+Neigh   | 0.0089769  | 0.0089769  | 0.0089769  |   0.0 |  0.02
+Comm    | 7.4148e-05 | 7.4148e-05 | 7.4148e-05 |   0.0 |  0.00
+Output  | 6.0081e-05 | 6.0081e-05 | 6.0081e-05 |   0.0 |  0.00
+Modify  | 49.623     | 49.623     | 49.623     |   0.0 | 99.98
+Other   |            | 1.478e-05  |            |       |  0.00
+
+Nlocal:        448.000 ave         448 max         448 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2811.00 ave        2811 max        2811 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      74684.0 ave       74684 max       74684 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 74684
+Ave neighs/atom = 166.70536
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0057142857142857142808 101
+Deleted 4 atoms, new total = 444
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      17    504.24687   -2492.7548          221          223            0            0            0            0 
+      18    504.24687   -2492.7548          221          223   -7.1780665 2.2472141e+72   -8.4647144 2.0915574e+85 
+Loop time of 48.795 on 1 procs for 1 steps with 444 atoms
+
+Performance: 0.000 ns/day, 135541.636 hours/ns, 0.020 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.002861   | 0.002861   | 0.002861   |   0.0 |  0.01
+Neigh   | 0.008832   | 0.008832   | 0.008832   |   0.0 |  0.02
+Comm    | 7.2002e-05 | 7.2002e-05 | 7.2002e-05 |   0.0 |  0.00
+Output  | 6.6042e-05 | 6.6042e-05 | 6.6042e-05 |   0.0 |  0.00
+Modify  | 48.783     | 48.783     | 48.783     |   0.0 | 99.98
+Other   |            | 1.192e-05  |            |       |  0.00
+
+Nlocal:        444.000 ave         444 max         444 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2787.00 ave        2787 max        2787 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      73358.0 ave       73358 max       73358 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 73358
+Ave neighs/atom = 165.22072
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0057657657657657658545 101
+Deleted 4 atoms, new total = 440
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      18    504.67517   -2458.1781          218          222            0            0            0            0 
+      19    504.67517   -2458.1781          218          222   -7.1230953 6.2742204e+71   -9.1959487 4.9088319e+92 
+Loop time of 48.0769 on 1 procs for 1 steps with 440 atoms
+
+Performance: 0.000 ns/day, 133546.942 hours/ns, 0.021 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0027699  | 0.0027699  | 0.0027699  |   0.0 |  0.01
+Neigh   | 0.0086391  | 0.0086391  | 0.0086391  |   0.0 |  0.02
+Comm    | 7.2956e-05 | 7.2956e-05 | 7.2956e-05 |   0.0 |  0.00
+Output  | 5.8889e-05 | 5.8889e-05 | 5.8889e-05 |   0.0 |  0.00
+Modify  | 48.065     | 48.065     | 48.065     |   0.0 | 99.98
+Other   |            | 1.502e-05  |            |       |  0.00
+
+Nlocal:        440.000 ave         440 max         440 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2759.00 ave        2759 max        2759 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      72048.0 ave       72048 max       72048 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 72048
+Ave neighs/atom = 163.74545
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0058181818181818186972 101
+Deleted 4 atoms, new total = 436
+Per MPI rank memory allocation (min/avg/max) = 3.33 | 3.33 | 3.33 Mbytes
+Step Temp PotEng v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] 
+      19    503.47548   -2417.2587          216          220            0            0            0            0 
+      20    503.47548   -2417.2587          216          220   -7.5224188 6.6459702e+75   -9.1519415 1.7676877e+92 
+Loop time of 47.1994 on 1 procs for 1 steps with 436 atoms
+
+Performance: 0.000 ns/day, 131109.548 hours/ns, 0.021 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0027051  | 0.0027051  | 0.0027051  |   0.0 |  0.01
+Neigh   | 0.0085361  | 0.0085361  | 0.0085361  |   0.0 |  0.02
+Comm    | 7.1764e-05 | 7.1764e-05 | 7.1764e-05 |   0.0 |  0.00
+Output  | 5.5075e-05 | 5.5075e-05 | 5.5075e-05 |   0.0 |  0.00
+Modify  | 47.188     | 47.188     | 47.188     |   0.0 | 99.98
+Other   |            | 1.597e-05  |            |       |  0.00
+
+Nlocal:        436.000 ave         436 max         436 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        2735.00 ave        2735 max        2735 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      70762.0 ave       70762 max       70762 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 70762
+Ave neighs/atom = 162.29817
+Neighbor list builds = 4099
+Dangerous builds = 0
+delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101
+delete_atoms	porosity whole 0.0058715596330275229148 101
+Deleted 4 atoms, new total = 432
+Total wall time: 0:18:28

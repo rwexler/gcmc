@@ -1,0 +1,95 @@
+
+timestep			0.0001
+
+#compute			mdtemp all temp
+#compute_modify	mdtemp dynamic/dof yes
+
+#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+#fix_modify		mynvt temp mdtemp
+
+#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
+
+fix					gcmcSi groupSi gcmc 1 1024 0 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 1024 0 1 12345 1000 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 1024 0 1 12345 1000 -7.97 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 1024 0 1 12345 1000 -7.97 0.5 full_energy
+fix					gcmcC groupC gcmc 1 1024 0 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 1024 0 2 98765 1000 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 1024 0 2 98765 1000 -11.14 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 1024 0 2 98765 1000 -11.14 0.5 full_energy
+
+# how about fix atom/swap?
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			1
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					100
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.25 | 4.25 | 4.25 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5] 
+       0         1000   -3153.3063          256          256            0            0            0            0            0            0 
+       1         1000   -3153.3063          256          256            0            0            0            0          516          508 
+       2         1000   -3153.3063          256          256            0            0            0            0         1042         1006 
+       3         1000   -3153.3063          256          256            0            0            0            0         1571         1501 
+       4         1000   -3153.3063          256          256            0            0            0            0         2093         2003 
+       5         1000   -3153.3063          256          256            0            0            0            0         2612         2508 
+       6         1000   -3153.3063          256          256            0            0            0            0         3103         3041 
+       7         1000   -3153.3063          256          256            0            0            0            0         3636         3532 
+       8         1000   -3153.3063          256          256            0            0            0            0         4158         4034 
+       9         1000   -3153.3063          256          256            0            0            0            0         4673         4543 
+      10         1000   -3153.3063          256          256            0            0            0            0         5188         5052 
+      11         1000   -3153.3063          256          256            0            0            0            0         5694         5570 
+      12         1000   -3153.3063          256          256            0            0            0            0         6202         6086 
+      13         1000   -3153.3063          256          256            0            0            0            0         6707         6605 
+      14         1000   -3153.3063          256          256            0            0            0            0         7212         7124 
+      15         1000   -3153.3063          256          256            0            0            0            0         7787         7573 
+      16         1000   -3153.3063          256          256            0            0            0            0         8318         8066 
+      17         1000   -3153.3063          256          256            0            0            0            0         8831         8577 
+      18         1000   -3153.3063          256          256            0            0            0            0         9307         9125 
+      19         1000   -3153.3063          256          256            0            0            0            0         9816         9640 
+      20         1000   -3153.3063          256          256            0            0            0            0        10343        10137 
+      21         1000   -3153.3063          256          256            0            0            0            0        10881        10623 
+      22         1000   -3153.3063          256          256            0            0            0            0        11381        11147 
+      23         1000   -3153.3063          256          256            0            0            0            0        11897        11655 
+      24         1000   -3153.3063          256          256            0            0            0            0        12393        12183 
+      25         1000   -3153.3063          256          256            0            0            0            0        12885        12715 
+      26         1000   -3153.3063          256          256            0            0            0            0        13414        13210 
+      27         1000   -3153.3063          256          256            0            0            0            0        13938        13710 
+      28         1000   -3153.3063          256          256            0            0            0            0        14438        14234 
+      29         1000   -3153.3063          256          256            0            0            0            0        14947        14749 
+      30         1000   -3153.3063          256          256            0            0            0            0        15460        15260 
+      31         1000   -3153.3063          256          256            0            0            0            0        15980        15764 
+      32         1000   -3153.3063          256          256            0            0            0            0        16531        16237 
+      33         1000   -3153.3063          256          256            0            0            0            0        17050        16742 
+      34         1000   -3153.3063          256          256            0            0            0            0        17589        17227 
+      35         1000   -3153.3063          256          256            0            0            0            0        18093        17747 
+      36         1000   -3153.3063          256          256            0            0            0            0        18606        18258 
+      37         1000   -3153.3063          256          256            0            0            0            0        19138        18750 
+      38         1000   -3153.3063          256          256            0            0            0            0        19639        19273 
+      39         1000   -3153.3063          256          256            0            0            0            0        20143        19793 
+      40         1000   -3153.3063          256          256            0            0            0            0        20652        20308 
+      41         1000   -3153.3063          256          256            0            0            0            0        21166        20818 
+      42         1000   -3153.3063          256          256            0            0            0            0        21670        21338 
+      43         1000   -3153.3063          256          256            0            0            0            0        22198        2183

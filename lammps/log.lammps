@@ -1,7 +1,7 @@
 LAMMPS (30 Jun 2020)
 #######################################
 #	Cubic Silicon Carbide (3C-SiC)
-# Fix GCMC Test
+# Fix Widom Test
 #	Using Tersoff Potential
 #######################################
 
@@ -10,51 +10,67 @@ atom_style	atomic
 dimension	3
 boundary	p p p
 
-variable			my_temp equal 500
-variable			my_press equal 1.0
-variable			lbox equal 2.0
+# average excess mu_si = -10.9 for only deletions
+# average excess mu_c = -11.69 for only deletions
+variable			si_mu_ex equal -9.9
+variable			c_mu_ex equal -10.69
+
+variable			massSi equal 28.086000
+variable			massC equal 12.011150
+variable			myTemp equal 500
+variable			myPress equal 1.0
+variable			disp equal 0.5
+variable			lbox equal 4.0
+
+variable			h equal 4.135667e-3				# in eV*ps
+variable			kT equal "8.617333e-5*v_myTemp"
+variable			broglieSi equal "sqrt( v_h^2 /(2*PI*v_massSi*v_kT) )"
+variable			broglieC equal "sqrt( v_h^2 /(2*PI*v_massC*v_kT) )"
+variable			si_mu_id equal "v_kT*ln( v_myPress*v_broglieSi^3/v_kT )"
+variable			c_mu_id equal "v_kT*ln( v_myPress*v_broglieC^3/v_kT )"
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom 4.36 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
 Lattice spacing in x,y,z = 4.3600000 4.3600000 4.3600000
 
 region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
-region whole block 0 2 0 ${lbox} 0 ${lbox} units lattice
-region whole block 0 2 0 2 0 ${lbox} units lattice
-region whole block 0 2 0 2 0 2 units lattice
+region whole block 0 4 0 ${lbox} 0 ${lbox} units lattice
+region whole block 0 4 0 4 0 ${lbox} units lattice
+region whole block 0 4 0 4 0 4 units lattice
 create_box 2 whole
-Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (8.7200000 8.7200000 8.7200000)
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.440000 17.440000 17.440000)
   1 by 1 by 1 MPI processor grid
 
 mass 1  28.086000	# Silicon
 mass 2  12.011150	# Carbon
 
 create_atoms 2 region whole basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
-Created 64 atoms
+Created 512 atoms
   create_atoms CPU = 0.001 seconds
 
 group				groupSi type 1
-32 atoms in group groupSi
+256 atoms in group groupSi
 group				groupC type 2
-32 atoms in group groupC
+256 atoms in group groupC
 
 variable			nSi equal count(groupSi)
 variable			nC equal count(groupC)
 
-thermo			10
-thermo_style	custom step temp press pe ke v_nSi v_nC
+variable			atoms_0 equal atoms
+variable			initial_natoms equal ${atoms_0}
+variable			initial_natoms equal 512
+
+print					${initial_natoms}
+print					512
+512
 
 # ---------- Define Interatomic Potential ---------------------
 pair_style 		tersoff
-pair_coeff 		* * SiC.tersoff Si C
+pair_coeff		 * * SiC.tersoff Si C
 Reading tersoff potential file SiC.tersoff with DATE: 2011-04-26
-neighbor			3.0 bin
+neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
-velocity			all create ${my_temp} 12345
+velocity			all create ${myTemp} 12345
 velocity			all create 500 12345
 
-dump				mydump all atom 10 bulk_npt_Si_${nSi}_C_${nC}.lammpstrj
-dump				mydump all atom 10 bulk_npt_Si_32_C_${nC}.lammpstrj
-dump				mydump all atom 10 bulk_npt_Si_32_C_32.lammpstrj
-
-log					log_npt.lammps
+log					logs/log_widom_porous.lammps

@@ -1,0 +1,66 @@
+
+timestep			0.0001
+
+#compute			mdtemp all temp
+#compute_modify	mdtemp dynamic/dof yes
+
+#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+#fix_modify		mynvt temp mdtemp
+
+#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
+
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 100 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 100 -5.10633007607697 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 100 -5.10633007607697 0.5 full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 100 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 100 -5.09535026874984 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 100 -5.09535026874984 0.5 full_energy
+
+# how about fix atom/swap?
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			1
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					100
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.249 | 4.249 | 4.249 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5] 
+       0          100   -3131.7038          254          256            0            0            0            0            0            0 
+       1          100   -3131.7038          254          256            0            0            0            0          259          253 
+       2          100   -3131.7038          254          256            0            0            0            0          516          508 
+       3          100   -3131.7038          254          256            0            0            0            0          774          762 
+       4          100   -3131.7038          254          256            0            0            0            0         1042         1006 
+       5          100   -3131.7038          254          256            0            0            0            0         1306         1254 
+       6          100   -3131.7038          254          256            0            0            0            0         1571         1501 
+       7          100   -3131.7038          254          256            0            0            0            0         1821         1763 
+       8          100   -3131.7038          254          256            0            0            0            0         2093         2003 
+       9          100   -3131.7038          254          256            0            0            0            0         2354         2254 
+      10          100   -3131.7038          254          256            0            0            0            0         2612         2508 
+      11          100   -3131.7038          254          256            0            0            0            0         2858         2774 
+      12    100.07221   -3140.0501          254          257            0            0            1            0         3103         3041 
+      13    100.07221   -3140.0501          254          257            0            0            1            0         3365         3291 
+      14    100.07221   -3140.0501          254          257      

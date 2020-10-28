@@ -53,13 +53,16 @@ mass 2  12.011150	# Carbon
 
 create_atoms 2 region whole basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
 
-delete_atoms	porosity whole 0.01 101
-
 group				groupSi type 1 
 group				groupC type 2 
 
 variable			nSi equal count(groupSi)
 variable			nC equal count(groupC)
+
+variable			atoms_0 equal atoms
+variable			initial_natoms equal ${atoms_0}
+
+print					${initial_natoms}
 
 # ---------- Define Interatomic Potential --------------------- 
 pair_style 		tersoff
@@ -68,7 +71,7 @@ neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
 velocity			all create ${myTemp} 12345
 
-dump				mydump all xyz 1 bulk_widom.xyz
+log					logs/log_widom_porous.lammps
 
 timestep			0.0001
 
@@ -84,10 +87,4 @@ fix					widomC groupC widom 1 2048 0 2 98765 ${myTemp} full_energy
 thermo			1
 thermo_style	custom step temp pe v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
 
-run					1
-
-delete_atoms	porosity whole 0.01 101
-run					1
-
-delete_atoms	porosity whole 0.01 101
-run					1
+run					20 every 1 "delete_atoms	porosity whole $(0.005*v_initial_natoms/atoms) 101"

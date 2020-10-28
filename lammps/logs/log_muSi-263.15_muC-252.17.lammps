@@ -1,0 +1,180 @@
+
+timestep			0.0001
+
+#compute			mdtemp all temp
+#compute_modify	mdtemp dynamic/dof yes
+
+#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+#fix_modify		mynvt temp mdtemp
+
+#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
+
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 100000 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 100000 -263.146144880718 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 512 0 1 12345 100000 -263.146144880718 0.5 full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 100000 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 100000 -252.166337553584 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 512 0 2 98765 100000 -252.166337553584 0.5 full_energy
+
+# how about fix atom/swap?
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			1
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					100
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.249 | 4.249 | 4.249 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5] 
+       0       100000   -3131.7038          254          256            0            0            0            0            0            0 
+       1    1427.6031            0            1            7            0          253            0          249          259          253 
+       2            0            0            0            0            1          255            0          256          532          492 
+       3            0            0            0            0            1          255            0          256          791          745 
+       4            0            0            0            0            1          255            0          256         1054          994 
+       5            0            0            0            0            1          255            0          256         1313         1247 
+       6            0            0            0            0            1          255            0          256         1579         1493 
+       7            0            0            0            0            1          255            0          256         1842         1742 
+       8            0            0            0            0            1          255            0          256         2099         1997 
+       9            0            0            0            0            1          255            0          256         2355         2253 
+      10            0            0            0            0            1          255            0          256         2621         2499 
+      11            0            0            0            0            1          255            0          256         2867         2765 
+      12            0            0            0            0            1          255            0          256         3114         3030 
+      13            0            0            0            0            1          255            0          256         3364         3292 
+      14            0            0            0            0            1          255            0          256         3615         3553 
+      15            0            0            0            0            1          255            0          256         3870         3810 
+      16            0            0            0            0            1          255            1          257         4144         4048 
+      17            0            0            0            0            1          255            1          257         4413         4291 
+      18            0            0            0            0            1          255            1          257         4686         4530 
+      19            0            0            0            0            1          255            1          257         4959         4769 
+      20            0            0            0            0            2          256            1          257         5215         5025 
+      21            0            0            0            0            2          256            1          257         5484         5268 
+      22            0            0            0            0            2          256            1          257         5740         5524 
+      23            0            0            0            0            2          256            1          257         5995         5781 
+      24            0            0            0            0            2          256            1          257         6263         6025 
+      25            0            0            0            0            2          256            1          257         6512         6288 
+      26            0            0            0            0            2          256            1          257         6772         6540 
+      27            0            0            0            0            2          256            2          258         7020         6804 
+      28            0            0            0            0            2          256            2          258         7280         7056 
+      29            0            0            0            0            3          257            2          258         7534         7314 
+      30            0            0            0            0            3          257            2          258         7802         7558 
+      31            0            0            0            0            3          257            2          258         8055         7817 
+      32            0            0            0            0            3          257            2          258         8291         8093 
+      33            0            0            0            0            3          257            2          258         8559         8337 
+      34            0            0            0            0            3          257            2          258         8812         8596 
+      35            0            0            0            0            3          257            2          258         9076         8844 
+      36            0            0            0            0            3          257            2          258         9377         9055 
+      37            0            0            0            0            3          257            2          258         9656         9288 
+      38            0            0            0            0            3          257            2          258         9931         9525 
+      39            0            0            0            0            3          257            2          258        10167         9801 
+      40            0            0            0            0            3          257            2          258        10414        10066 
+      41            0            0            0            0            3          257            2          258        10672        10320 
+      42            0            0            0            0            3          257            2          258        10942        10562 
+      43            0            0            0            0            3          257            2          258        11178        10838 
+      44            0            0            0            0            3          257            2          258        11418        11110 
+      45            0            0            0            0            3          257            2          258        11650        11390 
+      46            0            0            0            0            3          257            2          258        11899        11653 
+      47            0            0            0            0            3          257            2          258        12148        11916 
+      48            0            0            0            0            3          257            2          258        12377        12199 
+      49            0            0            0            0            5          259            2          258        12641        12447 
+      50            0            0            0            0            5          259            2          258        12901        12699 
+      51            0            0            0            0            6          260            2          258        13172        12940 
+      52            0            0            0            0            6          260            2          258        13431        13193 
+      53            0            0            0            0            6          260            3          259        13670        13466 
+      54            0            0            0            0            6          260            3          259        13919        13729 
+      55            0            0            0            0            6          260            3          259        14186        13974 
+      56            0            0            0            0            6          260            3          259        14437        14235 
+      57            0            0            0            0            6          260            3          259        14694        14490 
+      58            0            0            0            0            6          260            3          259        14954        14742 
+      59            0            0            0            0            6          260            3          259        15199        15009 
+      60            0            0            0            0            6          260            3          259        15459        15261 
+      61            0            0            0            0            6          260            3          259        15717        15515 
+      62            0            0            0            0            6          260            3          259        15955        15789 
+      63            0            0            0            0            6          260            3          259        16225        16031 
+      64            0            0            0            0            6          260            3          259        16489        16279 
+      65            0            0            0            0            6          260            3          259        16753        16527 
+      66            0            0            0            0            6          260            3          259        17001        16791 
+      67            0            0            0            0            6          260            3          259        17263        17041 
+      68            0            0            0            0            6          260            4          260        17518        17298 
+      69            0            0            0            0            6          260            4          260        17768        17560 
+      70            0            0            0            0            6          260            5          261        18027        17813 
+      71            0            0            0            0            6          260            5          261        18273        18079 
+      72            0            0            0            0            6          260            5          261        18514        18350 
+      73            0            0            0            0            6          260            5          261        18778        18598 
+      74            0            0            0            0            6          260            5          261        19030        18858 
+      75            0            0            0            0            6          260            5          261        19307        19093 
+      76            0            0            0            0            6          260            5          261        19560        19352 
+      77            0            0            0            0            6          260            5          261        19815        19609 
+      78            0            0            0            0            6          260            5          261        20095        19841 
+      79            0            0            0            0            6          260            5          261        20349        20099 
+      80            0            0            0            0            6          260            5          261        20624        20336 
+      81            0            0            0            0            6          260            6          262        20886        20586 
+      82            0            0            0            0            6          260            6          262        21137        20847 
+      83            0            0            0            0            6          260            6          262        21391        21105 
+      84            0            0            0            0            6          260            6          262        21664        21344 
+      85            0            0            0            0            6          260            6          262        21927        21593 
+      86            0            0            0            0            6          260            6          262        22183        21849 
+      87            0            0            0            0            6          260            6          262        22446        22098 
+      88            0            0            0            0            6          260            6          262        22690        22366 
+      89            0            0            0            0            6          260            6          262        22942        22626 
+      90            0            0            0            0            6          260            6          262        23200        22880 
+      91            0            0            0            0            6          260            6          262        23471        23121 
+      92            0            0            0            0            6          260            6          262        23749        23355 
+      93            0            0            0            0            7          261            6          262        23990        23626 
+      94            0            0            0            0            8          262            6          262        24249        23879 
+      95            0            0            0            0            8          262            6          262        24504        24136 
+      96            0            0            0            0            8          262            6          262        24742        24410 
+      97            0            0            0            0            8          262            6          262        24999        24665 
+      98            0            0            0            0            8          262            6          262        25240        24936 
+      99            0            0            0            0            8          262            6          262        25499        25189 
+     100            0            0            0            0            8          262            6          262        25757        25443 
+Loop time of 5.55219 on 1 procs for 100 steps with 0 atoms
+
+Performance: 0.156 ns/day, 154.228 hours/ns, 18.011 timesteps/s
+99.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.6451e-05 | 1.6451e-05 | 1.6451e-05 |   0.0 |  0.00
+Neigh   | 0.0001123  | 0.0001123  | 0.0001123  |   0.0 |  0.00
+Comm    | 5.9843e-05 | 5.9843e-05 | 5.9843e-05 |   0.0 |  0.00
+Output  | 0.002604   | 0.002604   | 0.002604   |   0.0 |  0.05
+Modify  | 5.5493     | 5.5493     | 5.5493     |   0.0 | 99.95
+Other   |            | 7.82e-05   |            |       |  0.00
+
+Nlocal:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Neighbor list builds = 52352
+Dangerous builds = 0
+Total wall time: 0:00:05
