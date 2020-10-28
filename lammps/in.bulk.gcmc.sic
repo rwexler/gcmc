@@ -14,8 +14,8 @@ boundary	p p p
 # -9.75 atom number doesn't change
 # average excess mu_si = -10.9
 # average excess mu_c = -11.69
-variable			si_mu_ex equal -9.9
-variable			c_mu_ex equal -10.69
+variable			si_mu_ex equal 20
+variable			c_mu_ex equal 0
 
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
@@ -80,9 +80,9 @@ dump				mydump all xyz 1 bulk_gcmc.xyz
 
 timestep			0.0001
 
-print					"Ideal Gas Chemical Potentials"
-print					${si_mu_id}
-print					${c_mu_id}
+print					"Thermal de Broglie Wavelengths"
+print					${broglieSi}
+print					${broglieC}
 
 compute			mdtemp all temp
 compute_modify	mdtemp dynamic/dof yes
@@ -98,8 +98,8 @@ compute_modify	mdtemp dynamic/dof yes
 # M the average number of MC moves should be the on the order of the number of atoms in cell
 # so that on an average cycle each atom moves per MC cycle
 # full_energy is needed to include the total energy calculation since it is a many-body pair style
-fix					gcmcSi groupSi gcmc 1 550 0 1 12345 ${myTemp} $(v_si_mu_id + v_si_mu_ex) ${disp} full_energy min 255
-fix					gcmcC groupC gcmc 1 550 0 2 98765 ${myTemp} $(v_c_mu_id + v_c_mu_ex) ${disp} full_energy min 255
+fix					gcmcSi groupSi gcmc 1 1024 0 1 12345 ${myTemp} $(v_si_mu_id + v_si_mu_ex) ${disp} full_energy min 255
+fix					gcmcC groupC gcmc 1 1024 0 2 98765 ${myTemp} $(v_c_mu_id + v_c_mu_ex) ${disp} full_energy min 255
 
 # how about fix atom/swap?
 
@@ -112,7 +112,7 @@ variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
 variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
 
 thermo			1
-thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] v_daccSi f_gcmcC[4] v_daccC
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] v_daccSi f_gcmcC[4] v_daccC f_gcmcSi[5]
 # other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
 thermo_modify	lost warn
 

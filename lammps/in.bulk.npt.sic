@@ -11,7 +11,7 @@ boundary	p p p
 
 variable			my_temp equal 500
 variable			my_press equal 1.0
-variable			lbox equal 4.0
+variable			lbox equal 2.0
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom 4.36 &
@@ -45,9 +45,7 @@ variable			nSi equal count(groupSi)
 variable			nC equal count(groupC)
 
 thermo			10
-thermo_style	custom step temp press pe ke atoms
-
-delete_atoms	porosity whole $(1.0/atoms) 101
+thermo_style	custom step temp press pe ke v_nSi v_nC
 
 # ---------- Define Interatomic Potential --------------------- 
 pair_style 		tersoff
@@ -58,8 +56,19 @@ velocity			all create ${my_temp} 12345
 
 dump				mydump all atom 10 bulk_npt_Si_${nSi}_C_${nC}.lammpstrj
 
+log					log_npt.lammps
+
 timestep			0.0001
 
 fix					my_npt all npt temp ${my_temp} ${my_temp} $(100.0*dt) iso ${my_press} ${my_press} $(1000.0*dt)
 
 run					1000
+
+variable			index loop 10
+label				loop
+
+delete_atoms	porosity whole $(1.0/atoms) 101
+run					1000
+
+next					index
+jump				in.bulk.npt.sic loop

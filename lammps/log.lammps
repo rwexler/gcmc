@@ -10,188 +10,51 @@ atom_style	atomic
 dimension	3
 boundary	p p p
 
-# -11.25 means that the minimal energy is to pull out all the atoms
-# -10.5 and -10 will eventually pull out all atoms
-# -9.75 atom number doesn't change
-# average excess mu_si = -10.9
-# average excess mu_c = -11.69
-variable			si_mu_ex equal -9.9
-variable			c_mu_ex equal -10.69
-
-variable			massSi equal 28.086000
-variable			massC equal 12.011150
-variable			myTemp equal 500
-variable			myPress equal 1.0
-variable			disp equal 0.5
-variable			lbox equal 4.0
-
-variable			h equal 4.135667e-3				# in eV*ps
-variable			kT equal "8.617333e-5*v_myTemp"
-variable			broglieSi equal "sqrt( v_h^2 /(2*PI*v_massSi*v_kT) )"
-variable			broglieC equal "sqrt( v_h^2 /(2*PI*v_massC*v_kT) )"
-variable			si_mu_id equal "v_kT*ln( v_myPress*v_broglieSi^3/v_kT )"
-variable			c_mu_id equal "v_kT*ln( v_myPress*v_broglieC^3/v_kT )"
-
-variable			etol equal 1.0e-8
-variable			ftol equal 1.0e-8
-variable			maxiter equal 500
-variable 			maxeval equal 500
+variable			my_temp equal 500
+variable			my_press equal 1.0
+variable			lbox equal 2.0
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom 4.36 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
 Lattice spacing in x,y,z = 4.3600000 4.3600000 4.3600000
 
 region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
-region whole block 0 4 0 ${lbox} 0 ${lbox} units lattice
-region whole block 0 4 0 4 0 ${lbox} units lattice
-region whole block 0 4 0 4 0 4 units lattice
+region whole block 0 2 0 ${lbox} 0 ${lbox} units lattice
+region whole block 0 2 0 2 0 ${lbox} units lattice
+region whole block 0 2 0 2 0 2 units lattice
 create_box 2 whole
-Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.440000 17.440000 17.440000)
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (8.7200000 8.7200000 8.7200000)
   1 by 1 by 1 MPI processor grid
 
 mass 1  28.086000	# Silicon
 mass 2  12.011150	# Carbon
 
 create_atoms 2 region whole basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
-Created 512 atoms
+Created 64 atoms
   create_atoms CPU = 0.001 seconds
 
-delete_atoms	porosity whole $(5.0/atoms) 101
-delete_atoms	porosity whole 0.009765625 101
-Deleted 8 atoms, new total = 504
-
 group				groupSi type 1
-250 atoms in group groupSi
+32 atoms in group groupSi
 group				groupC type 2
-254 atoms in group groupC
+32 atoms in group groupC
 
 variable			nSi equal count(groupSi)
 variable			nC equal count(groupC)
 
+thermo			10
+thermo_style	custom step temp press pe ke v_nSi v_nC
+
 # ---------- Define Interatomic Potential ---------------------
 pair_style 		tersoff
-pair_coeff		 * * SiC.tersoff Si C
+pair_coeff 		* * SiC.tersoff Si C
 Reading tersoff potential file SiC.tersoff with DATE: 2011-04-26
-neighbor			5.0 bin
+neighbor			3.0 bin
 neigh_modify	delay 0 every 1 check yes
-velocity			all create ${myTemp} 12345
+velocity			all create ${my_temp} 12345
 velocity			all create 500 12345
 
-dump				mydump all xyz 1 bulk_gcmc.xyz
+dump				mydump all atom 10 bulk_npt_Si_${nSi}_C_${nC}.lammpstrj
+dump				mydump all atom 10 bulk_npt_Si_32_C_${nC}.lammpstrj
+dump				mydump all atom 10 bulk_npt_Si_32_C_32.lammpstrj
 
-timestep			0.0001
-
-print					"Ideal Gas Chemical Potentials"
-Ideal Gas Chemical Potentials
-print					${si_mu_id}
-print					-0.705013660813244
--0.705013660813244
-print					${c_mu_id}
-print					-0.650114624177574
--0.650114624177574
-
-compute			mdtemp all temp
-compute_modify	mdtemp dynamic/dof yes
-
-#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
-#fix_modify		mynvt temp mdtemp
-
-#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
-
-#fix					widomSi groupSi widom 1 0 256 1 12345 ${temp} full_energy
-#fix					widomC groupC widom 1 0 256 2 98765 ${temp} full_energy
-
-# M the average number of MC moves should be the on the order of the number of atoms in cell
-# so that on an average cycle each atom moves per MC cycle
-# full_energy is needed to include the total energy calculation since it is a many-body pair style
-fix					gcmcSi groupSi gcmc 1 550 0 1 12345 ${myTemp} $(v_si_mu_id + v_si_mu_ex) ${disp} full_energy min 255
-fix					gcmcSi groupSi gcmc 1 550 0 1 12345 500 $(v_si_mu_id + v_si_mu_ex) ${disp} full_energy min 255
-fix					gcmcSi groupSi gcmc 1 550 0 1 12345 500 -10.605013660813243703 ${disp} full_energy min 255
-fix					gcmcSi groupSi gcmc 1 550 0 1 12345 500 -10.605013660813243703 0.5 full_energy min 255
-fix					gcmcC groupC gcmc 1 550 0 2 98765 ${myTemp} $(v_c_mu_id + v_c_mu_ex) ${disp} full_energy min 255
-fix					gcmcC groupC gcmc 1 550 0 2 98765 500 $(v_c_mu_id + v_c_mu_ex) ${disp} full_energy min 255
-fix					gcmcC groupC gcmc 1 550 0 2 98765 500 -11.340114624177573432 ${disp} full_energy min 255
-fix					gcmcC groupC gcmc 1 550 0 2 98765 500 -11.340114624177573432 0.5 full_energy min 255
-
-# how about fix atom/swap?
-
-variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
-variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
-variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
-
-variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
-variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
-variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
-
-thermo			1
-thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] v_daccSi f_gcmcC[4] v_daccC
-# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
-thermo_modify	lost warn
-
-run					20
-0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
-0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
-Neighbor list info ...
-  update every 1 steps, delay 0 steps, check yes
-  max neighbors/atom: 2000, page size: 100000
-  master list distance cutoff = 8
-  ghost atom cutoff = 8
-  binsize = 4, bins = 5 5 5
-  1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair tersoff, perpetual
-      attributes: full, newton on
-      pair build: full/bin/atomonly
-      stencil: full/bin/3d
-      bin: standard
-Per MPI rank memory allocation (min/avg/max) = 4.245 | 4.245 | 4.245 Mbytes
-Step Temp PotEng v_nSi v_nC f_gcmcSi[4] v_daccSi f_gcmcC[4] v_daccC 
-       0          500   -3064.9283          250          254            0            0            0            0 
-       1          500   -3064.9283          250          254            0            0            0            0 
-       2          500   -3064.9283          250          254            0            0            0            0 
-       3          500   -3064.9283          250          254            0            0            0            0 
-       4          500   -3064.9283          250          254            0            0            0            0 
-       5          500   -3064.9283          250          254            0            0            0            0 
-       6          500   -3064.9283          250          254            0            0            0            0 
-       7          500   -3064.9283          250          254            0            0            0            0 
-       8          500   -3064.9283          250          254            0            0            0            0 
-       9          500   -3064.9283          250          254            0            0            0            0 
-      10          500   -3064.9283          250          254            0            0            0            0 
-      11          500   -3064.9283          250          254            0            0            0            0 
-      12          500   -3064.9283          250          254            0            0            0            0 
-      13          500   -3064.9283          250          254            0            0            0            0 
-      14          500   -3064.9283          250          254            0            0            0            0 
-      15          500   -3064.9283          250          254            0            0            0            0 
-      16          500   -3064.9283          250          254            0            0            0            0 
-      17          500   -3064.9283          250          254            0            0            0            0 
-      18          500   -3064.9283          250          254            0            0            0            0 
-      19          500   -3064.9283          250          254            0            0            0            0 
-      20          500   -3064.9283          250          254            0            0            0            0 
-Loop time of 330.883 on 1 procs for 20 steps with 504 atoms
-
-Performance: 0.001 ns/day, 45955.958 hours/ns, 0.060 timesteps/s
-99.9% CPU use with 1 MPI tasks x no OpenMP threads
-
-MPI task timing breakdown:
-Section |  min time  |  avg time  |  max time  |%varavg| %total
----------------------------------------------------------------
-Pair    | 0.073445   | 0.073445   | 0.073445   |   0.0 |  0.02
-Neigh   | 0.22329    | 0.22329    | 0.22329    |   0.0 |  0.07
-Comm    | 0.0016906  | 0.0016906  | 0.0016906  |   0.0 |  0.00
-Output  | 0.013978   | 0.013978   | 0.013978   |   0.0 |  0.00
-Modify  | 330.57     | 330.57     | 330.57     |   0.0 | 99.91
-Other   |            | 0.0002832  |            |       |  0.00
-
-Nlocal:        504.000 ave         504 max         504 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-Nghost:        3171.00 ave        3171 max        3171 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-Neighs:        0.00000 ave           0 max           0 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-FullNghs:      94260.0 ave       94260 max       94260 min
-Histogram: 1 0 0 0 0 0 0 0 0 0
-
-Total # of neighbors = 94260
-Ave neighs/atom = 187.02381
-Neighbor list builds = 21823
-Dangerous builds = 0
-Total wall time: 0:05:30
+log					log_npt.lammps

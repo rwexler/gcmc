@@ -116,3 +116,12 @@ because the energy of insertion is very high in a filled lattice! I needed to ch
 the fix widom and fix gcmc code (since fix widom is based on gcmc) and create a FixWidom::attempt_atom_deletion_full() for the full_energy calculation. I recomplied the 
 code and it seems to work! I get an average chemical potential estimator of -11.15 eV for Si and -11.7 eV for C which is roughly what I expected! 
 This is the excess chemical potential, while LAMMPS requires that mu = mu_ideal + mu_excess
+
+## 10/ 27/ 20
+I realized that really isn't detailed balance with insertions and deletions because insertions are equally placed proportional to 1/V while deletions are 1/N.
+I can't really do anything about that so I just set the probability of doing a deletion to be 0.001 i.e. 0.1% so for every deletion there are 999 insertions, that should help offset 
+the boon deletions had near chemical potential equilibrium.
+
+pbc set {17.44 17.44 17.44} -all
+This command combined with the gui allows one to set periodic images of the simulation.
+I got a pretty simulation of a surface with sterically correct added monolayer of inhomogeneous SiC. That was with mu_si_ex  = -5 and mu_c_ex = -11.69

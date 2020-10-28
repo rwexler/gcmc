@@ -1,0 +1,93 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix Widom Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p p
+
+# average excess mu_si = -10.9 for only deletions
+# average excess mu_c = -11.69 for only deletions
+variable			si_mu_ex equal -9.9
+variable			c_mu_ex equal -10.69
+
+variable			massSi equal 28.086000
+variable			massC equal 12.011150
+variable			myTemp equal 500
+variable			myPress equal 1.0
+variable			disp equal 0.5
+variable			lbox equal 4.0
+
+variable			h equal 4.135667e-3				# in eV*ps
+variable			kT equal "8.617333e-5*v_myTemp"
+variable			broglieSi equal "sqrt( v_h^2 /(2*PI*v_massSi*v_kT) )"
+variable			broglieC equal "sqrt( v_h^2 /(2*PI*v_massC*v_kT) )"
+variable			si_mu_id equal "v_kT*ln( v_myPress*v_broglieSi^3/v_kT )"
+variable			c_mu_id equal "v_kT*ln( v_myPress*v_broglieC^3/v_kT )"
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.5 0.0 0.5 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25  &
+basis 0.75 0.25 0.75  &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.75 0.25 & 
+orient x 1 0 0	&
+orient y 0 1 0 &
+orient z 0 0 1
+
+region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
+create_box 2 whole
+
+mass 1  28.086000	# Silicon
+mass 2  12.011150	# Carbon
+
+create_atoms 2 region whole basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+
+delete_atoms	porosity whole 0.01 101
+
+group				groupSi type 1 
+group				groupC type 2 
+
+variable			nSi equal count(groupSi)
+variable			nC equal count(groupC)
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style 		tersoff
+pair_coeff		 * * SiC.tersoff Si C
+neighbor			5.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${myTemp} 12345
+
+dump				mydump all xyz 1 bulk_widom.xyz
+
+timestep			0.0001
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+#fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt) 
+#fix_modify		mynvt temp mdtemp
+
+fix					widomSi groupSi widom 1 2048 0 1 12345 ${myTemp} full_energy
+fix					widomC groupC widom 1 2048 0 2 98765 ${myTemp} full_energy
+
+thermo			1
+thermo_style	custom step temp pe v_nSi v_nC f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+
+run					1
+
+delete_atoms	porosity whole 0.01 101
+run					1
+
+delete_atoms	porosity whole 0.01 101
+run					1
