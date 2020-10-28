@@ -24,6 +24,16 @@ l = lammps()
 l.command("info config")
 
 It all worked! Next I will try to run the mc.py code and in.mc to test it all together in a real script. Unfortunately putting it on mode-shlibs
-means that it does not create an executable, so I ran it again without that mode.
-# to disable track pad scrolling in bash
+means that it does not create an executable, so I ran it again without that mode. To disable track pad scrolling in bash
 xinput set-prop 6 "Device Enabled" 0
+
+## 10/ 19/ 20
+So I tried the mc.py python code with the preset in.mc, which perturbs a hexagonal lattice. This works well, so I took my old in.sic script
+and got rid of the extra stuff to make it work as the input for mc.py. I need to have MANYBODY installed to use the tersoff potential.
+Also this time I added
+make yes-manybody
+make yes-python
+It seems that lammps and python work even if the python package isn't installed, so I'll see if installing it affects anything even.
+Ok the installation didn't work with 'make yes-python'. Reverted it to no, and it works
+I have decided that having 'mc.uvt_new_structure()' and 'mc.uvt_new_structure()' is confusing and frustrating to switch all calls of the 
+method from one to another. I think it is simpler to have a child class MC_NP which overrides the method, so the calls are the same.
