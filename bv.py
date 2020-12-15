@@ -5,7 +5,7 @@ from io import el_info
 from io import xsf_info
 import sys
 
-class bv(object) :
+class BondValence(object) :
 	"""class for representing bv objects and operations
 
 	parameters :
@@ -37,12 +37,6 @@ class bv(object) :
                         self.lat_vec_sc = np.vstack((self.lat_vec_sc, i * xsf.lat_vec[0] + j * xsf.lat_vec[1] + k * xsf.lat_vec[2]))
 
 	def copy(self) :
-		#cp_self = bv()
-		#cp_self.at_nn      = np.array(self.at_nn)
-		#cp_self.r_min      = np.array(self.r_min)
-		#cp_self.r_max      = np.array(self.r_max)
-		#cp_self.lat_vec_sc = np.array(self.lat_vec_sc)
-		#return cp_self
         return copy.deepcopy(self)
 			
 	# get number of neighbors for each atom

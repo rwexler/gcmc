@@ -1,0 +1,7 @@
+
+variable			etol equal 1.0e-8
+variable			ftol equal 1.0e-8
+variable			maxiter equal 500
+variable 			maxeval equal 500
+
+#minimize		${etol} ${ftol} ${maxiter} ${maxeval}

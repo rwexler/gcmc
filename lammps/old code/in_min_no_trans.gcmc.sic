@@ -1,0 +1,99 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p f
+
+# standard gibbs free energy of formation of SiO2 is -856 kJ/mol
+# standard gibbs free energy of formation of SiC is -69.139 kJ/mol this is -0.717 eV/particle
+# -5 and -5 is the best so far, end is 394
+# -4.5 and -4.5 means that the numbers of both Si and C increase, slowly but still to 465 from 424.
+# 424 to 423! with -4.75 and -4.75
+variable			si_mu equal -4.75
+variable			c_mu equal -4.75
+variable			temp equal 500
+variable			disp equal 0.5
+variable			seed1 equal 101
+variable			seed2 equal 107
+
+variable			etol equal 1.0e-5
+variable			ftol equal 1.0e-5
+variable			maxiter equal 10
+variable 			maxeval equal 10
+
+variable			iter loop 100
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom 4.36 &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.5 0.0 0.5 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25  &
+basis 0.75 0.25 0.75  &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.75 0.25 & 
+orient x 0 0 1 &
+orient y 1 2 0 &
+orient z -2 1 0
+
+#orient x 1 0 0	&
+#orient y 0 1 0 &
+#orient z 0 0 1
+
+region whole block 0 20 0 20 0 20 units box
+create_box 2 whole
+
+region atomBox block EDGE EDGE EDGE EDGE 0 10 units box
+region edgeBlock block EDGE EDGE EDGE EDGE 0 2.5 units box
+region gcmcBlock block EDGE EDGE EDGE EDGE 2.5 EDGE units box
+
+mass 1  12.011150	# Carbon
+mass 2  28.086000	# Silicon
+
+create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+
+group				edge region edgeBlock
+group				Si type 1 
+group				C type 2 
+
+variable			nSi equal count(Si)
+variable			nC equal count(C)
+
+# ---------- Define Interatomic Potential --------------------- 
+pair_style tersoff
+pair_coeff * * SiC.tersoff C Si
+neighbor	3.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${temp} 12345
+velocity			edge set 0.0 0.0 0.0
+
+thermo			10
+thermo_style	custom step temp press pe ke density atoms v_nSi v_nC
+thermo_modify	lost warn
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+dump				mydump all xyz 1 dump_min_gcmc_210.xyz
+
+timestep			0.0001
+
+fix					freeze edge setforce 0.0 0.0 0.0
+
+# M the average number of MC moves should be the on the order of the number of atoms in cell
+# so that on an average cycle each atom moves per MC cycle
+# full_energy is needed to include the total energy calculation since it is a many-body pair style
+fix					1 Si gcmc 1 50 0 1 ${seed1} ${temp} ${si_mu} ${disp} full_energy region gcmcBlock
+fix					2 C gcmc 1 50 0 2 ${seed2} ${temp} ${c_mu} ${disp} full_energy region gcmcBlock
+
+run					1000
+
