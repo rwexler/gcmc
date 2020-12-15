@@ -145,3 +145,23 @@ That worked fine and I got answer in the vicinity I expected. -7.9 for Si and -1
 I tried Widom Insertion Method with 2048 insert attempts and I slowly made the system more porous. Interestingly the chemical potential for Si is 20 (very high since it is hard for SIlicon
 to go in the interstitial spaces) but for C it is ~ 0 eV (Carbon interstices are a common defect in SiC) and as I decrease the number of atoms, 
 the chemical potentials stabilize to be -8 to -6 eV for Si and -10 to -7 eV for C. I should plot that.
+
+## 12/ 03/ 20
+Back into the project. I cleaned up some of my code, simplifying my lammps scripts into just two: a GCMC one and a Widom one. Then I read the structural data from a lammps file.
+I realized that I was calculating the ideal chemical potential from the TOTAL pressure i.e. 1.0 atmosphere. First of all, this is just too large. Second it should be the partial pressure of 
+each of the gases. I changed myPress to be two variables pressSi and pressC, which hold the partial pressure of each species, currently set to 0.1 atm.
+
+After simplifying my lammps scripts, I ran in.widom.sic with a surface 100 structure and then a bulk 100 structure. I saw a difference immediately! The excess chemical potential
+for silicon and carbon are around -5.5 eV for the surface. For the bulk mu_Si_ex is around +20 eV and mu_C_ex is aroun -0.5 eV. This is agrees with what I recorded in October.
+
+Also Nat and I were talking about the idea of burn in times. If I have a system start in a ground state, how likely is it that it will explore very different systems? Not likely at all, because
+it will have to climb out of the funnel, especially relevant since all my systems start in a perfect lattice, which is the local ground state.
+
+I equilibrate the 100 surface for 1000 steps at 500 K and it looks like it kind of increases the chemical potential. For Silicon it can get to -3.26 eV and Carbon's gets down to -4.4 eV.
+It's variation is also higher though because the Carbon one can get into the -6.0 eV range as well.
+Also all of today's experiments were with 2048 insertions, no deletions and nvt equilibration.
+
+I ran some more experiments with higher Si or C chemical potential, still adding up to what I think is the excess surface bulk energy of SiC, -10.5 eV. The surface is surprisingly stable
+but for long times I see the number of insertions and deletions of both increase, without destabilizing the surface. This is of course without nvt. 
+When I did fix atom swap with higher propensity for carbon, the entire region was replaced with carbon! With similar high Silicon the same doesn't happen. Instead the carbon surfaces,
+there was more carbon to start with, are removed to have a Silicon surface. Still though sometimes the Carbon monolayer would try to reform.

@@ -7,21 +7,47 @@
 units		metal
 atom_style	atomic
 dimension	3
-boundary	p p fm
+boundary	p p p
 
-variable			si_mu equal -5
-variable			c_mu equal -4.5
-variable			temp equal 500
+# -11.25 means that the minimal energy is to pull out all the atoms
+# -10.5 and -10 will eventually pull out all atoms
+# -9.75 atom number doesn't change
+# average excess mu_si = -10.9
+# average excess mu_c = -11.69
+# average excess SiC potential = -22.6
+# could the SiC surface potential be half i.e. -11.6?
+# from a quick 100 surface Widom experiment, mu_Si_ex_surf = -5.0 eV and mu_C_ex_surf = -5.5 eV
+# it seems I was right that the surface chemical potential would be roughly half the bulk one
+# mu_SiC_ex_surf ~ -10.5
+variable			si_mu_ex equal -4.5
+variable			c_mu_ex equal -6.0
+
+variable			massSi equal 28.086000
+variable			massC equal 12.011150
+variable			lat_const equal 4.3596
+
+variable			myTemp equal 500
+variable			pressSi equal 0.1
+variable 			pressC equal 0.1
 variable			disp equal 0.5
-variable			lbox equal 5.0
+variable			lbox equal 4.0
 
-variable			etol equal 1.0e-8
-variable			ftol equal 1.0e-8
-variable			maxiter equal 500
-variable 			maxeval equal 500
+variable			h equal 4.135667e-3				# in eV*ps
+variable			kT equal "8.617333e-5*v_myTemp"
+variable			broglieSi equal "sqrt( v_h^2 /(2*PI*v_massSi*v_kT) )"
+variable			broglieC equal "sqrt( v_h^2 /(2*PI*v_massC*v_kT) )"
+variable			si_mu_id equal "v_kT*ln( v_pressSi*v_broglieSi^3/v_kT )"
+variable			c_mu_id equal "v_kT*ln( v_pressC*v_broglieC^3/v_kT )"
+
+variable			si_mu equal $(v_si_mu_id + v_si_mu_ex)
+variable			c_mu equal $(v_c_mu_id + v_c_mu_ex)
+
+# manually overwrite the chemical potentials
+#variable			si_mu equal -7.97
+#variable			c_mu equal -11.14
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
-lattice custom 4.36 &
+lattice custom ${lat_const} &
 a1 1.0 0.0 0.0 &
 a2 0.0 1.0 0.0 &
 a3 0.0 0.0 1.0 &
@@ -40,53 +66,62 @@ orient z 0 0 1
 region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
 create_box 2 whole
 
-region atomBox block EDGE EDGE EDGE EDGE 0 $(v_lbox/2.0) units lattice
-region edgeBlock block EDGE EDGE EDGE EDGE 0 $(v_lbox/5.0)  units lattice
-region gcmcBlock block EDGE EDGE EDGE EDGE $(v_lbox/5.0)  EDGE units lattice
+#region atomBox block EDGE EDGE EDGE EDGE 0 $(v_lbox/2.0) units lattice
+#region edgeBlock block EDGE EDGE EDGE EDGE 0 $(v_lbox/5.0)  units lattice
+#region gcmcBlock block EDGE EDGE EDGE EDGE $(v_lbox/5.0)  EDGE units lattice
 
-mass 1  12.011150	# Carbon
-mass 2  28.086000	# Silicon
+mass 1  ${massSi}
+mass 2  ${massC}
 
-create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+#create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+#delete_atoms	porosity whole $(5.0/atoms) 101
 
-group			edge region edgeBlock
-group			active region gcmcBlock
-group				Si type 1 
-group				C type 2 
+# read in the atom positions from file; determines if BULK OR SURFACE; 210 OR 100
+read_dump		dumps/100.surf.init 0 x y z add yes
 
-variable			nSi equal count(Si)
-variable			nC equal count(C)
+group				groupSi type 1 
+group				groupC type 2 
+
+variable			nSi equal count(groupSi)
+variable			nC equal count(groupC)
 
 # ---------- Define Interatomic Potential --------------------- 
-pair_style tersoff
-pair_coeff * * SiC.tersoff C Si
-neighbor	3.0 bin
+pair_style 		tersoff
+pair_coeff		 * * SiC.tersoff Si C
+neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
-velocity			all create ${temp} 12345
-velocity			edge set 0.0 0.0 0.0
+velocity			all create ${myTemp} 12345
 
-compute			mdtemp active temp
-compute_modify	mdtemp dynamic/dof yes
+dump				mydump all xyz 1 dumps/gcmc_muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf_nvt.xyz
+log					logs/log_muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf_nvt.lammps
 
-thermo			10
-thermo_style	custom step c_mdtemp press pe ke density atoms v_nSi v_nC
-thermo_modify	lost warn
-
-dump				mydump all xyz 1 dump_gcmc.xyz
+print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
 
 timestep			0.0001
 
-fix					mynvt active nvt temp ${temp} ${temp} 100
-fix					freeze edge setforce 0.0 0.0 0.0
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
 
-#minimize			${etol} ${ftol} ${maxiter} ${maxeval}
+fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt) 
+fix_modify		mynvt temp mdtemp
 
-#run					500
+fix					gcmcSi groupSi gcmc 10 1024 0 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 10 1024 0 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
 
-# M the average number of MC moves should be the on the order of the number of atoms in cell
-# so that on an average cycle each atom moves per MC cycle
-# full_energy is needed to include the total energy calculation since it is a many-body pair style
-fix					1 Si gcmc 1 100 0 1 101 ${temp} ${c_mu} ${disp} full_energy region gcmcBlock
-fix					2 C gcmc 1 100 0 2 107 ${temp} ${c_mu} ${disp} full_energy region gcmcBlock
+fix					swapFix all atom/swap 10 256 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2]
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+# thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
 
 run					1000
