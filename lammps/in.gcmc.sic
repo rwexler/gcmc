@@ -9,18 +9,9 @@ atom_style	atomic
 dimension	3
 boundary	p p p
 
-# -11.25 means that the minimal energy is to pull out all the atoms
-# -10.5 and -10 will eventually pull out all atoms
-# -9.75 atom number doesn't change
-# average excess mu_si = -10.9
-# average excess mu_c = -11.69
-# average excess SiC potential = -22.6
-# could the SiC surface potential be half i.e. -11.6?
-# from a quick 100 surface Widom experiment, mu_Si_ex_surf = -5.0 eV and mu_C_ex_surf = -5.5 eV
-# it seems I was right that the surface chemical potential would be roughly half the bulk one
-# mu_SiC_ex_surf ~ -10.5
-variable			si_mu_ex equal -4.5
-variable			c_mu_ex equal -6.0
+# these are index variables in case they are to be iterated over or set from the commandline
+variable			si_mu_ex index 5.0
+variable			c_mu_ex index 5.5
 
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
@@ -42,10 +33,6 @@ variable			c_mu_id equal "v_kT*ln( v_pressC*v_broglieC^3/v_kT )"
 variable			si_mu equal $(v_si_mu_id + v_si_mu_ex)
 variable			c_mu equal $(v_c_mu_id + v_c_mu_ex)
 
-# manually overwrite the chemical potentials
-#variable			si_mu equal -7.97
-#variable			c_mu equal -11.14
-
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom ${lat_const} &
 a1 1.0 0.0 0.0 &
@@ -66,18 +53,11 @@ orient z 0 0 1
 region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
 create_box 2 whole
 
-#region atomBox block EDGE EDGE EDGE EDGE 0 $(v_lbox/2.0) units lattice
-#region edgeBlock block EDGE EDGE EDGE EDGE 0 $(v_lbox/5.0)  units lattice
-#region gcmcBlock block EDGE EDGE EDGE EDGE $(v_lbox/5.0)  EDGE units lattice
-
 mass 1  ${massSi}
 mass 2  ${massC}
 
-#create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
-#delete_atoms	porosity whole $(5.0/atoms) 101
-
 # read in the atom positions from file; determines if BULK OR SURFACE; 210 OR 100
-read_dump		dumps/100.surf.init 0 x y z add yes
+read_dump		dumps/100.bulk.init 0 x y z add yes
 
 group				groupSi type 1 
 group				groupC type 2 
@@ -92,8 +72,8 @@ neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
 velocity			all create ${myTemp} 12345
 
-dump				mydump all xyz 1 dumps/gcmc_muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf_nvt.xyz
-log					logs/log_muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf_nvt.lammps
+dump				mydump all xyz 1 dumps/BulkExp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100bulk.xyz
+log					logs/BulkExp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100bulk.lammps
 
 print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
 
@@ -105,10 +85,10 @@ compute_modify	mdtemp dynamic/dof yes
 fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt) 
 fix_modify		mynvt temp mdtemp
 
-fix					gcmcSi groupSi gcmc 10 1024 0 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
-fix					gcmcC groupC gcmc 10 1024 0 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
 
-fix					swapFix all atom/swap 10 256 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
 
 variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
 variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)

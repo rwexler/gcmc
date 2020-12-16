@@ -1,6 +1,22 @@
 LAMMPS (30 Jun 2020)
 #######################################
 #	Cubic Silicon Carbide (3C-SiC)
+# GCMC Different Chemical Potential Tests
+#	Using Tersoff Potential
+#######################################
+
+# i think the total excess chemical potential at equilibrium for a surface is -10.5
+variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25
+variable c_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25
+
+label		a
+label		b
+
+print			"muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
+muSi -3.25 and muC -3.25
+include		in.gcmc.sic
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
 # Fix GCMC Test
 #	Using Tersoff Potential
 #######################################
@@ -10,18 +26,9 @@ atom_style	atomic
 dimension	3
 boundary	p p p
 
-# -11.25 means that the minimal energy is to pull out all the atoms
-# -10.5 and -10 will eventually pull out all atoms
-# -9.75 atom number doesn't change
-# average excess mu_si = -10.9
-# average excess mu_c = -11.69
-# average excess SiC potential = -22.6
-# could the SiC surface potential be half i.e. -11.6?
-# from a quick 100 surface Widom experiment, mu_Si_ex_surf = -5.0 eV and mu_C_ex_surf = -5.5 eV
-# it seems I was right that the surface chemical potential would be roughly half the bulk one
-# mu_SiC_ex_surf ~ -10.5
-variable			si_mu_ex equal -4.5
-variable			c_mu_ex equal -6.0
+# these are index variables in case they are to be iterated over or set from the commandline
+variable			si_mu_ex index 5.0
+variable			c_mu_ex index 5.5
 
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
@@ -41,13 +48,9 @@ variable			si_mu_id equal "v_kT*ln( v_pressSi*v_broglieSi^3/v_kT )"
 variable			c_mu_id equal "v_kT*ln( v_pressC*v_broglieC^3/v_kT )"
 
 variable			si_mu equal $(v_si_mu_id + v_si_mu_ex)
-variable			si_mu equal -5.3042243733490730406
+variable			si_mu equal -4.0542243733490730406
 variable			c_mu equal $(v_c_mu_id + v_c_mu_ex)
-variable			c_mu equal -6.7493253367134027343
-
-# manually overwrite the chemical potentials
-#variable			si_mu equal -7.97
-#variable			c_mu equal -11.14
+variable			c_mu equal -3.9993253367134027343
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom ${lat_const} a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
@@ -62,17 +65,10 @@ create_box 2 whole
 Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.438400 17.438400 17.438400)
   1 by 1 by 1 MPI processor grid
 
-#region atomBox block EDGE EDGE EDGE EDGE 0 $(v_lbox/2.0) units lattice
-#region edgeBlock block EDGE EDGE EDGE EDGE 0 $(v_lbox/5.0)  units lattice
-#region gcmcBlock block EDGE EDGE EDGE EDGE $(v_lbox/5.0)  EDGE units lattice
-
 mass 1  ${massSi}
 mass 1  28.086
 mass 2  ${massC}
 mass 2  12.01115
-
-#create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
-#delete_atoms	porosity whole $(5.0/atoms) 101
 
 # read in the atom positions from file; determines if BULK OR SURFACE; 210 OR 100
 read_dump		dumps/100.surf.init 0 x y z add yes
@@ -102,9 +98,9 @@ neigh_modify	delay 0 every 1 check yes
 velocity			all create ${myTemp} 12345
 velocity			all create 500 12345
 
-dump				mydump all xyz 1 dumps/gcmc_muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf_nvt.xyz
-dump				mydump all xyz 1 dumps/gcmc_muSi-5.30_muC$(v_c_mu:%2.2f)_100surf_nvt.xyz
-dump				mydump all xyz 1 dumps/gcmc_muSi-5.30_muC-6.75_100surf_nvt.xyz
-log					logs/log_muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf_nvt.lammps
-log					logs/log_muSi-5.30_muC$(v_c_mu:%2.2f)_100surf_nvt.lammps
-log					logs/log_muSi-5.30_muC-6.75_100surf_nvt.lammps
+dump				mydump all xyz 1 dumps/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.xyz
+dump				mydump all xyz 1 dumps/tmp/muSi-4.05_muC$(v_c_mu:%2.2f)_100surf.xyz
+dump				mydump all xyz 1 dumps/tmp/muSi-4.05_muC-4.00_100surf.xyz
+log					logs/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.lammps
+log					logs/tmp/muSi-4.05_muC$(v_c_mu:%2.2f)_100surf.lammps
+log					logs/tmp/muSi-4.05_muC-4.00_100surf.lammps

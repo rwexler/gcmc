@@ -1,0 +1,25 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# GCMC Different Chemical Potential Tests
+#	Using Tersoff Potential
+#######################################
+
+# i think the total excess chemical potential at equilibrium for a surface is -10.5
+# i think tht etotal excess chemical potential at eq for bulk is -20.5
+variable si_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+variable c_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+
+label		a
+label		b
+
+print			"muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
+include		in.gcmc.sic
+clear
+next			si_mu_ex
+jump		SELF b
+
+# if the jump was skipped that means si_mu_ex indices were exhausted, 
+# so redefine it and increment c_mu_ex
+variable si_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+next			c_mu_ex
+jump		SELF a

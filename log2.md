@@ -181,3 +181,31 @@ but for long times I see the number of insertions and deletions of both increase
 When I did fix atom swap with higher propensity for carbon, the entire region was replaced with carbon! With similar high Silicon the same doesn't happen. Instead the carbon surfaces,
 there was more carbon to start with, are removed to have a Silicon surface. Still though sometimes the Carbon monolayer would try to reform.
 >>>>>>> 34a7daa4bfc6aaff2a6dcafed5797270d44eddea
+## 12/ 15/ 20
+I meet with Andrew Rappe and Rob today. They think I should be more systemic and cover the chemical phase space more careful and with results to show that. 
+I will start with an exploration of the chemical phase space at 1.0 eV intervals near where I think the relevant chemical potentials are.
+I had a cool idea where I can use subplots to plot the images of the structures at the end of the run, hoping I get a stable structure. The axes will then display the given chemical potential.
+Nat thinks I should create a chart of the widom insertion method's excess chemical potential (which only insertions or only deletions) against the 'fill ratio' of my simulation box. 
+Essentially to explore what the difference between a surface and a bulk material are. I think I should get different excess chemical potentials, but what is the limiting behavior of the chemical potential
+as the surface grows into essentially a bulk material (especialy relevant since I use periodic bounds)
+Old comments that I wanted out of my script:
+# -11.25 means that the minimal energy is to pull out all the atoms
+# -10.5 and -10 will eventually pull out all atoms
+# -9.75 atom number doesn't change
+# average excess mu_si = -10.9
+# average excess mu_c = -11.69
+# average excess SiC potential = -22.6
+# could the SiC surface potential be half i.e. -11.6?
+# from a quick 100 surface Widom experiment, mu_Si_ex_surf = -5.0 eV and mu_C_ex_surf = -5.5 eV
+# it seems I was right that the surface chemical potential would be roughly half the bulk one
+# mu_SiC_ex_surf ~ -10.5
+I don't do these commands since I now read in the structure separately
+#region atomBox block EDGE EDGE EDGE EDGE 0 $(v_lbox/2.0) units lattice
+#region edgeBlock block EDGE EDGE EDGE EDGE 0 $(v_lbox/5.0)  units lattice
+#region gcmcBlock block EDGE EDGE EDGE EDGE $(v_lbox/5.0)  EDGE units lattice
+#create_atoms 2 region atomBox basis 1 2 basis 2 2 basis 3 2 basis 4 2 basis 5 1 basis 6 1  basis 7 1  basis 8 1
+#delete_atoms	porosity whole $(5.0/atoms) 101
+I use the commandline arguement to overwrite the chemical potentials
+# manually overwrite the chemical potentials
+#variable			si_mu equal -4.0
+#variable			c_mu equal -4.0

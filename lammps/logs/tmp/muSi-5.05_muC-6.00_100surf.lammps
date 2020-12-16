@@ -1,0 +1,285 @@
+
+print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+muSi -5.05 and muC -6.00
+
+timestep			0.0001
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 500 $(100.0*dt)
+fix					mynvt all nvt temp 500 500 0.010000000000000000208
+fix_modify		mynvt temp mdtemp
+
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 -5.05422437334907 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 -5.05422437334907 0.5 full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 -5.9993253367134 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 -5.9993253367134 0.5 full_energy
+
+fix					swapFix all atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu -5.05422437334907 ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu -5.05422437334907 -5.9993253367134
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2]
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+# thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					1000
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.217 | 4.217 | 4.217 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2] 
+       0          500   -1613.0933          128          160            0            0            0            0            0 
+      10    504.59217    -1613.669          128          160            0            0            0            0            0 
+      20    519.03698   -1614.8622          128          160            0            0            0            0            0 
+      30    542.87533    -1628.034          130          160            2            0            0            0            0 
+      40    567.88708   -1629.5091          130          160            2            0            0            0            0 
+      50    597.17285   -1630.8263          130          160            2            0            0            0            0 
+      60    627.49948    -1632.371          130          160            2            0            0            0            0 
+      70    656.03691   -1633.8863          130          160            2            0            0            0            0 
+      80    678.68195   -1635.2404          130          160            2            0            0            0            0 
+      90    693.91043   -1636.4103          130          160            2            0            0            0            0 
+     100    700.03619   -1637.2328          130          160            2            0            0            0            0 
+     110    697.59167   -1637.7912          130          160            2            0            0            0            0 
+     120    683.44967   -1637.8355          130          160            2            0            0            0            0 
+     130    653.76102   -1637.2422          130          160            2            0            0            0            0 
+     140    610.96223   -1636.2338          130          160            2            0            0            0            0 
+     150    557.44414   -1634.6275          130          160            2            0            0            0            0 
+     160    505.19489   -1633.3073          130          160            2            0            0            0            0 
+     170    471.31538   -1632.4406          130          160            2            0            0            0            0 
+     180    457.12777   -1632.2041          130          160            2            0            0            0            0 
+     190    463.94823   -1632.9693          130          160            2            0            0            0            0 
+     200    489.33303    -1634.041          130          160            2            0            0            0            0 
+     210    527.32169    -1635.426          130          160            2            0            0            0            0 
+     220    559.33745   -1636.6071          130          160            2            0            0            0            0 
+     230    584.61255   -1637.7664          130          160            2            0            0            0            0 
+     240    595.35567   -1638.5716          130          160            2            0            0            0            0 
+     250    590.33219   -1638.7347          130          160            2            0            0            0            0 
+     260    576.82428   -1643.5884          131          160            3            0            0            0            0 
+     270    552.95275    -1643.134          131          160            3            0            0            0            0 
+     280    525.89379   -1642.8192          131          160            3            0            0            0            0 
+     290    501.96785   -1642.4421          131          160            3            0            0            0            0 
+     300    488.16249    -1647.264          132          160            4            0            0            0            0 
+     310    483.26027   -1647.3041          132          160            4            0            0            0            0 
+     320    485.98001   -1647.6815          132          160            4            0            0            0            0 
+     330    492.29579   -1648.0249          132          160            4            0            0            0            0 
+     340    501.44529   -1648.7978          132          160            4            0            0            0            0 
+     350    507.83655   -1649.3281          132          160            4            0            0            0            0 
+     360    514.26661   -1649.8388          132          160            4            0            0            0            0 
+     370    520.62123   -1650.1893          132          160            4            0            0            0            0 
+     380    527.72512   -1650.6355          132          160            4            0            0            0            0 
+     390    534.39062   -1651.0713          132          160            4            0            0            0            0 
+     400    537.93816   -1651.4329          132          160            4            0            0            0            0 
+     410     540.8574   -1651.7781          132          160            4            0            0            0            0 
+     420    541.89171   -1652.0689          132          160            4            0            0            0            0 
+     430    538.87527   -1657.9947          133          160            5            0            0            0            0 
+     440    530.63598   -1657.9692          133          160            5            0            0            0            0 
+     450    520.06346   -1657.9234          133          160            5            0            0            0            0 
+     460    509.53971   -1657.7897          133          160            5            0            0            0            0 
+     470    500.59685   -1657.6778          133          160            5            0            0            0            0 
+     480    491.55409   -1657.5214          133          160            5            0            0            0            0 
+     490     481.2475   -1657.4427          133          160            5            0            0            0            0 
+     500    470.86812   -1657.2164          133          160            5            0            0            0            0 
+     510    464.28649   -1656.8701          133          160            5            0            0            0            0 
+     520    465.40396   -1657.0667          133          160            5            0            0            0            0 
+     530    477.69764   -1657.6439          133          160            5            0            0            0            0 
+     540    497.88674   -1658.3877          133          160            5            0            0            0            0 
+     550    520.03462   -1659.2929          133          160            5            0            0            0            0 
+     560    540.02411   -1660.1195          133          160            5            0            0            0            0 
+     570    554.07062   -1660.6836          133          160            5            0            0            0            0 
+     580    560.98311   -1660.9989          133          160            5            0            0            0            0 
+     590    559.96738   -1661.1747          133          160            5            0            0            0            0 
+     600    550.64245   -1661.0163          133          160            5            0            0            0            0 
+     610    533.08682   -1660.5878          133          160            5            0            0            0            0 
+     620    511.03733   -1660.0966          133          160            5            0            0            0            0 
+     630    487.38733   -1660.2828          133          160            5            0            0            0            0 
+     640    463.20513   -1659.5696          133          160            5            0            0            0            0 
+     650    441.39501   -1659.1138          133          160            5            0            0            0            0 
+     660    425.55379   -1658.6126          133          160            5            0            0            0            0 
+     670    420.24903   -1658.4481          133          160            5            0            0            0            0 
+     680    425.72315   -1658.7762          133          160            5            0            0            0            0 
+     690     440.6875   -1659.3436          133          160            5            0            0            0            0 
+     700    460.74161   -1659.9341          133          160            5            0            0            0            0 
+     710    481.97559   -1660.5831          133          160            5            0            0            0            0 
+     720    500.71108   -1661.0544          133          160            5            0            0            0            0 
+     730    516.29968   -1661.3768          133          160            5            0            0            0            0 
+     740    527.45971   -1661.4895          133          160            5            0            0            0            0 
+     750    533.27431   -1661.5314          133          160            5            0            0            0            0 
+     760    533.44791   -1661.4653          133          160            5            0            0            0            0 
+     770    527.84074   -1661.1298          133          160            5            0            0            0            0 
+     780    518.56364   -1660.8418          133          160            5            0            0            0            0 
+     790    508.05657   -1660.3545          133          160            5            0            0            0            0 
+     800    498.04997   -1659.8881          133          160            5            0            0            0            0 
+     810     491.2495   -1659.5148          133          160            5            0            0            0            0 
+     820    488.65128   -1659.5087          133          160            5            0            0            0            0 
+     830    491.41766   -1659.3785          133          160            5            0            0            0            0 
+     840     498.1153   -1659.4878          133          160            5            0            0            0            0 
+     850    509.87891   -1659.8655          133          160            5            0            0            0            0 
+     860    520.49734   -1660.1088          133          160            5            0            0            0            0 
+     870    528.40537   -1660.2767          133          160            5            0            0            0            0 
+     880    533.80509   -1660.1073          133          160            5            0            0            0            0 
+     890    537.15437   -1660.1222          133          160            5            0            0            0            0 
+     900    540.02676   -1660.1021          133          160            5            0            0            0            0 
+     910    541.67901   -1660.1294          133          160            5            0            0            0            0 
+     920    541.01048   -1659.8957          133          160            5            0            0            0            0 
+     930    536.68114   -1659.6696          133          160            5            0            0            0            0 
+     940    528.84019   -1659.3876          133          160            5            0            0            0            0 
+     950    520.03874   -1659.2146          133          160            5            0            0            0            0 
+     960    511.19962   -1659.0983          133          160            5            0            0            0            0 
+     970    502.77525   -1658.8234          133          160            5            0            0            0            0 
+     980    495.12865   -1658.7393          133          160            5            0            0            0            0 
+     990    488.17821   -1658.7451          133          160            5            0            0            0            0 
+    1000    481.56823   -1658.3963          133          160            5            0            0            0            0 
+Loop time of 383.33 on 1 procs for 1000 steps with 293 atoms
+
+Performance: 0.023 ns/day, 1064.806 hours/ns, 2.609 timesteps/s
+99.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 2.1145     | 2.1145     | 2.1145     |   0.0 |  0.55
+Neigh   | 3.4089     | 3.4089     | 3.4089     |   0.0 |  0.89
+Comm    | 0.052031   | 0.052031   | 0.052031   |   0.0 |  0.01
+Output  | 0.41004    | 0.41004    | 0.41004    |   0.0 |  0.11
+Modify  | 377.34     | 377.34     | 377.34     |   0.0 | 98.44
+Other   |            | 0.009355   |            |       |  0.00
+
+Nlocal:        293.000 ave         293 max         293 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        1784.00 ave        1784 max        1784 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      40602.0 ave       40602 max       40602 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 40602
+Ave neighs/atom = 138.57338
+Neighbor list builds = 64000
+Dangerous builds = 0
+clear
+next			si_mu_ex
+jump		SELF b
+
+print			"muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
+muSi -5.25 and muC -5.25
+include		in.gcmc.sic
+#######################################
+#	Cubic Silicon Carbide (3C-SiC)
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p p
+
+# these are index variables in case they are to be iterated over or set from the commandline
+variable			si_mu_ex index 5.0
+variable			c_mu_ex index 5.5
+
+variable			massSi equal 28.086000
+variable			massC equal 12.011150
+variable			lat_const equal 4.3596
+
+variable			myTemp equal 500
+variable			pressSi equal 0.1
+variable 			pressC equal 0.1
+variable			disp equal 0.5
+variable			lbox equal 4.0
+
+variable			h equal 4.135667e-3				# in eV*ps
+variable			kT equal "8.617333e-5*v_myTemp"
+variable			broglieSi equal "sqrt( v_h^2 /(2*PI*v_massSi*v_kT) )"
+variable			broglieC equal "sqrt( v_h^2 /(2*PI*v_massC*v_kT) )"
+variable			si_mu_id equal "v_kT*ln( v_pressSi*v_broglieSi^3/v_kT )"
+variable			c_mu_id equal "v_kT*ln( v_pressC*v_broglieC^3/v_kT )"
+
+variable			si_mu equal $(v_si_mu_id + v_si_mu_ex)
+variable			si_mu equal -6.0542243733490730406
+variable			c_mu equal $(v_c_mu_id + v_c_mu_ex)
+variable			c_mu equal -5.9993253367134027343
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom ${lat_const} a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
+lattice custom 4.3596 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
+Lattice spacing in x,y,z = 4.3596000 4.3596000 4.3596000
+
+region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
+region whole block 0 4 0 ${lbox} 0 ${lbox} units lattice
+region whole block 0 4 0 4 0 ${lbox} units lattice
+region whole block 0 4 0 4 0 4 units lattice
+create_box 2 whole
+Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.438400 17.438400 17.438400)
+  1 by 1 by 1 MPI processor grid
+
+mass 1  ${massSi}
+mass 1  28.086
+mass 2  ${massC}
+mass 2  12.01115
+
+# read in the atom positions from file; determines if BULK OR SURFACE; 210 OR 100
+read_dump		dumps/100.surf.init 0 x y z add yes
+  orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.438400 17.438400 17.438400)
+  0 atoms before read
+  288 atoms in snapshot
+  0 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  288 atoms added
+  288 atoms after read
+
+group				groupSi type 1
+128 atoms in group groupSi
+group				groupC type 2
+160 atoms in group groupC
+
+variable			nSi equal count(groupSi)
+variable			nC equal count(groupC)
+
+# ---------- Define Interatomic Potential ---------------------
+pair_style 		tersoff
+pair_coeff		 * * SiC.tersoff Si C
+Reading tersoff potential file SiC.tersoff with DATE: 2011-04-26
+neighbor			5.0 bin
+neigh_modify	delay 0 every 1 check yes
+velocity			all create ${myTemp} 12345
+velocity			all create 500 12345
+
+dump				mydump all xyz 1 dumps/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.xyz
+dump				mydump all xyz 1 dumps/tmp/muSi-6.05_muC$(v_c_mu:%2.2f)_100surf.xyz
+dump				mydump all xyz 1 dumps/tmp/muSi-6.05_muC-6.00_100surf.xyz
+log					logs/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.lammps
+log					logs/tmp/muSi-6.05_muC$(v_c_mu:%2.2f)_100surf.lammps
+log					logs/tmp/muSi-6.05_muC-6.00_100surf.lammps

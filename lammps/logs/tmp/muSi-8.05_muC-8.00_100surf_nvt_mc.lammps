@@ -1,0 +1,100 @@
+
+print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+muSi -8.05 and muC -8.00
+
+timestep			0.0001
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 500 $(100.0*dt)
+fix					mynvt all nvt temp 500 500 0.010000000000000000208
+fix_modify		mynvt temp mdtemp
+
+fix					gcmcSi groupSi gcmc 1 2 1 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 2 1 1 12345 500 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 2 1 1 12345 500 -8.05422437334907 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 2 1 1 12345 500 -8.05422437334907 0.5 full_energy
+fix					gcmcC groupC gcmc 1 2 1 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 2 1 2 98765 500 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 2 1 2 98765 500 -7.9993253367134 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 2 1 2 98765 500 -7.9993253367134 0.5 full_energy
+
+fix					swapFix all atom/swap 1 1 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 1 34567 500 semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 1 34567 500 semi-grand yes types 1 2 mu -8.05422437334907 ${c_mu}
+fix					swapFix all atom/swap 1 1 34567 500 semi-grand yes types 1 2 mu -8.05422437334907 -7.9993253367134
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2]
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+# thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					1
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.217 | 4.217 | 4.217 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2] 
+       0          500   -1613.0933          128          160            0            0            0            0            0 
+       1    500.11803   -1613.0977          128          160            0            0            0            0            0 
+Loop time of 0.0602591 on 1 procs for 1 steps with 288 atoms
+
+Performance: 0.143 ns/day, 167.386 hours/ns, 16.595 timesteps/s
+97.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0017939  | 0.0017939  | 0.0017939  |   0.0 |  2.98
+Neigh   | 0.00371    | 0.00371    | 0.00371    |   0.0 |  6.16
+Comm    | 5.0068e-05 | 5.0068e-05 | 5.0068e-05 |   0.0 |  0.08
+Output  | 0.00045586 | 0.00045586 | 0.00045586 |   0.0 |  0.76
+Modify  | 0.054239   | 0.054239   | 0.054239   |   0.0 | 90.01
+Other   |            | 1.001e-05  |            |       |  0.02
+
+Nlocal:        288.000 ave         288 max         288 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        1749.00 ave        1749 max        1749 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      38592.0 ave       38592 max       38592 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 38592
+Ave neighs/atom = 134.00000
+Neighbor list builds = 10
+Dangerous builds = 0
+clear
+next			si_mu_ex
+jump		SELF b
+
+# if the jump was skipped that means si_mu_ex indices were exhausted,
+# so redefine it and increment c_mu_ex
+variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25
+next			c_mu_ex
+jump		SELF a
+Total wall time: 0:00:01
