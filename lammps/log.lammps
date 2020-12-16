@@ -6,14 +6,15 @@ LAMMPS (30 Jun 2020)
 #######################################
 
 # i think the total excess chemical potential at equilibrium for a surface is -10.5
-variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25
-variable c_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25
+# i think tht etotal excess chemical potential at eq for bulk is -20.5
+variable si_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+variable c_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
 
 label		a
 label		b
 
 print			"muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
-muSi -3.25 and muC -3.25
+muSi -8.25 and muC -8.25
 include		in.gcmc.sic
 #######################################
 #	Cubic Silicon Carbide (3C-SiC)
@@ -48,9 +49,9 @@ variable			si_mu_id equal "v_kT*ln( v_pressSi*v_broglieSi^3/v_kT )"
 variable			c_mu_id equal "v_kT*ln( v_pressC*v_broglieC^3/v_kT )"
 
 variable			si_mu equal $(v_si_mu_id + v_si_mu_ex)
-variable			si_mu equal -4.0542243733490730406
+variable			si_mu equal -9.0542243733490721525
 variable			c_mu equal $(v_c_mu_id + v_c_mu_ex)
-variable			c_mu equal -3.9993253367134027343
+variable			c_mu equal -8.9993253367134027343
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom ${lat_const} a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
@@ -99,8 +100,8 @@ velocity			all create ${myTemp} 12345
 velocity			all create 500 12345
 
 dump				mydump all xyz 1 dumps/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.xyz
-dump				mydump all xyz 1 dumps/tmp/muSi-4.05_muC$(v_c_mu:%2.2f)_100surf.xyz
-dump				mydump all xyz 1 dumps/tmp/muSi-4.05_muC-4.00_100surf.xyz
+dump				mydump all xyz 1 dumps/tmp/muSi-9.05_muC$(v_c_mu:%2.2f)_100surf.xyz
+dump				mydump all xyz 1 dumps/tmp/muSi-9.05_muC-9.00_100surf.xyz
 log					logs/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.lammps
-log					logs/tmp/muSi-4.05_muC$(v_c_mu:%2.2f)_100surf.lammps
-log					logs/tmp/muSi-4.05_muC-4.00_100surf.lammps
+log					logs/tmp/muSi-9.05_muC$(v_c_mu:%2.2f)_100surf.lammps
+log					logs/tmp/muSi-9.05_muC-9.00_100surf.lammps

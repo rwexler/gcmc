@@ -1,0 +1,198 @@
+
+print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+muSi -13.05 and muC -13.00
+
+timestep			0.0001
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 500 $(100.0*dt)
+fix					mynvt all nvt temp 500 500 0.010000000000000000208
+fix_modify		mynvt temp mdtemp
+
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 -13.0542243733491 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 -13.0542243733491 0.5 full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 -12.9993253367134 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 -12.9993253367134 0.5 full_energy
+
+fix					swapFix all atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu -13.0542243733491 ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu -13.0542243733491 -12.9993253367134
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2]
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+# thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					1000
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.217 | 4.217 | 4.217 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2] 
+       0          500   -1613.0933          128          160            0            0            0            0            0 
+      10    191.54406   -209.91234           36           67            0           92            0           93            2 
+      20            0            0            0            0            0          128            0          160           25 
+      30            0            0            0            0            0          128            0          160           25 
+      40            0            0            0            0            0          128            0          160           25 
+      50            0            0            0            0            0          128            0          160           25 
+      60            0            0            0            0            0          128            0          160           25 
+      70            0            0            0            0            0          128            0          160           25 
+      80            0            0            0            0            0          128            0          160           25 
+      90            0            0            0            0            0          128            0          160           25 
+     100            0            0            0            0            0          128            0          160           25 
+     110            0            0            0            0            0          128            0          160           25 
+     120            0            0            0            0            0          128            0          160           25 
+     130            0            0            0            0            0          128            0          160           25 
+     140            0            0            0            0            0          128            0          160           25 
+     150            0            0            0            0            0          128            0          160           25 
+     160            0            0            0            0            0          128            0          160           25 
+     170            0            0            0            0            0          128            0          160           25 
+     180            0            0            0            0            0          128            0          160           25 
+     190            0            0            0            0            0          128            0          160           25 
+     200            0            0            0            0            0          128            0          160           25 
+     210            0            0            0            0            0          128            0          160           25 
+     220            0            0            0            0            0          128            0          160           25 
+     230            0            0            0            0            0          128            0          160           25 
+     240            0            0            0            0            0          128            0          160           25 
+     250            0            0            0            0            0          128            0          160           25 
+     260            0            0            0            0            0          128            0          160           25 
+     270            0            0            0            0            0          128            0          160           25 
+     280            0            0            0            0            0          128            0          160           25 
+     290            0            0            0            0            0          128            0          160           25 
+     300            0            0            0            0            0          128            0          160           25 
+     310            0            0            0            0            0          128            0          160           25 
+     320            0            0            0            0            0          128            0          160           25 
+     330            0            0            0            0            0          128            0          160           25 
+     340            0            0            0            0            0          128            0          160           25 
+     350            0            0            0            0            0          128            0          160           25 
+     360            0            0            0            0            0          128            0          160           25 
+     370            0            0            0            0            0          128            0          160           25 
+     380            0            0            0            0            0          128            0          160           25 
+     390            0            0            0            0            0          128            0          160           25 
+     400            0            0            0            0            0          128            0          160           25 
+     410            0            0            0            0            0          128            0          160           25 
+     420            0            0            0            0            0          128            0          160           25 
+     430            0            0            0            0            0          128            0          160           25 
+     440            0            0            0            0            0          128            0          160           25 
+     450            0            0            0            0            0          128            0          160           25 
+     460            0            0            0            0            0          128            0          160           25 
+     470            0            0            0            0            0          128            0          160           25 
+     480            0            0            0            0            0          128            0          160           25 
+     490            0            0            0            0            0          128            0          160           25 
+     500            0            0            0            0            0          128            0          160           25 
+     510            0            0            0            0            0          128            0          160           25 
+     520            0            0            0            0            0          128            0          160           25 
+     530            0            0            0            0            0          128            0          160           25 
+     540            0            0            0            0            0          128            0          160           25 
+     550            0            0            0            0            0          128            0          160           25 
+     560            0            0            0            0            0          128            0          160           25 
+     570            0            0            0            0            0          128            0          160           25 
+     580            0            0            0            0            0          128            0          160           25 
+     590            0            0            0            0            0          128            0          160           25 
+     600            0            0            0            0            0          128            0          160           25 
+     610            0            0            0            0            0          128            0          160           25 
+     620            0            0            0            0            0          128            0          160           25 
+     630            0            0            0            0            0          128            0          160           25 
+     640            0            0            0            0            0          128            0          160           25 
+     650            0            0            0            0            0          128            0          160           25 
+     660            0            0            0            0            0          128            0          160           25 
+     670            0            0            0            0            0          128            0          160           25 
+     680            0            0            0            0            0          128            0          160           25 
+     690            0            0            0            0            0          128            0          160           25 
+     700            0            0            0            0            0          128            0          160           25 
+     710            0            0            0            0            0          128            0          160           25 
+     720            0            0            0            0            0          128            0          160           25 
+     730            0            0            0            0            0          128            0          160           25 
+     740            0            0            0            0            0          128            0          160           25 
+     750            0            0            0            0            0          128            0          160           25 
+     760            0            0            0            0            0          128            0          160           25 
+     770            0            0            0            0            0          128            0          160           25 
+     780            0            0            0            0            0          128            0          160           25 
+     790            0            0            0            0            0          128            0          160           25 
+     800            0            0            0            0            0          128            0          160           25 
+     810            0            0            0            0            0          128            0          160           25 
+     820            0            0            0            0            0          128            0          160           25 
+     830            0            0            0            0            0          128            0          160           25 
+     840            0            0            0            0            0          128            0          160           25 
+     850            0            0            0            0            0          128            0          160           25 
+     860            0            0            0            0            0          128            0          160           25 
+     870            0            0            0            0            0          128            0          160           25 
+     880            0            0            0            0            0          128            0          160           25 
+     890            0            0            0            0            0          128            0          160           25 
+     900            0            0            0            0            0          128            0          160           25 
+     910            0            0            0            0            0          128            0          160           25 
+     920            0            0            0            0            0          128            0          160           25 
+     930            0            0            0            0            0          128            0          160           25 
+     940            0            0            0            0            0          128            0          160           25 
+     950            0            0            0            0            0          128            0          160           25 
+     960            0            0            0            0            0          128            0          160           25 
+     970            0            0            0            0            0          128            0          160           25 
+     980            0            0            0            0            0          128            0          160           25 
+     990            0            0            0            0            0          128            0          160           25 
+    1000            0            0            0            0            0          128            0          160           25 
+Loop time of 2.07649 on 1 procs for 1000 steps with 0 atoms
+
+Performance: 4.161 ns/day, 5.768 hours/ns, 481.582 timesteps/s
+99.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0079217  | 0.0079217  | 0.0079217  |   0.0 |  0.38
+Neigh   | 0.019528   | 0.019528   | 0.019528   |   0.0 |  0.94
+Comm    | 0.00093508 | 0.00093508 | 0.00093508 |   0.0 |  0.05
+Output  | 0.008204   | 0.008204   | 0.008204   |   0.0 |  0.40
+Modify  | 2.0394     | 2.0394     | 2.0394     |   0.0 | 98.21
+Other   |            | 0.0004816  |            |       |  0.02
+
+Nlocal:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Neighbor list builds = 24652
+Dangerous builds = 0
+clear
+next			si_mu_ex
+jump		SELF b
+
+# if the jump was skipped that means si_mu_ex indices were exhausted,
+# so redefine it and increment c_mu_ex
+variable si_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+next			c_mu_ex
+jump		SELF a
+Total wall time: 0:01:36

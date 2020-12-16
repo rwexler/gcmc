@@ -57,7 +57,7 @@ mass 1  ${massSi}
 mass 2  ${massC}
 
 # read in the atom positions from file; determines if BULK OR SURFACE; 210 OR 100
-read_dump		dumps/100.bulk.init 0 x y z add yes
+read_dump		dumps/100.surf.init 0 x y z add yes
 
 group				groupSi type 1 
 group				groupC type 2 
@@ -72,8 +72,8 @@ neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
 velocity			all create ${myTemp} 12345
 
-dump				mydump all xyz 1 dumps/BulkExp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100bulk.xyz
-log					logs/BulkExp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100bulk.lammps
+dump				mydump all xyz 1 dumps/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.xyz
+log					logs/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.lammps
 
 print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
 

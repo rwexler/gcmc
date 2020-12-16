@@ -1,1 +1,1 @@
-ERROR on proc 0: Cannot open input script in.bulk.npt.sic: No such file or directory (../lammps.cpp:445)
+ERROR on proc 0: Cannot open input script exp.mu.sic: No such file or directory (../lammps.cpp:445)

@@ -1,0 +1,198 @@
+
+print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+muSi -13.05 and muC -13.00
+
+timestep			0.0001
+
+compute			mdtemp all temp
+compute_modify	mdtemp dynamic/dof yes
+
+fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 ${myTemp} $(100.0*dt)
+fix					mynvt all nvt temp 500 500 $(100.0*dt)
+fix					mynvt all nvt temp 500 500 0.010000000000000000208
+fix_modify		mynvt temp mdtemp
+
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 ${si_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 -13.0542243733491 ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 10 1 12345 500 -13.0542243733491 0.5 full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 ${c_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 -12.9993253367134 ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 10 2 98765 500 -12.9993253367134 0.5 full_energy
+
+fix					swapFix all atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu -13.0542243733491 ${c_mu}
+fix					swapFix all atom/swap 1 10 34567 500 semi-grand yes types 1 2 mu -13.0542243733491 -12.9993253367134
+
+variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
+variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
+
+variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
+variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2]
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+# thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
+thermo_modify	lost warn
+
+run					1000
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcSi
+0 atoms in group FixGCMC:gcmc_exclusion_group:gcmcC
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 4.25 | 4.25 | 4.25 Mbytes
+Step Temp PotEng v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2] 
+       0          500   -3153.3579          256          256            0            0            0            0            0 
+      10     310.2216   -1350.2632          160          163            0           96            0           93            0 
+      20    119.35238   -185.37551           54           65            0          202            0          191            4 
+      30            0            0            0            0            0          256            0          256           28 
+      40            0            0            0            0            0          256            0          256           28 
+      50            0            0            0            0            0          256            0          256           28 
+      60            0            0            0            0            0          256            0          256           28 
+      70            0            0            0            0            0          256            0          256           28 
+      80            0            0            0            0            0          256            0          256           28 
+      90            0            0            0            0            0          256            0          256           28 
+     100            0            0            0            0            0          256            0          256           28 
+     110            0            0            0            0            0          256            0          256           28 
+     120            0            0            0            0            0          256            0          256           28 
+     130            0            0            0            0            0          256            0          256           28 
+     140            0            0            0            0            0          256            0          256           28 
+     150            0            0            0            0            0          256            0          256           28 
+     160            0            0            0            0            0          256            0          256           28 
+     170            0            0            0            0            0          256            0          256           28 
+     180            0            0            0            0            0          256            0          256           28 
+     190            0            0            0            0            0          256            0          256           28 
+     200            0            0            0            0            0          256            0          256           28 
+     210            0            0            0            0            0          256            0          256           28 
+     220            0            0            0            0            0          256            0          256           28 
+     230            0            0            0            0            0          256            0          256           28 
+     240            0            0            0            0            0          256            0          256           28 
+     250            0            0            0            0            0          256            0          256           28 
+     260            0            0            0            0            0          256            0          256           28 
+     270            0            0            0            0            0          256            0          256           28 
+     280            0            0            0            0            0          256            0          256           28 
+     290            0            0            0            0            0          256            0          256           28 
+     300            0            0            0            0            0          256            0          256           28 
+     310            0            0            0            0            0          256            0          256           28 
+     320            0            0            0            0            0          256            0          256           28 
+     330            0            0            0            0            0          256            0          256           28 
+     340            0            0            0            0            0          256            0          256           28 
+     350            0            0            0            0            0          256            0          256           28 
+     360            0            0            0            0            0          256            0          256           28 
+     370            0            0            0            0            0          256            0          256           28 
+     380            0            0            0            0            0          256            0          256           28 
+     390            0            0            0            0            0          256            0          256           28 
+     400            0            0            0            0            0          256            0          256           28 
+     410            0            0            0            0            0          256            0          256           28 
+     420            0            0            0            0            0          256            0          256           28 
+     430            0            0            0            0            0          256            0          256           28 
+     440            0            0            0            0            0          256            0          256           28 
+     450            0            0            0            0            0          256            0          256           28 
+     460            0            0            0            0            0          256            0          256           28 
+     470            0            0            0            0            0          256            0          256           28 
+     480            0            0            0            0            0          256            0          256           28 
+     490            0            0            0            0            0          256            0          256           28 
+     500            0            0            0            0            0          256            0          256           28 
+     510            0            0            0            0            0          256            0          256           28 
+     520            0            0            0            0            0          256            0          256           28 
+     530            0            0            0            0            0          256            0          256           28 
+     540            0            0            0            0            0          256            0          256           28 
+     550            0            0            0            0            0          256            0          256           28 
+     560            0            0            0            0            0          256            0          256           28 
+     570            0            0            0            0            0          256            0          256           28 
+     580            0            0            0            0            0          256            0          256           28 
+     590            0            0            0            0            0          256            0          256           28 
+     600            0            0            0            0            0          256            0          256           28 
+     610            0            0            0            0            0          256            0          256           28 
+     620            0            0            0            0            0          256            0          256           28 
+     630            0            0            0            0            0          256            0          256           28 
+     640            0            0            0            0            0          256            0          256           28 
+     650            0            0            0            0            0          256            0          256           28 
+     660            0            0            0            0            0          256            0          256           28 
+     670            0            0            0            0            0          256            0          256           28 
+     680            0            0            0            0            0          256            0          256           28 
+     690            0            0            0            0            0          256            0          256           28 
+     700            0            0            0            0            0          256            0          256           28 
+     710            0            0            0            0            0          256            0          256           28 
+     720            0            0            0            0            0          256            0          256           28 
+     730            0            0            0            0            0          256            0          256           28 
+     740            0            0            0            0            0          256            0          256           28 
+     750            0            0            0            0            0          256            0          256           28 
+     760            0            0            0            0            0          256            0          256           28 
+     770            0            0            0            0            0          256            0          256           28 
+     780            0            0            0            0            0          256            0          256           28 
+     790            0            0            0            0            0          256            0          256           28 
+     800            0            0            0            0            0          256            0          256           28 
+     810            0            0            0            0            0          256            0          256           28 
+     820            0            0            0            0            0          256            0          256           28 
+     830            0            0            0            0            0          256            0          256           28 
+     840            0            0            0            0            0          256            0          256           28 
+     850            0            0            0            0            0          256            0          256           28 
+     860            0            0            0            0            0          256            0          256           28 
+     870            0            0            0            0            0          256            0          256           28 
+     880            0            0            0            0            0          256            0          256           28 
+     890            0            0            0            0            0          256            0          256           28 
+     900            0            0            0            0            0          256            0          256           28 
+     910            0            0            0            0            0          256            0          256           28 
+     920            0            0            0            0            0          256            0          256           28 
+     930            0            0            0            0            0          256            0          256           28 
+     940            0            0            0            0            0          256            0          256           28 
+     950            0            0            0            0            0          256            0          256           28 
+     960            0            0            0            0            0          256            0          256           28 
+     970            0            0            0            0            0          256            0          256           28 
+     980            0            0            0            0            0          256            0          256           28 
+     990            0            0            0            0            0          256            0          256           28 
+    1000            0            0            0            0            0          256            0          256           28 
+Loop time of 9.75685 on 1 procs for 1000 steps with 0 atoms
+
+Performance: 0.886 ns/day, 27.102 hours/ns, 102.492 timesteps/s
+99.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.031931   | 0.031931   | 0.031931   |   0.0 |  0.33
+Neigh   | 0.1049     | 0.1049     | 0.1049     |   0.0 |  1.08
+Comm    | 0.0020094  | 0.0020094  | 0.0020094  |   0.0 |  0.02
+Output  | 0.016417   | 0.016417   | 0.016417   |   0.0 |  0.17
+Modify  | 9.6009     | 9.6009     | 9.6009     |   0.0 | 98.40
+Other   |            | 0.000685   |            |       |  0.01
+
+Nlocal:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Neighbor list builds = 25110
+Dangerous builds = 0
+clear
+next			si_mu_ex
+jump		SELF b
+
+# if the jump was skipped that means si_mu_ex indices were exhausted,
+# so redefine it and increment c_mu_ex
+variable si_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+next			c_mu_ex
+jump		SELF a
+Total wall time: 1:26:05
