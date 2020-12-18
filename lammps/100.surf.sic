@@ -30,10 +30,10 @@ orient x 1 0 0	&
 orient y 0 1 0 &
 orient z 0 0 1
 
-region simBox block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
+region simBox block 0 ${lbox} 0 ${lbox} -${lbox} ${lbox} units lattice
 create_box 2 simBox
 
-region atomBox block EDGE EDGE EDGE EDGE EDGE $(v_lbox/2) units lattice
+region atomBox block EDGE EDGE EDGE EDGE $(-v_lbox/2+0.25) $(v_lbox/2) units lattice
 
 mass 1  ${massSi}
 mass 2  ${massC}

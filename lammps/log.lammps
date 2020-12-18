@@ -5,17 +5,29 @@ LAMMPS (30 Jun 2020)
 #	Using Tersoff Potential
 #######################################
 
+shell mkdkir ExpSurf2
+WARNING: Shell command returned with non-zero status (../input.cpp:1352)
+shell mkdir ExpSurf2/dumps
+WARNING: Shell command 'mkdir' failed with error 'File exists' (../input.cpp:1280)
+shell mkdir ExpSurf2/logs
+WARNING: Shell command 'mkdir' failed with error 'File exists' (../input.cpp:1280)
+
+shell cd ExpSurf2
+
 # i think the total excess chemical potential at equilibrium for a surface is -10.5
 # i think tht etotal excess chemical potential at eq for bulk is -20.5
-variable si_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
-variable c_mu_ex index -8.25 -9.25 -10.25 -11.25 -12.25
+# -8.25 -9.25 -10.25 -11.25 -12.25
+# -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
+
+variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
+variable c_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
 
 label		a
 label		b
 
 print			"muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
-muSi -8.25 and muC -8.25
-include		in.gcmc.sic
+muSi -3.25 and muC -3.25
+include		../in.gcmc.sic
 #######################################
 #	Cubic Silicon Carbide (3C-SiC)
 # Fix GCMC Test
@@ -39,7 +51,7 @@ variable			myTemp equal 500
 variable			pressSi equal 0.1
 variable 			pressC equal 0.1
 variable			disp equal 0.5
-variable			lbox equal 4.0
+variable			lbox equal 5.0
 
 variable			h equal 4.135667e-3				# in eV*ps
 variable			kT equal "8.617333e-5*v_myTemp"
@@ -49,21 +61,23 @@ variable			si_mu_id equal "v_kT*ln( v_pressSi*v_broglieSi^3/v_kT )"
 variable			c_mu_id equal "v_kT*ln( v_pressC*v_broglieC^3/v_kT )"
 
 variable			si_mu equal $(v_si_mu_id + v_si_mu_ex)
-variable			si_mu equal -9.0542243733490721525
+variable			si_mu equal -4.0542243733490730406
 variable			c_mu equal $(v_c_mu_id + v_c_mu_ex)
-variable			c_mu equal -8.9993253367134027343
+variable			c_mu equal -3.9993253367134027343
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
 lattice custom ${lat_const} a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
 lattice custom 4.3596 a1 1.0 0.0 0.0 a2 0.0 1.0 0.0 a3 0.0 0.0 1.0 basis 0.0 0.0 0.0 basis 0.5 0.0 0.5 basis 0.0 0.5 0.5 basis 0.5 0.5 0.0 basis 0.25 0.25 0.25  basis 0.75 0.25 0.75  basis 0.25 0.75 0.75 basis 0.75 0.75 0.25 orient x 1 0 0	orient y 0 1 0 orient z 0 0 1
 Lattice spacing in x,y,z = 4.3596000 4.3596000 4.3596000
 
-region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
-region whole block 0 4 0 ${lbox} 0 ${lbox} units lattice
-region whole block 0 4 0 4 0 ${lbox} units lattice
-region whole block 0 4 0 4 0 4 units lattice
+# make the z direction twice as long
+region whole block 0 ${lbox} 0 ${lbox} -${lbox} ${lbox} units lattice
+region whole block 0 5 0 ${lbox} -${lbox} ${lbox} units lattice
+region whole block 0 5 0 5 -${lbox} ${lbox} units lattice
+region whole block 0 5 0 5 -5 ${lbox} units lattice
+region whole block 0 5 0 5 -5 5 units lattice
 create_box 2 whole
-Created orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.438400 17.438400 17.438400)
+Created orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
   1 by 1 by 1 MPI processor grid
 
 mass 1  ${massSi}
@@ -73,35 +87,35 @@ mass 2  12.01115
 
 # read in the atom positions from file; determines if BULK OR SURFACE; 210 OR 100
 read_dump		dumps/100.surf.init 0 x y z add yes
-  orthogonal box = (0.0000000 0.0000000 0.0000000) to (17.438400 17.438400 17.438400)
+  orthogonal box = (0.0000000 0.0000000 -17.438400) to (17.438400 17.438400 17.438400)
   0 atoms before read
-  288 atoms in snapshot
+  512 atoms in snapshot
   0 atoms purged
   0 atoms replaced
   0 atoms trimmed
-  288 atoms added
-  288 atoms after read
+  512 atoms added
+  512 atoms after read
 
 group				groupSi type 1
-128 atoms in group groupSi
+256 atoms in group groupSi
 group				groupC type 2
-160 atoms in group groupC
+256 atoms in group groupC
 
 variable			nSi equal count(groupSi)
 variable			nC equal count(groupC)
 
 # ---------- Define Interatomic Potential ---------------------
 pair_style 		tersoff
-pair_coeff		 * * SiC.tersoff Si C
-Reading tersoff potential file SiC.tersoff with DATE: 2011-04-26
+pair_coeff		 * * ../SiC.tersoff Si C
+Reading tersoff potential file ../SiC.tersoff with DATE: 2011-04-26
 neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
 velocity			all create ${myTemp} 12345
 velocity			all create 500 12345
 
-dump				mydump all xyz 1 dumps/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.xyz
-dump				mydump all xyz 1 dumps/tmp/muSi-9.05_muC$(v_c_mu:%2.2f)_100surf.xyz
-dump				mydump all xyz 1 dumps/tmp/muSi-9.05_muC-9.00_100surf.xyz
-log					logs/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.lammps
-log					logs/tmp/muSi-9.05_muC$(v_c_mu:%2.2f)_100surf.lammps
-log					logs/tmp/muSi-9.05_muC-9.00_100surf.lammps
+dump				mydump all xyz 1 dumps/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).xyz
+dump				mydump all xyz 1 dumps/muSi-4.05_muC$(v_c_mu:%2.2f).xyz
+dump				mydump all xyz 1 dumps/muSi-4.05_muC-4.00.xyz
+log					logs/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).lammps
+log					logs/muSi-4.05_muC$(v_c_mu:%2.2f).lammps
+log					logs/muSi-4.05_muC-4.00.lammps

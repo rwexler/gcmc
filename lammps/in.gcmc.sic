@@ -21,7 +21,7 @@ variable			myTemp equal 500
 variable			pressSi equal 0.1
 variable 			pressC equal 0.1
 variable			disp equal 0.5
-variable			lbox equal 4.0
+variable			lbox equal 5.0
 
 variable			h equal 4.135667e-3				# in eV*ps
 variable			kT equal "8.617333e-5*v_myTemp"
@@ -50,7 +50,8 @@ orient x 1 0 0	&
 orient y 0 1 0 &
 orient z 0 0 1
 
-region whole block 0 ${lbox} 0 ${lbox} 0 ${lbox} units lattice
+# make the z direction twice as long
+region whole block 0 ${lbox} 0 ${lbox} -${lbox} ${lbox} units lattice
 create_box 2 whole
 
 mass 1  ${massSi}
@@ -67,13 +68,13 @@ variable			nC equal count(groupC)
 
 # ---------- Define Interatomic Potential --------------------- 
 pair_style 		tersoff
-pair_coeff		 * * SiC.tersoff Si C
+pair_coeff		 * * ../SiC.tersoff Si C
 neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
 velocity			all create ${myTemp} 12345
 
-dump				mydump all xyz 1 dumps/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.xyz
-log					logs/tmp/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)_100surf.lammps
+dump				mydump all xyz 1 dumps/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).xyz
+log					logs/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).lammps
 
 print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
 
@@ -85,10 +86,10 @@ compute_modify	mdtemp dynamic/dof yes
 fix					mynvt all nvt temp ${myTemp} ${myTemp} $(100.0*dt) 
 fix_modify		mynvt temp mdtemp
 
-fix					gcmcSi groupSi gcmc 1 20 10 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
-fix					gcmcC groupC gcmc 1 20 10 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+fix					gcmcSi groupSi gcmc 1 20 20 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
+fix					gcmcC groupC gcmc 1 20 20 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
 
-fix					swapFix all atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
+#fix					swapFix all atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
 
 variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
 variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
@@ -99,8 +100,8 @@ variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
 variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
 
 thermo			10
-thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_swapFix[2]
-# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2]
+thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] 
+# other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] f_swapFix[2]
 # thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
 thermo_modify	lost warn
 

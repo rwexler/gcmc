@@ -209,3 +209,8 @@ I use the commandline arguement to overwrite the chemical potentials
 # manually overwrite the chemical potentials
 #variable			si_mu equal -4.0
 #variable			c_mu equal -4.0
+
+## 12/ 16/ 20
+I ran two experiments with bulk and surfaces (ExpBulk and ExpSurf) These includes 1:1:1:1 insertions:deletions:moves:swaps that is 10 attempts at each timestep
+Now I am going to try the same but without atom swaps and with 1:1:2 insertiosn:deletions:moves since I was thinking moves might be a very important one
+to equilibrate the 'gaseous stuff' into new monolayers
