@@ -2,9 +2,11 @@
 import random
 import copy
 import numpy as np
-from io import xsf_info
+#from io import xsf_info
 from io import el_info
 from bv import bv
+
+from structure import Structure
 
 # global variable definitions
 ry_ev = 13.605693009
@@ -25,9 +27,9 @@ class MonteCarlo :
         self.at_mv_ind      = np.array([]).astype('int') # Indices of atoms to move
         self.at_mv_vec      = np.zeros((0, 3))           # Displacement of atoms
         if xsf is None:
-            self.current_xsf        = XSF_info()                 # xsf in current iteration
-            self.proposed_xsf        = XSF_info()                 # xsf in proposed iteration
-            self.opt_xsf        = xsf_info()                 # xsf associated with the lowest energy
+            self.current_xsf        = Structure()                 # xsf in current iteration
+            self.proposed_xsf        = Structure()                 # xsf in proposed iteration
+            self.opt_xsf        = Structure()                 # xsf associated with the lowest energy
         else:
             self.current_xsf     = xsf.copy()
             self.proposed_xsf     = xsf.copy()
@@ -127,6 +129,8 @@ class MonteCarlo :
                 trial += 1
                 if trial >= 100000 :
                     break
+            # don't add an atom if the distance to the nearest atom is too small or too large
+            # this prevents the expected atom from very adding into the headspace far above the surface
             if trial >= 100000 and (dis < el.r_min[self.uvt_el_exc] or dis > el.r_max[self.uvt_el_exc]) :
                 act_pp[3] = 0
         # avoid removing action if no removable atoms
@@ -272,3 +276,63 @@ class MonteCarlo :
 		else :
 			return 0
     # Some thing might need to do: instead of fixing the action probability, separate acc into acc_a, acc_r, acc_m, and adjust action probability based on these numbers, (basicly acc_a and acc_r), i.e. if acc_a is large, meaning that adding atom is favored, we should increase the action probability of add atoms
+    
+class MonteCarloLammps( MonteCarlo ):
+""" class that is a child of an MC process that adds the functionality to load proposed structures
+    from a lammps dump file
+"""
+    def __init__(self, T = 0, pace = 0, xsf = None) :
+		MonteCarlo.__init__(self, T, pace, xsf)
+        
+    def uvt_propose_structure_lammps(el, lmp, dump_file, step_max):
+        """
+            Use lammps object to load a structure from a set of dump files
+            This structure will have been accepted as part of a markov
+            chain with a classical hamiltonian
+            It should be a close approximation of the QM-accurate states
+        """
+        step = np.random.randint(step_max)
+        command = "read_dump " + dump_file + " " + str(step) + " x y z purge yes format xyz"
+        print("LAMMPS COMMAND:", command)
+        lmp.command(command)
+        natoms = lmp.get_natoms()
+
+        self.proposed_xsf = Structure(filename = None, el = el, natoms = natoms)
+        self.proposed_xsf.atom_coords = lmp.numpy.extract_atom("x",3)
+        self.proposed_xsf.atom_type = lmp.numpy.extract_atom("type")
+        print("Atom coords:", self.proposed_xsf.atom_coords)
+        print("One atom's coord:", 
+            self.proposed_xsf.atom_coords[1][0], self.proposed_xsf.atom_coords[1][1], self.proposed_xsf.atom_coords[1][2])
+        print("Atom types:", self.proposed_xsf.atom_type)
+        
+        lmp.command("group groupSi type 1")
+        lmp.command("group groupC type 2")
+        lmp.command("variable nSi equal count(groupSi)")
+        lmp.command("variable nC equal count(groupC)")
+        self.proposed_xsf.num_each_element.append( lmp.numpy.extract_variable("nSi") )
+        self.proposed_xsf.num_each_element.append( lmp.numpy.extract_variable("nC") )
+        return self.proposed_xsf
+        
+def main():
+    '''
+    main function for debugging lammps functionality
+    '''
+    el_filename = "el_list.txt"
+    lmp_init   = ""
+    dump_file      = ""
+    step_max       = 5000
+    T = 500
+    niter    = 100
+    mc = MonteCarloLammps(T, 0.5)
+    el = Element_info(el_filename, T) 
+    
+    lmp = lammps()
+    lmp.file(lmp_init)
+    for i in range(niter) :
+        mc_run.uvt_propose_structure_lammps(el, lmp, dump_file, step_max)
+        lmp.command("run 0")
+        new_en = lmp.extract_compute("thermo_pe",0,0)
+        print("Energy:", new_en)
+        
+# if running this as main, create a instance of MC for testing
+if __name__ is "__main__":

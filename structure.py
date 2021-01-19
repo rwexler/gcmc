@@ -55,62 +55,42 @@ class Element_info :
             print("Temperature equal to zero! Thermal de Brogle wavelength calculation would cause division by zero")
 	
 class Structure:
-""" class for representing structure of material, i.e. stores atom coordinates """
-	def __init__(self):
-		self.atom_coords    = np.zeros((0, 3))               # atomic coordinates        
-		self.atom_num      = 0                              # number of atoms
-		self.atom_forces = np.zeros((self.atom_num, 3)) # forces on atoms
+    """ 
+    class for representing structure of material, i.e. stores atom coordinates 
+	class for representing a structure from xsf file
+    """
+	def __init__(self, filename = None, el = None, buf_len = 0, natoms = 0) : 		
+        self.atom_num      = natoms                             # number of atoms
+		self.atom_coords    = np.zeros((self.atom_num, 3))               # atomic coordinates        
 		self.atom_type     = np.array([]).astype('int')     # indices of of element symbols
 		self.num_each_element = np.array([]).astype('int')     # number of each unique element
 		self.atoms_removable      = np.array([]).astype('int')     # indices of removable atoms
 		self.atoms_swap     = []                             # list of list of swappable atoms by element index
-		
-	def copy(self) :
-        return copy.deepcopy(self)
-
-class Structure_lammps(Structure):
-	"""class for representing a structure that can communicate with LAMMPS simulation"""
-	def __init__(self):
-		Structure.__init__(self)
-		
-	def extract_attrs(lmp):
-	""" get number of atoms and atom coordinates from the lammps simulation values"""
-		self.atom_num = lmp.get_natoms()
-		# lmp.extract_global("natoms",0)
-		self.atom_coords = lmp.numpy.extract_atom("x",3))
-		
-	def set_lmp_attrs(lmp):
-	"""set number of atoms and atom coordinates for lammps simulation from object"""
-		x = lmp.numpy.extract_atom("x", 3))
-		# set array equal to the struct's coords since the array points to the actual lammps coordinates
-		x = self.atom_coords
-		
-class Structure_xsf(Structure) :
-	"""class for representing a structure from xsf file"""
-	def __init__(self, filename = None, el = None, buf_len = 0) : 
-		Structure.__init__(self)
-		self.lat_vecs     = np.zeros((0, 3))               # lattice vectors
+        
+        self.lat_vecs     = np.zeros((0, 3))               # lattice vectors
 		self.c_min       = 0                              # minimum allowed projection of atomic coordinates on c
 		self.c_max       = 0                              # maximum allowed projection of atomic coordinates on c
 		self.r_min       = 0                              # minimum allowed distance to origin
 		self.r_max       = 0                              # maximum allowed distance to origin
 		self.vol         = 0                              # volume of variable composition region
-
-        if filename is not None:
+		if filename is not None:
             # get number of atoms
             self.set_num_atoms(self, filename)
             # get lattice vectors
             self.set_lat_vecss(self, filename)
-		# initialize forces
-		self.atom_forces = np.zeros((self.atom_num, 3))
-        if el is not None:    
-            # get atom related attributes
-            self.set_atom_attrs(self, el)        
+            if el is not None:    
+                # get atom related attributes
+                self.set_atom_attrs(self, filename, el)               
+            self.get_c_min_max(buf_len)
+            self.get_r_min_max(buf_len)
+            self.get_vol()
+            #self.get_vol_np()
         
-        self.get_c_min_max(buf_len)
-		self.get_r_min_max(buf_len)
-		self.get_vol()
-		self.get_vol_np()
+        # initialize forces on atoms
+		self.atom_forces = np.zeros((self.atom_num, 3))
+        
+    def copy(self) :
+        return copy.deepcopy(self)
         
     def set_num_atoms(self, filename):
         # get number of atoms
@@ -134,7 +114,7 @@ class Structure_xsf(Structure) :
 					self.lat_vecs = np.vstack((self.lat_vecs, np.array([line.split()[0:3]]).astype('float')))
 					break
                     
-    def set_atom_attrs(self, el):
+    def set_atom_attrs(self, filename, el):
         # get atom related attributes
 		self.num_each_element = np.zeros(el.num).astype('int')
 		for t1 in range(el.num) :
@@ -147,7 +127,7 @@ class Structure_xsf(Structure) :
 			for at in range(self.atom_num) :
 				for line in f :
 					# indices of element symbols of atoms
-					self.at_type = np.append(self.at_type, el.sym.index(line.split()[0]))
+					self.atom_type = np.append(self.atom_type, el.sym.index(line.split()[0]))
 					# number of each element
 					self.num_each_element[el.sym.index(line.split()[0])] += 1
 					# coordiantes of atoms
