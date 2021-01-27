@@ -4,26 +4,32 @@
 #	Using Tersoff Potential
 #######################################
 
-shell mkdkir ExpSurf2
-shell mkdir ExpSurf2/dumps
-shell mkdir ExpSurf2/logs
+variable Exp string "ExpSurfCterm100"
+shell mkdir ${Exp}
+shell mkdir ${Exp}/dumps
+shell mkdir ${Exp}/logs
 
-shell cd ExpSurf2
+shell cd ${Exp}
 
 # i think the total excess chemical potential at equilibrium for a surface is -10.5
 # i think tht etotal excess chemical potential at eq for bulk is -20.5
 # -8.25 -9.25 -10.25 -11.25 -12.25
 # -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
+# -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
 
-variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
-variable c_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
+variable si_mu_ex index -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
+variable c_mu_ex index -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
+
+include		../100.surf.sic
+clear
 
 label		a
 label		b
 
-print			"muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
+print			"Excess muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
 include		../in.gcmc.sic
 clear
+
 next			si_mu_ex
 jump		SELF b
 

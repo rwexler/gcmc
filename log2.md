@@ -214,3 +214,20 @@ I use the commandline arguement to overwrite the chemical potentials
 I ran two experiments with bulk and surfaces (ExpBulk and ExpSurf) These includes 1:1:1:1 insertions:deletions:moves:swaps that is 10 attempts at each timestep
 Now I am going to try the same but without atom swaps and with 1:1:2 insertiosn:deletions:moves since I was thinking moves might be a very important one
 to equilibrate the 'gaseous stuff' into new monolayers
+
+## 1/ 11/ 20
+Meeting with Dr. Rappe and Jurti. I met Drew Behrendt for the first time and he is a new grad student with Dr. Rappe. We talked alot and he thinks I need to be more careful because my
+temperature is going everywhere and I need to do more relaxation in between the insertions/deletions. 
+I am going to do 1 insertion attempts, 1  deletion attempts, N move attempts, per timestep, on average (should I have the insertion/deletion attempt average be less than 1.0?)
+I will have to consider what my insertion/deletion attempt success is to determine how often insertions/deletions are made.
+I created graphs for my ExpSurf2 for composition which demonstrates that the sum of chemical potentials of -12.05 eV is more stable. 
+To include nvt is to include nvt dynamics and have more hyperparameters like the damping parameter. Because MC moves already are nvt samplers,
+why bother including nvt if it just has more hyperparameters I need to worry about?
+I think I will just fix the z dimension instead of having it be periodic to simplify matters more. I will have to do simulation runs for Si vs C terminating monolayers, but it should
+be interesting to consider the fact that different points in the graph should converge to the same node in the graph for Markov Chain processes.
+
+I am using Nose-Hoover, but Rappe said I should look into velocity rescaling or Andersons method.
+I am going to do p(7 x 7) because why not? The bigger the better. Also that one paper did Silicon studies on p(7 x 7), you know what for now I'll stick with 4 x 4.
+
+When I did proper thermostatting with a frozen layer of atoms, I still get this large (60 K) swings which have a period of 100 timesteps. I think I should decrease my damping constant
+from 100*dt to 50*dt.
