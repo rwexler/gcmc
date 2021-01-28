@@ -3,8 +3,8 @@ import random
 import copy
 import numpy as np
 #from io import xsf_info
-from io import el_info
-from bv import bv
+from structure import Element_info
+#from bv import bv
 
 from structure import Structure
 
@@ -203,7 +203,7 @@ class MonteCarlo :
                 for j in range(len(self.proposed_xsf.atoms_swap[i])) :
                     if self.proposed_xsf.atoms_swap[i][j] > at_rm :
                         self.proposed_xsf.atoms_swap[i][j] -= 1
-		return self.proposed_xsf
+        return self.proposed_xsf
   
     # Calculate free energy and probability threshhold of accepting steps
     # en in unit of eV
@@ -220,7 +220,7 @@ class MonteCarlo :
         if self.uvt_act <= 4 :
             exp_coef = np.exp(-(free_g_new - self.curr_g) / (self.T * kb))
         else : 
-            print 'Wrong action number for get_free_g_p! Undefined action!'
+            print('Wrong action number for get_free_g_p! Undefined action!')
             exit()
         prob_acc = np.minimum(1, exp_coef * (self.proposed_xsf.vol / exc_therm_db**3 / exc_el_num )**self.uvt_at_exc_num)
         return free_g_new, prob_acc
@@ -236,7 +236,7 @@ class MonteCarlo :
 
     def update_T_quadratic(self, iter, period) : 
         self.T = float(self.T_max - 1) / (period-1)**2 * (period - iter%period - 1)**2 + 1
-;
+
     # canonical acceptance condition, return 1 if accepted, 0 otherwise;  energy in units eV
     def nvt_mc(self, en) :
         self.nvt_run_cnt += 1
@@ -260,31 +260,30 @@ class MonteCarlo :
         if self.uvt_act == 0 : # move
             self.nvt_run_cnt += 1
         elif self.uvt_act > 4 : 
-            print 'Wrong action number! Undefined action!'
+            print('Wrong action number! Undefined action!')
             exit()
-		if self.nvt_run_cnt % self.check_acc == 0 :
-			self.update_pace()
-		if rand <= prob_acc : # accept
-			if self.uvt_act == 0: # move
-				self.nvt_acc += 1
+            if self.nvt_run_cnt % self.check_acc == 0:
+                self.update_pace()
+            if rand <= prob_acc: # accept
+                if self.uvt_act == 0: # move
+                    self.nvt_acc += 1
                 self.curr_g = free_g
                 self.current_xsf = self.proposed_xsf.copy()
-			if free_g < self.opt_g : 
-				self.opt_g = free_g
-				self.opt_xsf = self.proposed_xsf.copy()
-			return 1
-		else :
-			return 0
+                if free_g < self.opt_g : 
+                    self.opt_g = free_g
+                    self.opt_xsf = self.proposed_xsf.copy()
+                return 1
+            else:
+                return 0
     # Some thing might need to do: instead of fixing the action probability, separate acc into acc_a, acc_r, acc_m, and adjust action probability based on these numbers, (basicly acc_a and acc_r), i.e. if acc_a is large, meaning that adding atom is favored, we should increase the action probability of add atoms
     
+#  class that is a child of an MC process that adds the functionality to load proposed structures
+#  from a lammps dump file
 class MonteCarloLammps( MonteCarlo ):
-""" class that is a child of an MC process that adds the functionality to load proposed structures
-    from a lammps dump file
-"""
-    def __init__(self, T = 0, pace = 0, xsf = None) :
-		MonteCarlo.__init__(self, T, pace, xsf)
+    def __init__(self, T = 0, pace = 0, xsf = None):
+        MonteCarlo.__init__(self, T, pace, xsf)
         
-    def uvt_propose_structure_lammps(el, lmp, dump_file, step_max):
+    def uvt_propose_structure_lammps(self, el, lmp, dump_file, step_max):
         """
             Use lammps object to load a structure from a set of dump files
             This structure will have been accepted as part of a markov
@@ -292,40 +291,43 @@ class MonteCarloLammps( MonteCarlo ):
             It should be a close approximation of the QM-accurate states
         """
         step = np.random.randint(step_max)
-        command = "read_dump " + dump_file + " " + str(step) + " x y z purge yes format xyz"
+        print("step:", step)
+        command = "read_dump " + dump_file + " " + str(step) + " x y z purge yes replace no add yes box no scaled no format xyz"
         print("LAMMPS COMMAND:", command)
         lmp.command(command)
         natoms = lmp.get_natoms()
-
+        print("natoms", natoms)
         self.proposed_xsf = Structure(filename = None, el = el, natoms = natoms)
-        self.proposed_xsf.atom_coords = lmp.numpy.extract_atom("x",3)
+        self.proposed_xsf.atom_coords = lmp.numpy.extract_atom("x")
         self.proposed_xsf.atom_type = lmp.numpy.extract_atom("type")
         print("Atom coords:", self.proposed_xsf.atom_coords)
-        print("One atom's coord:", 
-            self.proposed_xsf.atom_coords[1][0], self.proposed_xsf.atom_coords[1][1], self.proposed_xsf.atom_coords[1][2])
-        print("Atom types:", self.proposed_xsf.atom_type)
+        # print("One atom's coord:", 
+        #    self.proposed_xsf.atom_coords[1][0], self.proposed_xsf.atom_coords[1][1], self.proposed_xsf.atom_coords[1][2])
+        # print("Atom types:", self.proposed_xsf.atom_type)
         
         lmp.command("group groupSi type 1")
         lmp.command("group groupC type 2")
         lmp.command("variable nSi equal count(groupSi)")
         lmp.command("variable nC equal count(groupC)")
-        self.proposed_xsf.num_each_element.append( lmp.numpy.extract_variable("nSi") )
-        self.proposed_xsf.num_each_element.append( lmp.numpy.extract_variable("nC") )
+        
+        np.append( self.proposed_xsf.num_each_element, lmp.numpy.extract_variable("nSi") )
+        np.append( self.proposed_xsf.num_each_element, lmp.numpy.extract_variable("nC") )
         return self.proposed_xsf
         
 def main():
     '''
     main function for debugging lammps functionality
     '''
+    from lammps import lammps
     el_filename = "el_list.txt"
-    lmp_init   = ""
-    dump_file      = ""
-    step_max       = 5000
+    lmp_init   = "lammps/gcmc.init"
+    dump_file      = "lammps/gcmc.dump"
+    step_max       = 750
     T = 500
     niter    = 100
-    mc = MonteCarloLammps(T, 0.5)
+    mc_run = MonteCarloLammps(T, 0.5)
     el = Element_info(el_filename, T) 
-    
+    energy_list = []
     lmp = lammps()
     lmp.file(lmp_init)
     for i in range(niter) :
@@ -333,6 +335,9 @@ def main():
         lmp.command("run 0")
         new_en = lmp.extract_compute("thermo_pe",0,0)
         print("Energy:", new_en)
+        energy_list.append(new_en)
+    print("energies::", energy_list)
         
 # if running this as main, create a instance of MC for testing
-if __name__ is "__main__":
+if __name__ == "__main__":
+    main()

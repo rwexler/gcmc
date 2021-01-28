@@ -1,0 +1,4923 @@
+
+# print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+
+timestep			0.0001
+
+# compute			mdtemp all temp
+# compute_modify	mdtemp dynamic/dof yes
+
+thermo			10
+thermo_style	custom step temp pe v_nSi v_nC
+read_dump lammps/gcmc.dump 123 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  0 atoms before read
+  418 atoms in snapshot
+  0 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 6 6 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair tersoff, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     123            0   -2164.6665          128          130 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 418 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45742.0 ave       45742 max       45742 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45742
+Ave neighs/atom = 109.43062
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 722 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  424 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     722            0   -2211.0599          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46606.0 ave       46606 max       46606 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46606
+Ave neighs/atom = 109.91981
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 345 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  422 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     345            0   -2197.4085          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46326.0 ave       46326 max       46326 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46326
+Ave neighs/atom = 109.77725
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 426 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  422 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     426            0   -2198.6338          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46284.0 ave       46284 max       46284 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46284
+Ave neighs/atom = 109.67773
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 740 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  425 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     740            0   -2221.0151          130          135 
+Loop time of 3.09944e-06 on 1 procs for 0 steps with 425 atoms
+
+96.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 3.099e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46832.0 ave       46832 max       46832 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46832
+Ave neighs/atom = 110.19294
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 236 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  420 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     236            0   -2183.0897          129          131 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 420 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45930.0 ave       45930 max       45930 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45930
+Ave neighs/atom = 109.35714
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 343 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  422 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     343            0   -2197.8929          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46294.0 ave       46294 max       46294 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46294
+Ave neighs/atom = 109.70142
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 336 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  422 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     336            0    -2195.805          129          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 422 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46296.0 ave       46296 max       46296 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46296
+Ave neighs/atom = 109.70616
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 409 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  422 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     409            0   -2197.2366          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46234.0 ave       46234 max       46234 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46234
+Ave neighs/atom = 109.55924
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 748 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  425 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     748            0   -2221.5484          130          135 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 425 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46838.0 ave       46838 max       46838 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46838
+Ave neighs/atom = 110.20706
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 261 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  421 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  421 atoms added
+  421 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+132 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     261            0   -2188.6839          129          132 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 421 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        421.000 ave         421 max         421 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        775.000 ave         775 max         775 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46106.0 ave       46106 max       46106 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46106
+Ave neighs/atom = 109.51544
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 477 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  421 atoms before read
+  423 atoms in snapshot
+  421 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     477            0   -2202.1431          130          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 423 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46360.0 ave       46360 max       46360 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46360
+Ave neighs/atom = 109.59811
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 457 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  423 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     457            0   -2203.1799          130          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 423 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46428.0 ave       46428 max       46428 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46428
+Ave neighs/atom = 109.75887
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 595 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  424 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     595            0   -2211.7265          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46534.0 ave       46534 max       46534 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46534
+Ave neighs/atom = 109.75000
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 214 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  420 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     214            0   -2180.8818          129          131 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 420 atoms
+
+52.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45958.0 ave       45958 max       45958 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45958
+Ave neighs/atom = 109.42381
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 134 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  418 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     134            0   -2164.7915          128          130 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 418 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45728.0 ave       45728 max       45728 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45728
+Ave neighs/atom = 109.39713
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 726 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  425 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     726            0   -2217.5195          130          135 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 425 atoms
+
+0.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46808.0 ave       46808 max       46808 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46808
+Ave neighs/atom = 110.13647
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 102 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  418 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     102            0   -2166.8735          128          130 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 418 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45804.0 ave       45804 max       45804 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45804
+Ave neighs/atom = 109.57895
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 159 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  419 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     159            0   -2173.2021          128          131 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 419 atoms
+
+186.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45836.0 ave       45836 max       45836 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45836
+Ave neighs/atom = 109.39379
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 665 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  424 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     665            0   -2212.1372          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46518.0 ave       46518 max       46518 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46518
+Ave neighs/atom = 109.71226
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 502 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  423 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     502            0   -2205.0134          130          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 423 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46406.0 ave       46406 max       46406 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46406
+Ave neighs/atom = 109.70686
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 674 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  424 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     674            0   -2213.9118          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46564.0 ave       46564 max       46564 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46564
+Ave neighs/atom = 109.82075
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 554 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     554            0    -2214.327          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+186.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46634.0 ave       46634 max       46634 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46634
+Ave neighs/atom = 109.98585
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 564 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     564            0   -2213.1009          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46576.0 ave       46576 max       46576 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46576
+Ave neighs/atom = 109.84906
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 529 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  423 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     529            0   -2203.3692          130          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 423 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46438.0 ave       46438 max       46438 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46438
+Ave neighs/atom = 109.78251
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 369 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  422 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     369            0   -2197.4648          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+93.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46344.0 ave       46344 max       46344 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46344
+Ave neighs/atom = 109.81991
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 217 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  420 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     217            0    -2182.089          129          131 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 420 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45926.0 ave       45926 max       45926 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45926
+Ave neighs/atom = 109.34762
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 720 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  424 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     720            0   -2210.2072          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46618.0 ave       46618 max       46618 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46618
+Ave neighs/atom = 109.94811
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 715 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     715            0   -2213.0569          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46556.0 ave       46556 max       46556 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46556
+Ave neighs/atom = 109.80189
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 745 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  425 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     745            0   -2221.9369          130          135 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 425 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46804.0 ave       46804 max       46804 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46804
+Ave neighs/atom = 110.12706
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 173 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  419 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     173            0   -2172.0428          128          131 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 419 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45838.0 ave       45838 max       45838 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45838
+Ave neighs/atom = 109.39857
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 679 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  424 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     679            0   -2212.9724          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46586.0 ave       46586 max       46586 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46586
+Ave neighs/atom = 109.87264
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 692 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     692            0   -2213.1092          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46526.0 ave       46526 max       46526 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46526
+Ave neighs/atom = 109.73113
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 460 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  423 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     460            0   -2204.1296          130          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 423 atoms
+
+93.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46418.0 ave       46418 max       46418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46418
+Ave neighs/atom = 109.73522
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 411 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  422 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     411            0   -2197.3237          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46186.0 ave       46186 max       46186 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46186
+Ave neighs/atom = 109.44550
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 535 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  424 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     535            0   -2211.2138          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46646.0 ave       46646 max       46646 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46646
+Ave neighs/atom = 110.01415
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 672 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     672            0   -2213.2852          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46540.0 ave       46540 max       46540 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46540
+Ave neighs/atom = 109.76415
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 568 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     568            0   -2212.7717          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46556.0 ave       46556 max       46556 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46556
+Ave neighs/atom = 109.80189
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 687 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     687            0   -2213.1653          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46526.0 ave       46526 max       46526 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46526
+Ave neighs/atom = 109.73113
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 498 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  423 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     498            0   -2205.1618          130          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 423 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46418.0 ave       46418 max       46418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46418
+Ave neighs/atom = 109.73522
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 393 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  422 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     393            0    -2198.252          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+93.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46244.0 ave       46244 max       46244 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46244
+Ave neighs/atom = 109.58294
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 118 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  418 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     118            0   -2162.9746          128          130 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 418 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45704.0 ave       45704 max       45704 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45704
+Ave neighs/atom = 109.33971
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 749 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  425 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     749            0   -2221.6956          130          135 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 425 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46838.0 ave       46838 max       46838 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46838
+Ave neighs/atom = 110.20706
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 41 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  416 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  416 atoms added
+  416 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+128 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      41            0   -2151.9718          128          128 
+Loop time of 1.19209e-06 on 1 procs for 0 steps with 416 atoms
+
+167.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.192e-06  |            |       |100.00
+
+Nlocal:        416.000 ave         416 max         416 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        764.000 ave         764 max         764 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45450.0 ave       45450 max       45450 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45450
+Ave neighs/atom = 109.25481
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 172 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  416 atoms before read
+  419 atoms in snapshot
+  416 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     172            0   -2171.9975          128          131 
+Loop time of 1.19209e-06 on 1 procs for 0 steps with 419 atoms
+
+83.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.192e-06  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45844.0 ave       45844 max       45844 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45844
+Ave neighs/atom = 109.41289
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 646 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  424 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     646            0   -2213.0057          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46568.0 ave       46568 max       46568 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46568
+Ave neighs/atom = 109.83019
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 523 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  423 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     523            0   -2204.0997          130          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 423 atoms
+
+186.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46416.0 ave       46416 max       46416 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46416
+Ave neighs/atom = 109.73050
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 330 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  422 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     330            0   -2194.6785          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46282.0 ave       46282 max       46282 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46282
+Ave neighs/atom = 109.67299
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 325 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  422 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     325            0   -2197.0078          129          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 422 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46300.0 ave       46300 max       46300 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46300
+Ave neighs/atom = 109.71564
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 265 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  421 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  421 atoms added
+  421 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+132 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     265            0   -2189.5739          129          132 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 421 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        421.000 ave         421 max         421 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        775.000 ave         775 max         775 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46098.0 ave       46098 max       46098 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46098
+Ave neighs/atom = 109.49644
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 318 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  421 atoms before read
+  422 atoms in snapshot
+  421 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     318            0   -2195.9209          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+93.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46306.0 ave       46306 max       46306 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46306
+Ave neighs/atom = 109.72986
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 695 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  424 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     695            0   -2213.4359          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46536.0 ave       46536 max       46536 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46536
+Ave neighs/atom = 109.75472
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 531 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     531            0   -2210.1835          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46596.0 ave       46596 max       46596 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46596
+Ave neighs/atom = 109.89623
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 742 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  425 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     742            0   -2221.7291          130          135 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 425 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46838.0 ave       46838 max       46838 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46838
+Ave neighs/atom = 110.20706
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 484 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  423 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     484            0   -2203.6195          130          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 423 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46376.0 ave       46376 max       46376 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46376
+Ave neighs/atom = 109.63593
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 383 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  422 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     383            0   -2198.5151          129          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 422 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46306.0 ave       46306 max       46306 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46306
+Ave neighs/atom = 109.72986
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 289 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  421 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  421 atoms added
+  421 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+132 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     289            0   -2190.4225          129          132 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 421 atoms
+
+93.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        421.000 ave         421 max         421 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        775.000 ave         775 max         775 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46088.0 ave       46088 max       46088 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46088
+Ave neighs/atom = 109.47268
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 358 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  421 atoms before read
+  422 atoms in snapshot
+  421 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     358            0   -2197.4238          129          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 422 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46328.0 ave       46328 max       46328 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46328
+Ave neighs/atom = 109.78199
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 441 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  422 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     441            0   -2197.4183          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46304.0 ave       46304 max       46304 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46304
+Ave neighs/atom = 109.72512
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 606 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  424 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     606            0   -2211.7755          130          134 
+Loop time of 3.09944e-06 on 1 procs for 0 steps with 424 atoms
+
+161.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 3.099e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46568.0 ave       46568 max       46568 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46568
+Ave neighs/atom = 109.83019
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 403 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  422 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     403            0   -2196.8171          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46262.0 ave       46262 max       46262 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46262
+Ave neighs/atom = 109.62559
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 232 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  420 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     232            0   -2181.7565          129          131 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 420 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45952.0 ave       45952 max       45952 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45952
+Ave neighs/atom = 109.40952
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 468 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  423 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     468            0   -2204.1924          130          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 423 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46414.0 ave       46414 max       46414 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46414
+Ave neighs/atom = 109.72577
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 375 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  422 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     375            0    -2197.135          129          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 422 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46334.0 ave       46334 max       46334 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46334
+Ave neighs/atom = 109.79621
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 653 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  424 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     653            0   -2213.0306          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+93.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46536.0 ave       46536 max       46536 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46536
+Ave neighs/atom = 109.75472
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 525 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  423 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     525            0   -2203.9356          130          133 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 423 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46430.0 ave       46430 max       46430 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46430
+Ave neighs/atom = 109.76359
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 298 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  421 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  421 atoms added
+  421 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+132 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     298            0   -2190.2306          129          132 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 421 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        421.000 ave         421 max         421 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        775.000 ave         775 max         775 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46068.0 ave       46068 max       46068 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46068
+Ave neighs/atom = 109.42518
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 159 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  421 atoms before read
+  419 atoms in snapshot
+  421 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     159            0   -2173.2021          128          131 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 419 atoms
+
+46.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45836.0 ave       45836 max       45836 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45836
+Ave neighs/atom = 109.39379
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 31 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  416 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  416 atoms added
+  416 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+128 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      31            0   -2149.2605          128          128 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 416 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        416.000 ave         416 max         416 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        764.000 ave         764 max         764 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45418.0 ave       45418 max       45418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45418
+Ave neighs/atom = 109.17788
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 511 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  416 atoms before read
+  423 atoms in snapshot
+  416 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  423 atoms added
+  423 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     511            0   -2202.9924          130          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 423 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        423.000 ave         423 max         423 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        779.000 ave         779 max         779 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46426.0 ave       46426 max       46426 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46426
+Ave neighs/atom = 109.75414
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 740 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  423 atoms before read
+  425 atoms in snapshot
+  423 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  425 atoms added
+  425 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+135 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     740            0   -2221.0151          130          135 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 425 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        425.000 ave         425 max         425 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        785.000 ave         785 max         785 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46832.0 ave       46832 max       46832 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46832
+Ave neighs/atom = 110.19294
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 602 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  425 atoms before read
+  424 atoms in snapshot
+  425 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     602            0   -2211.2409          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46562.0 ave       46562 max       46562 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46562
+Ave neighs/atom = 109.81604
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 95 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  418 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      95            0   -2166.7459          128          130 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 418 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45788.0 ave       45788 max       45788 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45788
+Ave neighs/atom = 109.54067
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 99 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  418 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      99            0   -2166.3612          128          130 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 418 atoms
+
+52.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45788.0 ave       45788 max       45788 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45788
+Ave neighs/atom = 109.54067
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 221 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  420 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     221            0   -2181.4616          129          131 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 420 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45924.0 ave       45924 max       45924 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45924
+Ave neighs/atom = 109.34286
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 137 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  418 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     137            0   -2168.1833          128          130 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 418 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45712.0 ave       45712 max       45712 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45712
+Ave neighs/atom = 109.35885
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 2 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  416 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  416 atoms added
+  416 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+128 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+       2            0   -2148.3253          128          128 
+Loop time of 1.19209e-06 on 1 procs for 0 steps with 416 atoms
+
+167.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.192e-06  |            |       |100.00
+
+Nlocal:        416.000 ave         416 max         416 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        764.000 ave         764 max         764 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45474.0 ave       45474 max       45474 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45474
+Ave neighs/atom = 109.31250
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 723 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  416 atoms before read
+  424 atoms in snapshot
+  416 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     723            0   -2210.7311          130          134 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 424 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46604.0 ave       46604 max       46604 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46604
+Ave neighs/atom = 109.91509
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 307 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  421 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  421 atoms added
+  421 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+132 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     307            0   -2191.5836          129          132 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 421 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        421.000 ave         421 max         421 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        775.000 ave         775 max         775 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46052.0 ave       46052 max       46052 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46052
+Ave neighs/atom = 109.38717
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 364 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  421 atoms before read
+  422 atoms in snapshot
+  421 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     364            0   -2197.2025          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46382.0 ave       46382 max       46382 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46382
+Ave neighs/atom = 109.90995
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 244 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  420 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     244            0   -2181.7953          129          131 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 420 atoms
+
+52.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45938.0 ave       45938 max       45938 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45938
+Ave neighs/atom = 109.37619
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 355 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  422 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     355            0   -2196.3151          129          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 422 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46326.0 ave       46326 max       46326 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46326
+Ave neighs/atom = 109.77725
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 188 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  419 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     188            0   -2174.4314          128          131 
+Loop time of 1.19209e-06 on 1 procs for 0 steps with 419 atoms
+
+83.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.192e-06  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45882.0 ave       45882 max       45882 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45882
+Ave neighs/atom = 109.50358
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 580 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  424 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     580            0      -2212.5          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46552.0 ave       46552 max       46552 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46552
+Ave neighs/atom = 109.79245
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 325 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  422 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     325            0   -2197.0078          129          133 
+Loop time of 1.19209e-06 on 1 procs for 0 steps with 422 atoms
+
+167.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.192e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46300.0 ave       46300 max       46300 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46300
+Ave neighs/atom = 109.71564
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 437 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  422 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     437            0   -2197.1673          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46290.0 ave       46290 max       46290 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46290
+Ave neighs/atom = 109.69194
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 118 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  418 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  418 atoms added
+  418 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+130 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     118            0   -2162.9746          128          130 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 418 atoms
+
+419.4% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        418.000 ave         418 max         418 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        766.000 ave         766 max         766 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45704.0 ave       45704 max       45704 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45704
+Ave neighs/atom = 109.33971
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 667 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  418 atoms before read
+  424 atoms in snapshot
+  418 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     667            0   -2212.8209          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46510.0 ave       46510 max       46510 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46510
+Ave neighs/atom = 109.69340
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 164 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  419 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     164            0   -2174.2308          128          131 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 419 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45846.0 ave       45846 max       45846 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45846
+Ave neighs/atom = 109.41766
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 657 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  424 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     657            0   -2212.1674          130          134 
+Loop time of 3.09944e-06 on 1 procs for 0 steps with 424 atoms
+
+129.1% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 3.099e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46520.0 ave       46520 max       46520 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46520
+Ave neighs/atom = 109.71698
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 541 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     541            0   -2212.7346          130          134 
+Loop time of 3.09944e-06 on 1 procs for 0 steps with 424 atoms
+
+96.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 3.099e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46668.0 ave       46668 max       46668 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46668
+Ave neighs/atom = 110.06604
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 562 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  424 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  424 atoms added
+  424 atoms after read
+group groupSi type 1
+130 atoms in group groupSi
+group groupC type 2
+134 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     562            0   -2213.6703          130          134 
+Loop time of 1.90735e-06 on 1 procs for 0 steps with 424 atoms
+
+157.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.907e-06  |            |       |100.00
+
+Nlocal:        424.000 ave         424 max         424 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        782.000 ave         782 max         782 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46606.0 ave       46606 max       46606 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46606
+Ave neighs/atom = 109.91981
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 309 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  424 atoms before read
+  421 atoms in snapshot
+  424 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  421 atoms added
+  421 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+132 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     309            0   -2190.7303          129          132 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 421 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        421.000 ave         421 max         421 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        775.000 ave         775 max         775 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46044.0 ave       46044 max       46044 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46044
+Ave neighs/atom = 109.36817
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 68 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  421 atoms before read
+  417 atoms in snapshot
+  421 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  417 atoms added
+  417 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+129 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      68            0   -2158.8024          128          129 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 417 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        417.000 ave         417 max         417 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        765.000 ave         765 max         765 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45550.0 ave       45550 max       45550 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45550
+Ave neighs/atom = 109.23261
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 377 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  417 atoms before read
+  422 atoms in snapshot
+  417 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     377            0   -2198.1227          129          133 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 422 atoms
+
+139.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46318.0 ave       46318 max       46318 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46318
+Ave neighs/atom = 109.75829
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 205 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  419 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  419 atoms added
+  419 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     205            0   -2176.5321          128          131 
+Loop time of 1.19209e-06 on 1 procs for 0 steps with 419 atoms
+
+167.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.192e-06  |            |       |100.00
+
+Nlocal:        419.000 ave         419 max         419 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        769.000 ave         769 max         769 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45906.0 ave       45906 max       45906 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45906
+Ave neighs/atom = 109.56086
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 50 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  419 atoms before read
+  417 atoms in snapshot
+  419 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  417 atoms added
+  417 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+129 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      50            0   -2158.0808          128          129 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 417 atoms
+
+209.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        417.000 ave         417 max         417 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        765.000 ave         765 max         765 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45526.0 ave       45526 max       45526 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45526
+Ave neighs/atom = 109.17506
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 384 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  417 atoms before read
+  422 atoms in snapshot
+  417 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  422 atoms added
+  422 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+133 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     384            0   -2197.8774          129          133 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 422 atoms
+
+314.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        422.000 ave         422 max         422 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        776.000 ave         776 max         776 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      46304.0 ave       46304 max       46304 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 46304
+Ave neighs/atom = 109.72512
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 229 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  422 atoms before read
+  420 atoms in snapshot
+  422 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  420 atoms added
+  420 atoms after read
+group groupSi type 1
+129 atoms in group groupSi
+group groupC type 2
+131 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+     229            0   -2180.6597          129          131 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 420 atoms
+
+0.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        420.000 ave         420 max         420 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        772.000 ave         772 max         772 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45954.0 ave       45954 max       45954 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45954
+Ave neighs/atom = 109.41429
+Neighbor list builds = 0
+Dangerous builds = 0
+read_dump lammps/gcmc.dump 71 x y z purge yes replace no add yes box no scaled no format xyz
+Scanning dump file ...
+Reading snapshot from dump file ...
+  orthogonal box = (0.0000000 0.0000000 -21.798000) to (21.798000 21.798000 21.798000)
+  420 atoms before read
+  417 atoms in snapshot
+  420 atoms purged
+  0 atoms replaced
+  0 atoms trimmed
+  417 atoms added
+  417 atoms after read
+group groupSi type 1
+128 atoms in group groupSi
+group groupC type 2
+129 atoms in group groupC
+variable nSi equal count(groupSi)
+variable nC equal count(groupC)
+run 0
+WARNING: No fixes defined, atoms won't move (src/verlet.cpp:54)
+Per MPI rank memory allocation (min/avg/max) = 3.105 | 3.105 | 3.105 Mbytes
+Step Temp PotEng v_nSi v_nC 
+      71            0   -2158.0974          128          129 
+Loop time of 9.53674e-07 on 1 procs for 0 steps with 417 atoms
+
+104.9% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 9.537e-07  |            |       |100.00
+
+Nlocal:        417.000 ave         417 max         417 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        765.000 ave         765 max         765 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      45494.0 ave       45494 max       45494 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45494
+Ave neighs/atom = 109.09832
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:01
