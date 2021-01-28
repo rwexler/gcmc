@@ -17,6 +17,11 @@ from lammps import lammps
 xsf_filename   = sys.argv[1] # read xsf filename
 el_filename    = sys.argv[2] # read element list filename
 
+lmp_init       = ""
+dump_file      = ""
+step_max       = 5000
+biasProposals = False       # don't use lammps, just the basic random structure proposal
+
 #############################
 # SET SIMULATION PARAMETERS #
 #############################
@@ -63,17 +68,7 @@ bvo = BondValence()
 mc_run = MonteCarlo(T_move, max_disp, xsf)
 
 lmp = lammps()
-# sets up atom coordinates
-lmp.file(infile)
-
-lmp.command("variable e equal pe")
-
-# run 0 to get energy of perfect lattice
-# emin = minimum energy
-lmp.command("run 0")
-
-emin = lmp.extract_compute("thermo_pe",0,0) / natoms
-lmp.command("variable emin equal $e")
+lmp.file(lmp_init)
 		
 ###################################
 # RUN GRAND CANONICAL MONTE CARLO #
@@ -94,55 +89,55 @@ for i in range(niter) :
 		# alway start with move
 		mc_run.uvt_propose_structure(el, np.array([1,0,0,0,0]), bvo) 
 	else :
-		mc_run.uvt_propose_structure(el, act_p, bvo) 
+		if biasProposals:
+            # load biased proposals from LAMMPS dump files, proposals that are part of a markov chain with the classical hamiltonian
+            mc_run.uvt_propose_structure_lammps(el, lmp, dump_file, step_max)
+        else:
+            mc_run.uvt_propose_structure(el, act_p, bvo) 
 
-	if useQE:
-		# get energy and structure from QE and XSF
-		# make input file
-		make_qe_in('qe.in', mc_run.proposed_xsf, el)
+    # get energy and structure from QE and XSF
+    # make input file
+    make_qe_in('qe.in', mc_run.proposed_xsf, el)
 
-		# if not move step, then replace scf with relax
-		if mc_run.uvt_act != 0 :
-			os.system('sed -i "s/scf/relax/g" qe.in')
+    # if not move step, then replace scf with relax
+    if mc_run.uvt_act != 0 :
+        os.system('sed -i "s/scf/relax/g" qe.in')
 		
-		# if number of atoms is smaller than or equal to 6, make sure it has 36 bands
-		# note that in the future it should be evaluated based on number of electrons
-		# and the threshold for the number of bands should be -ndiag in qe
-		if mc_run.proposed_xsf.atom_num <= 6 :
-			os.system('sed -i "/&SYSTEM/a nbnd = 36" qe.in')
+    # if number of atoms is smaller than or equal to 6, make sure it has 36 bands
+    # note that in the future it should be evaluated based on number of electrons
+    # and the threshold for the number of bands should be -ndiag in qe
+    if mc_run.proposed_xsf.atom_num <= 6 :
+        os.system('sed -i "/&SYSTEM/a nbnd = 36" qe.in')
 		
-		# calculate and get total energy by calling QE
-		call_qe = 'mpiexec_mpt -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -ndiag ' + str(ndiag) + ' -i qe.in > qe.out'
-		subprocess.call(call_qe, shell = True)
-		qe_out = qe_out_info('qe.out')
+    # calculate and get total energy by calling QE
+    call_qe = 'mpiexec_mpt -np ' + str(nproc) + ' ../bin/pw.x -nk ' + str(nkdiv) + ' -ndiag ' + str(ndiag) + ' -i qe.in > qe.out'
+    subprocess.call(call_qe, shell = True)
+    qe_out = qe_out_info('qe.out')
 
-		# get energy and forces from qe
-		if os.popen('grep ! qe.out').read() == '' :
-			# qe failed at first scf step
-			new_en = fail_en
-			mc_run.proposed_xsf.atom_forces = np.zeros((mc_run.proposed_xsf.atom_num, 3))
-		else :
-			# get energy from qe
-			new_en = qe_out.get_final_en()
-			# get forces from qe
-			mc_run.proposed_xsf.atom_forces = qe_out.get_forces(mc_run.proposed_xsf.atom_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
+    # get energy and forces from qe
+    if os.popen('grep ! qe.out').read() == '' :
+        # qe failed at first scf step
+        new_en = fail_en
+        mc_run.proposed_xsf.atom_forces = np.zeros((mc_run.proposed_xsf.atom_num, 3))
+    else :
+        # get energy from qe
+        new_en = qe_out.get_final_en()
+        # get forces from qe
+        mc_run.proposed_xsf.atom_forces = qe_out.get_forces(mc_run.proposed_xsf.atom_num) * ry_ev / bohr_ang # convert forces from ry/bohr to ev/ang
 
-		# if not move step and qe does not fail at first step, update atomic coordinates
-		if ( os.popen('grep ! qe.out').read() != '' and mc_run.uvt_act != 0 ) :
-			mc_run.proposed_xsf.atom_coords = qe_out.get_coord(mc_run.proposed_xsf.atom_num)
-	else:
-		# using LAMMPS for calculations
-		# assume that the proposed structure coordinates pointer already points to the lammps memory block
-		# this means the changes to the proposed structure coordinates would 
+    # if not move step and qe does not fail at first step, update atomic coordinates
+    if ( os.popen('grep ! qe.out').read() != '' and mc_run.uvt_act != 0 ) :
+        mc_run.proposed_xsf.atom_coords = qe_out.get_coord(mc_run.proposed_xsf.atom_num)
+		      
 	# decide whether or not to accept uvt action 
-	# note that old_xsf is changed to proposed_xsf if accepted
+	# note that current_xsf is changed to proposed_xsf if accepted if it was a move
 	accept = mc_run.uvt_mc(new_en, el, mu_list)
 
 	# calculate free energy 
 	free_en, _ = mc_run.get_free_g_p(new_en, el, mu_list)
 
 	# if step is accepted set current xsf to the proposed (and now accepted) structure
-	if accept == 1 :
+    if accept == 1 :
 		mc_run.current_xsf = mc_run.proposed_xsf.copy()
 
 	# update logs if no qe error
