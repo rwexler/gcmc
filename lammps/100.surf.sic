@@ -11,8 +11,8 @@ boundary	p p f
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
 variable			lat_const equal 4.3596
-variable			lbox equal 4.0
-variable			lzbox equal 2.0
+variable			lbox equal 3.0
+variable			lzbox equal 1.0
 variable			myTemp equal 500
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
@@ -59,7 +59,7 @@ group				frozenC type 4
 group				frozen_atoms union frozenSi frozenC
 
 pair_style 		tersoff
-pair_coeff		 * * ../SiC.tersoff Si C Si C
+pair_coeff		 * * /home/wwatk/gcmc/lammps/SiC.tersoff Si C Si C
 neighbor			5.0 bin
 neigh_modify	delay 0 every 1 check yes
 

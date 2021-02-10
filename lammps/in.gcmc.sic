@@ -9,7 +9,7 @@ atom_style	atomic
 dimension	3
 boundary	p p f
 
-# these are index variables in case they are to be iterated over or set from the commandline
+# these are index variables in case they are to be iterated over or set from the commandline"
 variable			si_mu_ex index 5.0
 variable			c_mu_ex index 5.5
 
@@ -20,9 +20,10 @@ variable			lat_const equal 4.3596
 variable			myTemp equal 500
 variable			pressSi equal 0.1
 variable 			pressC equal 0.1
-variable			disp equal 0.5
-variable			lbox equal 4.0
-variable			lzbox equal 2.0
+# typical interatomic distance for displacement
+variable			disp equal $(1.0*v_lat_const)
+variable			lbox equal 3.0
+variable			lzbox equal 1.0
 
 variable			h equal 4.135667e-3				# in eV*ps
 variable			kT equal "8.617333e-5*v_myTemp"
@@ -55,13 +56,21 @@ orient z 0 0 1
 region whole block 0 ${lbox} 0 ${lbox} $(-v_lzbox-1) $(v_lzbox+1)  units lattice
 create_box 4 whole
 
+region dynamic block EDGE EDGE EDGE EDGE $(-v_lzbox) EDGE units lattice
+region add block EDGE EDGE EDGE EDGE 0 EDGE units lattice
+
 mass 1  ${massSi}
 mass 2  ${massC}
 
 mass 3 ${massSi}
 mass 4 ${massC}
 
-read_dump		dumps/struct.init 10000 x y z add yes
+#read_dump		dumps/struct.init 10000 x y z add yes
+read_dump		struct.init 10000 x y z add yes
+reset_timestep		0
+
+#create_atoms		1 random 2 12345 add
+#create_atoms		2 random 2 98765 add
 
 group				groupSi type 1 
 group				groupC type 2 
@@ -74,50 +83,65 @@ group				frozen_atoms union frozenSi frozenC
 variable			nSi equal count(groupSi)
 variable			nC equal count(groupC)
 
-# ---------- Define Interatomic Potential --------------------- 
-pair_style 		tersoff
-pair_coeff		 * * ../SiC.tersoff Si C Si C
-neighbor			5.0 bin
-neigh_modify	delay 0 every 1 check yes
+# ---------- Define Interatomic Potential ---------------------#
+# use hybrid pair style bcause I don't want any potential for 3* 3* because they don't move anyway
+# I want 1*2 3* to still interact though 
+pair_style 			hybrid tersoff
+pair_coeff			* * tersoff /home/wwatk/gcmc/lammps/SiC.tersoff Si C Si C
+pair_coeff			3* 3* none
+neighbor			3.0 bin
+# exclude type 3 3 exluce type 4 4 will remove the frozen pair interaction from being calculated
+# we still want interactions between the slab and the dynamic atoms though
+neigh_modify			delay 0 every 1 check yes exclude type 3 3 exclude type 4 4
 
 # gaussian initializiaton with velocity Anderson rescaling to get the exact right temperaure with compute
 velocity			mdatoms create ${myTemp} 12345
 
 dump				mydump all xyz 10 dumps/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).xyz
-log					logs/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).lammps
+log				logs/muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f).lammps
 
-print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+print				"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
 
 timestep			0.0001
 
 # need dynamic dof bc I add particles ( 3 more per particle)
-compute			mdtemp mdatoms temp
-compute_modify	mdtemp dynamic/dof yes
+compute				mdtemp mdatoms temp
+compute_modify			mdtemp dynamic/dof yes
 
-fix					mynvt mdatoms nvt temp ${myTemp} ${myTemp} $(100.0*dt) drag 0.0
-fix_modify		mynvt temp mdtemp
+fix				mynvt mdatoms nvt temp ${myTemp} ${myTemp} $(100.0*dt) drag 0.0
+fix_modify			mynvt temp mdtemp
 
-fix					freeze frozen_atoms setforce 0.0 0.0 0.0
+fix				freeze frozen_atoms setforce 0.0 0.0 0.0
 
-fix					gcmcSi groupSi gcmc 5 128 128 1 12345 ${myTemp} ${si_mu} ${disp} full_energy
-fix					gcmcC groupC gcmc 5 128 128 2 98765 ${myTemp} ${c_mu} ${disp} full_energy
+# do N MC moves every step so that one MD timestep equals one MC cycle
+# 0.1 GC steps every 1 timestep, so that 10 MC cycles go by between each GC attempt on average
+fix				gcmcSi groupSi gcmc 10 1 0 1 12345 ${myTemp} ${si_mu} ${disp} full_energy region dynamic
+fix				gcmcC  groupC  gcmc 10 1 0 2 98765 ${myTemp} ${c_mu} ${disp} full_energy region dynamic
+
+# fix				mcSi groupSi gcmc 10 0 ${nSi} 1 12345 ${myTemp} ${si_mu} ${disp} full_energy region dynamic
+# fix				mcC  groupC  gcmc 10 0 ${nC}  2 98765 ${myTemp} ${c_mu}  ${disp} full_energy region dynamic
 
 # fix					swapFix mdatoms atom/swap 1 10 34567 ${myTemp} semi-grand yes types 1 2 mu ${si_mu} ${c_mu}
 
-variable			taccSi equal f_gcmcSi[2]/(f_gcmcSi[1]+0.1)
+# the probability of translation is based on mcSI and mcC fixes
+variable			taccSi equal f_mcSi[2]/(f_mcSi[1]+0.1)
 variable			iaccSi equal f_gcmcSi[4]/(f_gcmcSi[3]+0.1)
 variable			daccSi equal f_gcmcSi[6]/(f_gcmcSi[5]+0.1)
 
-variable			taccC equal f_gcmcC[2]/(f_gcmcC[1]+0.1)
+variable			taccC equal f_mcC[2]/(f_mcC[1]+0.1)
 variable			iaccC equal f_gcmcC[4]/(f_gcmcC[3]+0.1)
 variable			daccC equal f_gcmcC[6]/(f_gcmcC[5]+0.1)
 
-thermo			10
-thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] v_taccSi v_taccC
+run				0
+variable			reduced_pe equal "pe - v_c_mu*v_nC - v_si_mu*v_nSi"
+
+thermo				10
+# step temperature PE v v insertion_prob deletion_prob insertion_prob deletion_prob translation_acc translation_acc
+thermo_style			custom step temp pe v_reduced_pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] #v_taccSi v_taccC
 thermo_modify temp mdtemp
 
 # other useful parameters: f_widomSi[1] f_widomSi[2] f_widomC[1] f_widomC[2] f_swapFix[2]
 # thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
 # thermo_modify	lost warn
 
-run					1000000
+run					1000

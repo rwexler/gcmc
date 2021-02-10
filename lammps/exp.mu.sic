@@ -4,7 +4,8 @@
 #	Using Tersoff Potential
 #######################################
 
-variable Exp string "ExpSurfCterm100"
+variable path index "../"
+variable Exp string "benchmark_no_omp"
 shell mkdir ${Exp}
 shell mkdir ${Exp}/dumps
 shell mkdir ${Exp}/logs
@@ -17,17 +18,21 @@ shell cd ${Exp}
 # -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
 # -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
 
-variable si_mu_ex index -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
-variable c_mu_ex index -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
+# variable si_mu_ex index -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
+# variable c_mu_ex universe -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
+variable si_mu_ex index -5.00 -5.25 -5.50
+variable c_mu_ex universe -5.00 -5.25 -5.50
 
-include		../100.surf.sic
-clear
+# this was included to create and equilibrate the structure, but with multiple processors, they will
+# all try to run this which we don't want, since they will overwrite eachother's struct.init
+# include		${path}/100.surf.sic
+# clear
 
 label		a
 label		b
 
 print			"Excess muSi $(v_si_mu_ex:%2.2f) and muC $(v_c_mu_ex:%2.2f)"
-include		../in.gcmc.sic
+include		${path}/in.gcmc.sic
 clear
 
 next			si_mu_ex
@@ -35,6 +40,9 @@ jump		SELF b
 
 # if the jump was skipped that means si_mu_ex indices were exhausted, 
 # so redefine it and increment c_mu_ex
-variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
+#variable si_mu_ex index -3.25 -4.25 -5.25 -6.25 -7.25 -8.25
+variable si_mu_ex index -5.00 -5.25 -5.50
+# variable si_mu_ex index -5.00 -5.05 -5.10 -5.15 -5.20 -5.25 -5.30 -5.35 -5.40 -5.45 -5.50
+
 next			c_mu_ex
 jump		SELF a
