@@ -1,14 +1,17 @@
 import sys
 import copy
-from io import xsf_info, el_info
-from io import qe_out_info, make_qe_in
-from io import init_log, upd_log
-from io import init_axsf, upd_axsf
-from mc import mc
+print("sys.path", sys.path)
+sys.path.append('/home/wwatk/.local/lib64/python3.6/site-packages')
+#from io import xsf_info, el_info
+from input_output import qe_out_info, make_qe_in
+from input_output import init_log, upd_log
+from input_output import init_axsf, upd_axsf
+from mc import MonteCarlo
 from bv import bv
 import os
 import numpy as np
 import subprocess
+
 from lammps import lammps
 
 ####################
@@ -55,7 +58,7 @@ el = Element_info(el_filename, T_move)
 ##############################
 if useQE:
 	xsf = Structure_xsf(xsf_filename, el, buf_len)
-else
+else:
 	xsf = None
 ####################################
 # GET NEAREST NEIGHBOR INFORMATION #
@@ -84,14 +87,14 @@ axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initia
 
 failed_cnt = 0
 for i in range(niter) :
-	# attempt uvt action and store xsf attributes in xsf_new
-	if i == 0 : 
+    if biasProposals: 
+        #load biased proposals from LAMMPS dump files, proposals that are part of a markov chain with the classical hamiltonian
+        mc_run.uvt_propose_structure_lammps(el, lmp, dump_file, step_max)
+    else:
+        # attempt uvt action and store xsf attributes in xsf_new
+        if i == 0 : 
 		# alway start with move
-		mc_run.uvt_propose_structure(el, np.array([1,0,0,0,0]), bvo) 
-	else :
-		if biasProposals:
-            # load biased proposals from LAMMPS dump files, proposals that are part of a markov chain with the classical hamiltonian
-            mc_run.uvt_propose_structure_lammps(el, lmp, dump_file, step_max)
+            mc_run.uvt_propose_structure(el, np.array([1,0,0,0,0]), bvo) 
         else:
             mc_run.uvt_propose_structure(el, act_p, bvo) 
 
@@ -131,27 +134,27 @@ for i in range(niter) :
 		      
 	# decide whether or not to accept uvt action 
 	# note that current_xsf is changed to proposed_xsf if accepted if it was a move
-	accept = mc_run.uvt_mc(new_en, el, mu_list)
+        accept = mc_run.uvt_mc(new_en, el, mu_list)
 
 	# calculate free energy 
-	free_en, _ = mc_run.get_free_g_p(new_en, el, mu_list)
+        free_en, _ = mc_run.get_free_g_p(new_en, el, mu_list)
 
-	# if step is accepted set current xsf to the proposed (and now accepted) structure
+        # if step is accepted set current xsf to the proposed (and now accepted) structure
     if accept == 1 :
-		mc_run.current_xsf = mc_run.proposed_xsf.copy()
+        mc_run.current_xsf = mc_run.proposed_xsf.copy()
 
-	# update logs if no qe error
-	if new_en != fail_en :
-		# write energies, number of accepted steps, and acceptance rate to log file
-		upd_log(log_file, i - failed_cnt, free_en, mc_run)
-		# write atomic coordinates to axsf file
-		upd_axsf(axsf_opt_file, i - failed_cnt, mc_run.opt_xsf, el)
-		upd_axsf(axsf_new_file, i - failed_cnt, mc_run.proposed_xsf, el)
-		upd_axsf(axsf_accept_file, i - failed_cnt, mc_run.current_xsf, el)
-	else :
-		failed_cnt += 1
-		upd_axsf(axsf_failed_file, failed_cnt, mc_run.proposed_xsf, el)
-		upd_axsf(axsf_failed_iter_file, i, mc_run.proposed_xsf, el)
+        # update logs if no qe error
+        if new_en != fail_en :
+            # write energies, number of accepted steps, and acceptance rate to log file
+            upd_log(log_file, i - failed_cnt, free_en, mc_run)
+            # write atomic coordinates to axsf file
+            upd_axsf(axsf_opt_file, i - failed_cnt, mc_run.opt_xsf, el)
+            upd_axsf(axsf_new_file, i - failed_cnt, mc_run.proposed_xsf, el)
+            upd_axsf(axsf_accept_file, i - failed_cnt, mc_run.current_xsf, el)
+        else :
+            failed_cnt += 1
+            upd_axsf(axsf_failed_file, failed_cnt, mc_run.proposed_xsf, el)
+            upd_axsf(axsf_failed_iter_file, i, mc_run.proposed_xsf, el)
 
 log_file.close()
 axsf_opt_file.close()

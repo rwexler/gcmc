@@ -69,8 +69,8 @@ mass 4 ${massC}
 read_dump		struct.init 10000 x y z add yes
 reset_timestep		0
 
-#create_atoms		1 random 2 12345 add
-#create_atoms		2 random 2 98765 add
+create_atoms		1 random 2 12345 add
+create_atoms		2 random 2 98765 add
 
 group				groupSi type 1 
 group				groupC type 2 
@@ -144,4 +144,4 @@ thermo_modify temp mdtemp
 # thermo_style	custom step temp pe v_nSi v_nC f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] f_gcmcSi[3] f_gcmcSi[5]
 # thermo_modify	lost warn
 
-run					1000
+run					1000000
