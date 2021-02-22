@@ -36,23 +36,22 @@ def plot_stats(df, filename, makePDF = True):
     #pace = np.asarray(pace)
     
     # define a cutoff for which the system is still equilibrating
-    cutoff = 50
+    # cutoff = 50
     
-    poteng = df['PE'].values[cutoff:] 
-    redPot = df['redPot'].values[cutoff:] 
-    nacc_insSi = df['nacc_insSi'].values[cutoff:] 
-    nacc_delSi = df['nacc_delSi'].values[cutoff:] 
-    nacc_insC = df['nacc_insC'].values[cutoff:] 
-    nacc_delC = df['nacc_delC'].values[cutoff:] 
-    indices = df['indx'].values[cutoff:] 
-
-    prcnt_insSi = nacc_insSi/indices
-    prcnt_delSi = nacc_delSi/indices
-    prcnt_insC = nacc_insC/indices
-    prcnt_delC = nacc_delC/indices
+    poteng = df['PE'].values #[cutoff:] 
+    redPot = df['redPot'].values
+    nacc_insSi = df['nacc_insSi'].values
+    nacc_delSi = df['nacc_delSi'].values
+    nacc_insC = df['nacc_insC'].values
+    nacc_delC = df['nacc_delC'].values
+    indices = df['indx'].values
+    
+    nSi = df['nSi'].values 
+    nC = df['nC'].values 
+    comp = nSi/nC
     
     # plot contents of log file
-    fig, (ax0, ax1, ax2) = plt.subplots(ncols=3, figsize=(12, 4))
+    fig, (ax0, ax1) = plt.subplots(ncols=2, figsize=(8, 4))
 
     # plot energies
     ax0.plot(indices, poteng, 'b--', label = 'Potential')
@@ -65,9 +64,31 @@ def plot_stats(df, filename, makePDF = True):
     #ax0.set_ylim(en_min, en_max)
     ax3 = ax0.twinx()
     ax3.plot(indices, redPot, 'r--', label = 'Reduced Potential')
-    ax3.set_ylabel('Reduced Potential Energy (eV)', color = 'r')
+    ax3.set_ylabel('Grand Potential Energy (eV)', color = 'r')
     ax3.tick_params('y', labelcolor='r')
+    
+    ax1.plot(indices, comp, 'k--', linewidth=1.5, label='Si/C')
+    ax1.legend(loc='right')
+    ax1.set_xlabel('Step Number')
+    ax1.set_ylabel('% Composition')
+    ax1.set_title('Ratio of Composition nSi/nC')
 
+    fig.tight_layout()
+    plt.savefig( generate_plot_filename(filename, "_stats") )
+
+def plot_accs(df, filename, makePDF = True):
+    nacc_insSi = df['nacc_insSi'].values 
+    nacc_delSi = df['nacc_delSi'].values
+    nacc_insC = df['nacc_insC'].values
+    nacc_delC = df['nacc_delC'].values
+    indices = df['indx'].values
+    
+    prcnt_insSi = nacc_insSi/indices
+    prcnt_delSi = nacc_delSi/indices
+    prcnt_insC = nacc_insC/indices
+    prcnt_delC = nacc_delC/indices
+    
+    fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(8, 4))
     # plot number of accepted steps and the percentage of accepted steps
     ax1.plot(indices, nacc_insSi, 'k-', label = "Inserted Si")
     ax1.plot(indices, nacc_delSi, 'b-', label = "Deleted Si")
@@ -86,8 +107,8 @@ def plot_stats(df, filename, makePDF = True):
     ax2.legend(loc="upper right")
 
     fig.tight_layout()
-    plt.savefig( generate_plot_filename(filename, "_stats") )
-
+    plt.savefig( generate_plot_filename(filename, "_accs") )
+    
 def plot_phase_diagram(df, filename, makePDF = True):    
     dmu_line = np.linspace(-2, 0, 101)
     pref_phase = np.zeros((dmuOs.shape[0], ))

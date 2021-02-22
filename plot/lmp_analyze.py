@@ -19,6 +19,9 @@ def main():
     parser.add_argument('--stats', dest='plot_stats', action='store_const', 
                 const=True, default=False,
                 help='plot the statistics of the system (default: False)')
+    parser.add_argument('--acc', dest='plot_accs', action='store_const', 
+                const=True, default=False,
+                help='plot the acceptance numbers and percentages of the system (default: False)')
     args = parser.parse_args()
     params = vars(args)
 
@@ -31,6 +34,8 @@ def main():
         plot_comp(df, filename)
     if params['plot_stats']:
         plot_stats(df, filename)
+    if params['plot_accs']:
+        plot_accs(df, filename)
     
 def scrape_structs(filename):
     ''' 

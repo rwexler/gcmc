@@ -8,7 +8,8 @@ def generate_plot_filename(filename, str_title, makePDF = True):
     and a string to decribe the file
     '''
     # the file name without the .lammps or .log etc
-    file_no_suf = filename.split('.')[0]
+    # but there might be decimals so only cut out the last one
+    file_no_suf = '.'.join( filename.split('.')[:-1] )
     plt_filename = file_no_suf + str_title #"_comp_plot" or "_stats_plot"
     if makePDF:
         plt_filename += ".pdf"
@@ -18,7 +19,7 @@ def generate_plot_filename(filename, str_title, makePDF = True):
     
 def generate_df_filename(filename):
     # the file name without the .lammps or .log etc
-    file_no_suf = filename.split('.')[0]
+    file_no_suf = '.'.join( filename.split('.')[:-1] )
     return file_no_suf + ".csv"
     
 def get_num_structs(filename):
