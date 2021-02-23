@@ -68,7 +68,7 @@ def scrape_structs(filename):
     # [0] Silicon, [1] Carbon
     num_elements = 2
     # right now the other method to count number of structures is too slow to actually be feasible 
-    num_structs = 10001
+    num_structs = 100001
     print("num structures:", num_structs)
                     
     # get number of atoms and
