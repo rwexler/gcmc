@@ -62,15 +62,15 @@ def scrape_structs(filename):
     # essentially the potential energy and the acceptances of insert/remove/translate for Si and C respectively    
     col_names = ['indx', 'T', 'PE', 'rU', 'nSi', 'nC', 'nacc_insSi', 'nacc_delSi', 'nacc_insC', 'nacc_delC', 
                     'GammaO', 'Eslab', 'EbulkAgO', 'EbulkO', 'Phi', 'A']
-    df = pd.DataFrame(columns = col_names)
+    num_elements = 2
+    # right now the other method to count number of structures is too slow to actually be feasible 
+    num_structs = 10001
+    print("num structures:", num_structs)
+    df = pd.DataFrame(columns = col_names, index = np.arange(num_structs))
 
     area = 5
     # [0] Silicon, [1] Carbon
-    num_elements = 2
-    # right now the other method to count number of structures is too slow to actually be feasible 
-    num_structs = 100001
-    print("num structures:", num_structs)
-                    
+                        
     # get number of atoms and
     # and number of each element
     # for each structure
