@@ -53,27 +53,18 @@ def scrape_structs(filename):
     new_en = []
     en_curr = []
     en_low = []
-    acc = []            # Number of Accepted Steps
-    pace = []           # Percent of Steps Accepted
-    
-    # get contents of log file
-    # for LAMMPS I could imagine I would want to plot these against time
-    # Temp PotEng f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] v_taccSi v_taccC 
-    # essentially the potential energy and the acceptances of insert/remove/translate for Si and C respectively    
-    col_names = ['indx', 'T', 'PE', 'rU', 'nSi', 'nC', 'nacc_insSi', 'nacc_delSi', 'nacc_insC', 'nacc_delC', 
-                    'GammaO', 'Eslab', 'EbulkAgO', 'EbulkO', 'Phi', 'A']
+        
     num_elements = 2
     # right now the other method to count number of structures is too slow to actually be feasible 
-    num_structs = 10001
+    num_structs = 100001
     print("num structures:", num_structs)
-    df = pd.DataFrame(columns = col_names, index = np.arange(num_structs))
-
+    # it is less computationally expensive to make a list and append items
+    # then make the data frame in one go from that list
+    data = []
+    
     area = 5
     # [0] Silicon, [1] Carbon
                         
-    # get number of atoms and
-    # and number of each element
-    # for each structure
     line_list = None
     # don't break on 'Step' because a run 0 would have a dump header with 'Step'
     # only the real run (run 1000000) would have 'PotEng' in dump header
@@ -84,28 +75,31 @@ def scrape_structs(filename):
         for str_ind in range(num_structs) :
             line_list = f.readline().split()
             #print("line_list:", line_list)
-            #num_atoms.append( natoms_si + natoms_c )
+            indx = str_ind + 1
+            T = float(line_list[1])
+            PE = float(line_list[2])
+            redPot = float(line_list[3])
             
-            df.loc[str_ind, 'indx'] = str_ind + 1
-            df.loc[str_ind, 'T'] = float(line_list[1])
-            df.loc[str_ind, 'PE'] = float(line_list[2])
-            df.loc[str_ind, 'redPot'] = float(line_list[3])
+            nSi = int(line_list[4])
+            nC = int(line_list[5])
             
-            df.loc[str_ind, 'nSi'] = int(line_list[4])
-            df.loc[str_ind, 'nC'] = int(line_list[5])
+            nacc_insSi = int(line_list[6])
+            nacc_delSi = int(line_list[7])
+            nacc_insC = int(line_list[8])
+            nacc_delC = int(line_list[9])
             
-            df.loc[str_ind, 'nacc_insSi'] = int(line_list[6])
-            df.loc[str_ind, 'nacc_delSi'] = int(line_list[7])
-            df.loc[str_ind, 'nacc_insC'] = int(line_list[8])
-            df.loc[str_ind, 'nacc_delC'] = int(line_list[9])
-            
-            #df.loc[str_ind, 'GammaO'] = 0
-            #df.loc[str_ind, 'Eslab'] = 0
-            #df.loc[str_ind, 'EbulkAgO'] = 0
-            #df.loc[str_ind, 'EbulkO'] = 0
-            #df.loc[str_ind, 'Phi'] = 0
-            #df.loc[str_ind, 'A'] = area
+            data.append( [indx, T, PE, redPot, nSi, nC, nacc_insSi, nacc_delSi, nacc_insC, nacc_delC, 0, 0, 0, 0, 0, area] )
+            # Gamma0, Eslab, EbulkAgO, EbulkO, Phi
             #df.loc[i + nsurf_run, 'dir'] = dir
+            
+    # get contents of log file
+    # for LAMMPS I could imagine I would want to plot these against time
+    # Temp PotEng f_gcmcSi[4] f_gcmcSi[6] f_gcmcC[4] f_gcmcC[6] v_taccSi v_taccC 
+    # essentially the potential energy and the acceptances of insert/remove/translate for Si and C respectively    
+    col_names = ['indx', 'T', 'PE', 'redPot', 'nSi', 'nC', 'nacc_insSi', 'nacc_delSi', 'nacc_insC', 'nacc_delC', 
+                    'GammaO', 'Eslab', 'EbulkAgO', 'EbulkO', 'Phi', 'A']
+                    
+    df = pd.DataFrame(data, columns = col_names, )
     df.to_csv( generate_df_filename(filename), index = False)
     return df
     

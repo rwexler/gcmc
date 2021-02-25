@@ -40,10 +40,10 @@ def plot_stats(df, filename, makePDF = True):
     
     poteng = df['PE'].values #[cutoff:] 
     redPot = df['redPot'].values
-    nacc_insSi = df['nacc_insSi'].values
-    nacc_delSi = df['nacc_delSi'].values
-    nacc_insC = df['nacc_insC'].values
-    nacc_delC = df['nacc_delC'].values
+    #nacc_insSi = df['nacc_insSi'].values
+    #nacc_delSi = df['nacc_delSi'].values
+    #nacc_insC = df['nacc_insC'].values
+    #nacc_delC = df['nacc_delC'].values
     indices = df['indx'].values
     
     nSi = df['nSi'].values 
@@ -62,10 +62,11 @@ def plot_stats(df, filename, makePDF = True):
     #en_min = np.min(poteng)
     #en_max = np.max(poteng)
     #ax0.set_ylim(en_min, en_max)
-    ax3 = ax0.twinx()
-    ax3.plot(indices, redPot, 'r--', label = 'Reduced Potential')
-    ax3.set_ylabel('Grand Potential Energy (eV)', color = 'r')
-    ax3.tick_params('y', labelcolor='r')
+    
+    #ax3 = ax0.twinx()
+    #ax3.plot(indices, redPot, 'r--', label = 'Reduced Potential')
+    #ax3.set_ylabel('Grand Potential Energy (eV)', color = 'r')
+    #ax3.tick_params('y', labelcolor='r')
     
     ax1.plot(indices, comp, 'k--', linewidth=1.5, label='Si/C')
     ax1.legend(loc='right')
