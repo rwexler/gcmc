@@ -34,3 +34,35 @@ def get_num_structs(filename):
             if 'Loop' in line:
                 start_cnt = False
     return num_structs
+    
+def convert_to_ase(filename):
+    '''
+        the full xyz filename
+        Converts the types (1,2,3,4) to (Si, C, Si, C)
+        to be properly read by ASE's xyz reader
+    '''
+    file_no_suf = '.'.join( filename.split('.')[:-1] )
+    file_ase = file_no_suf + "_ase.xyz"
+    open(file_ase,"w").close()
+    outfile = open(file_ase,"w")
+     
+    start = False
+
+    with open(filename, 'r') as f:
+        for line in f:
+            line_list = line.split()
+            #print("line list", line_list)
+            if line_list[0] == "1":
+                line_list[0] = "Si"
+            elif line_list[0] == "2":
+                line_list[0] = "C"
+            if line_list[0] == "3":
+                line_list[0] = "Si"
+            elif line_list[0] == "4":
+                line_list[0] = "C"
+
+            line = " ".join(line_list) + "\n"
+            outfile.write(line)
+            #print("new line", line)
+    outfile.close()      
+    return file_ase
