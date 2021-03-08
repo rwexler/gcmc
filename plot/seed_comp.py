@@ -5,16 +5,16 @@ import pandas as pd
 
 import matplotlib.image as mpimg
 
-
 from lmp_plotting import *
 from lmp_utils import *
+from plot_ase import *
    
 def main():
     filename = "muSi-5.80_muC-5.75_seed"
     filename1 = filename + "1.csv"
     filename2 = filename + "2.csv"
     filename3 = filename + "3.csv"
-    
+       
     file_top = "images/Top "
     file_side = "images/Side "
     imgs_top = []
@@ -26,10 +26,17 @@ def main():
     comp = {}   
     
     for num in range(0, 3):
-        file = file_top + str(num+1) + ".png"
-        imgs_top.append( mpimg.imread(file) )
-        file = file_side + str(num+1) + ".png"
-        imgs_side.append( mpimg.imread(file) )
+        if False:
+            file = file_top + str(num+1) + ".png"
+            imgs_top.append( mpimg.imread(file) )
+            file = file_side + str(num+1) + ".png"
+            imgs_side.append( mpimg.imread(file) )
+        else:
+            plot_ase(filename + str(num+1) + ".xyz")
+            file = filename + str(num+1) + "_top.png"
+            imgs_top.append( mpimg.imread(file) )
+            file = filename + str(num+1) + "_side.png"
+            imgs_side.append( mpimg.imread(file) )
         file = filename + str(num+1) + ".csv"
         df[num] = pd.read_csv( file )
         
@@ -63,7 +70,7 @@ def main():
     axs[0,2].set_title('Orthographic Top View')
     axs[0,3].set_title('Orthographic Side View')
     fig.tight_layout()
-    plt.savefig( "seed_comp.pdf" )
+    plt.savefig( "seed_comp_ase.pdf" )
         
 if __name__ == "__main__":
     main()
