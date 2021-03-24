@@ -48,7 +48,8 @@ def scrape_structs(filename):
     # then count the number of lines between that and either the end of the file or a line that looks like this
     # Loop time of 1031.05 on 1 procs for 1000 steps with 505 atoms
     # the area of simulation is constant
-
+    pathraw = "../results/raw/"
+    pathcsv = "../results/csv/"
     # WHAT WAS THE POINT OF ALL OF THESE DIAGNOSTICS? WHAT IS NEW/CURRENT/LOW ENERGY?
     new_en = []
     en_curr = []
@@ -56,7 +57,7 @@ def scrape_structs(filename):
         
     num_elements = 2
     # right now the other method to count number of structures is too slow to actually be feasible 
-    num_structs = 100001
+    num_structs = 10000
     print("num structures:", num_structs)
     # it is less computationally expensive to make a list and append items
     # then make the data frame in one go from that list
@@ -68,12 +69,13 @@ def scrape_structs(filename):
     line_list = None
     # don't break on 'Step' because a run 0 would have a dump header with 'Step'
     # only the real run (run 1000000) would have 'PotEng' in dump header
-    with open(filename, 'r') as f:
+    with open(pathraw + filename, 'r') as f:
         for line in f:
             if 'PotEng' in line:
                 break
         for str_ind in range(num_structs) :
             line_list = f.readline().split()
+            print("line list:", line_list)
             #print("line_list:", line_list)
             indx = str_ind + 1
             T = float(line_list[1])
@@ -100,7 +102,7 @@ def scrape_structs(filename):
                     'GammaO', 'Eslab', 'EbulkAgO', 'EbulkO', 'Phi', 'A']
                     
     df = pd.DataFrame(data, columns = col_names, )
-    df.to_csv( generate_df_filename(filename), index = False)
+    df.to_csv( pathcsv + generate_df_filename(filename), index = False)
     return df
     
 if __name__ == "__main__":

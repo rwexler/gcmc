@@ -1,0 +1,1366 @@
+# VMD for WIN32, version 1.9.3 (November 30, 2016)
+# Log file 'log.vmd', created by user Will Watkins
+axes location Off
+scale by 1.200000
+scale by 1.200000
+rotate x by -3.000000
+rotate y by -0.666667
+rotate x by -1.200000
+rotate y by -0.266667
+rotate x by -2.666667
+rotate x by -1.066667
+rotate x by -1.666667
+rotate x by -0.666667
+rotate x by -1.666667
+rotate y by 0.333333
+rotate x by -0.666667
+rotate y by 0.133333
+rotate x by -1.333333
+rotate y by 0.333333
+rotate x by -0.533333
+rotate y by 0.133333
+rotate x by -1.333333
+rotate x by -0.533333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -1.000000
+rotate y by -0.333333
+rotate x by -0.400000
+rotate y by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -1.333333
+rotate y by -0.333333
+rotate x by -0.533333
+rotate y by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -1.000000
+rotate x by -0.400000
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -1.000000
+rotate y by -0.666667
+rotate x by -0.400000
+rotate y by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -1.000000
+rotate x by -0.400000
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -1.333333
+rotate y by -0.333333
+rotate x by -0.533333
+rotate y by -0.133333
+rotate x by -0.333333
+rotate y by -0.333333
+rotate x by -0.133333
+rotate y by -0.133333
+rotate x by -1.666667
+rotate y by -0.333333
+rotate x by -0.666667
+rotate y by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -1.333333
+rotate y by -0.666667
+rotate x by -0.533333
+rotate y by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -1.333333
+rotate y by -0.666667
+rotate x by -0.533333
+rotate y by -0.266667
+rotate x by -0.333333
+rotate y by -0.333333
+rotate x by -0.133333
+rotate y by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -1.333333
+rotate x by -0.533333
+rotate x by -0.333333
+rotate y by -0.666667
+rotate x by -0.133333
+rotate y by -0.266667
+rotate x by -1.333333
+rotate x by -0.533333
+rotate x by -1.000000
+rotate y by -0.333333
+rotate x by -0.400000
+rotate y by -0.133333
+rotate x by -0.666667
+rotate y by -0.333333
+rotate x by -0.266667
+rotate y by -0.133333
+rotate x by -1.000000
+rotate y by -0.333333
+rotate x by -0.400000
+rotate y by -0.133333
+rotate x by -1.000000
+rotate y by -0.333333
+rotate x by -0.400000
+rotate y by -0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -1.000000
+rotate x by -0.400000
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate y by 0.333333
+rotate x by -0.266667
+rotate y by 0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate y by 0.333333
+rotate x by -0.266667
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate y by 0.666667
+rotate x by -0.266667
+rotate y by 0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate y by 0.333333
+rotate x by -0.266667
+rotate y by 0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate z by -0.333333
+rotate z by -0.133333
+rotate z by -0.333333
+rotate z by -0.133333
+rotate z by -0.333333
+rotate z by -0.133333
+rotate z by -0.333333
+rotate z by -0.133333
+rotate z by -0.333333
+rotate z by -0.133333
+rotate z by -0.666667
+rotate z by -0.266667
+rotate z by -0.333333
+rotate z by -0.133333
+rotate z by -0.333333
+rotate z by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.666667
+rotate y by -0.333333
+rotate x by 0.266667
+rotate y by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate y by -0.666667
+rotate x by 0.133333
+rotate y by -0.266667
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate x by 0.333333
+rotate x by 0.133333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate y by -1.000000
+rotate x by 0.133333
+rotate y by -0.400000
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate x by 0.666667
+rotate y by -0.333333
+rotate x by 0.266667
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 1.000000
+rotate y by -0.333333
+rotate x by 0.400000
+rotate y by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by 0.333333
+rotate y by 0.333333
+rotate x by 0.133333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -1.000000
+rotate x by -0.400000
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -1.000000
+rotate y by -0.333333
+rotate x by -0.400000
+rotate y by -0.133333
+rotate x by -1.666667
+rotate y by -0.333333
+rotate x by -0.666667
+rotate y by -0.133333
+rotate x by -0.333333
+rotate y by -0.666667
+rotate x by -0.133333
+rotate y by -0.266667
+rotate x by -1.000000
+rotate y by -0.333333
+rotate x by -0.400000
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by -0.666667
+rotate y by -0.333333
+rotate x by -0.266667
+rotate y by -0.133333
+rotate x by -0.333333
+rotate y by -0.333333
+rotate x by -0.133333
+rotate y by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate y by -0.333333
+rotate x by -0.133333
+rotate y by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.666667
+rotate x by -0.266667
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by 0.333333
+rotate y by 0.666667
+rotate x by 0.133333
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate x by 0.333333
+rotate y by 0.333333
+rotate x by 0.133333
+rotate y by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate y by -0.666667
+rotate x by 0.133333
+rotate y by -0.266667
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate y by -1.000000
+rotate x by 0.133333
+rotate y by -0.400000
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.666667
+rotate y by -0.666667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.333333
+rotate y by -0.533333
+rotate x by 0.333333
+rotate y by -1.666667
+rotate x by 0.133333
+rotate y by -0.666667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate y by -1.333333
+rotate x by 0.133333
+rotate y by -0.533333
+rotate y by -1.333333
+rotate y by -0.533333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate x by 0.333333
+rotate y by -1.000000
+rotate x by 0.133333
+rotate y by -0.400000
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -1.333333
+rotate y by -0.533333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate y by -0.666667
+rotate x by 0.133333
+rotate y by -0.266667
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate y by -0.666667
+rotate x by 0.133333
+rotate y by -0.266667
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -1.666667
+rotate y by -0.666667
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -1.000000
+rotate y by -0.400000
+rotate y by -1.666667
+rotate y by -0.666667
+rotate y by -1.333333
+rotate y by -0.533333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate y by -1.333333
+rotate y by -0.533333
+rotate y by -0.666667
+rotate y by -0.266667
+rotate x by 0.333333
+rotate y by -0.333333
+rotate x by 0.133333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 1.000000
+rotate y by 0.400000
+rotate x by 0.333333
+rotate y by 0.333333
+rotate x by 0.133333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by 0.333333
+rotate y by 0.666667
+rotate x by 0.133333
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 2.000000
+rotate y by 0.800000
+rotate y by 1.333333
+rotate y by 0.533333
+rotate y by 1.333333
+rotate y by 0.533333
+rotate y by 2.666667
+rotate y by 1.066667
+rotate y by 1.666667
+rotate y by 0.666667
+rotate y by 1.666667
+rotate y by 0.666667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 1.333333
+rotate y by 0.533333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.666667
+rotate y by 0.266667
+rotate x by -0.333333
+rotate y by 1.000000
+rotate x by -0.133333
+rotate y by 0.400000
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 1.000000
+rotate y by 0.400000
+rotate y by 0.666667
+rotate y by 0.266667
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by -0.333333
+rotate y by 0.333333
+rotate x by -0.133333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate x by -0.333333
+rotate x by -0.133333
+rotate y by 0.333333
+rotate y by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate x by 0.333333
+rotate x by 0.133333
+rotate y by -0.333333
+rotate y by -0.133333
+mol delete 3
+display resetview
+mol addrep 4
+display resetview
+mol new {../results/raw/muSi-5.60_muC-5.75_seed1_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 4
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 4
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 4
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.60_muC-5.75_seed1_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.60_muC-5.75_seed1_side.bmp
+mol delete 4
+display resetview
+mol addrep 5
+display resetview
+mol new {../results/raw/muSi-5.60_muC-5.75_seed2_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 5
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 5
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 5
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.60_muC-5.75_seed2_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.60_muC-5.75_seed2_side.bmp
+mol delete 5
+display resetview
+mol addrep 6
+display resetview
+mol new {../results/raw/muSi-5.60_muC-5.75_seed3_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 6
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 6
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 6
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.60_muC-5.75_seed3_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.60_muC-5.75_seed3_side.bmp
+mol delete 6
+display resetview
+mol addrep 7
+display resetview
+mol new {../results/raw/muSi-5.70_muC-5.75_seed1_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 7
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 7
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 7
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.70_muC-5.75_seed1_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.70_muC-5.75_seed1_side.bmp
+mol delete 7
+display resetview
+mol addrep 8
+display resetview
+mol new {../results/raw/muSi-5.70_muC-5.75_seed2_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 8
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 8
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 8
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.70_muC-5.75_seed2_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.70_muC-5.75_seed2_side.bmp
+mol delete 8
+display resetview
+mol addrep 9
+display resetview
+mol new {../results/raw/muSi-5.70_muC-5.75_seed3_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 9
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 9
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 9
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.70_muC-5.75_seed3_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.70_muC-5.75_seed3_side.bmp
+mol delete 9
+display resetview
+mol addrep 10
+display resetview
+mol new {../results/raw/muSi-5.80_muC-5.75_seed1_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 10
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 10
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 10
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.80_muC-5.75_seed1_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.80_muC-5.75_seed1_side.bmp
+mol delete 10
+display resetview
+mol addrep 11
+display resetview
+mol new {../results/raw/muSi-5.80_muC-5.75_seed2_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 11
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 11
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 11
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.80_muC-5.75_seed2_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.80_muC-5.75_seed2_side.bmp
+mol delete 11
+display resetview
+mol addrep 12
+display resetview
+mol new {../results/raw/muSi-5.80_muC-5.75_seed3_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 12
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 12
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 12
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.80_muC-5.75_seed3_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.80_muC-5.75_seed3_side.bmp
+mol delete 12
+display resetview
+mol addrep 13
+display resetview
+mol new {../results/raw/muSi-5.80_muC-5.85_seed1_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 13
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 13
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 13
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.80_muC-5.85_seed1_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.80_muC-5.85_seed1_side.bmp
+mol delete 13
+display resetview
+mol addrep 14
+display resetview
+mol new {../results/raw/muSi-5.80_muC-5.85_seed2_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 14
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 14
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 14
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.80_muC-5.85_seed2_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.80_muC-5.85_seed2_side.bmp
+mol delete 14
+display resetview
+mol addrep 15
+display resetview
+mol new {../results/raw/muSi-5.80_muC-5.85_seed3_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 15
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 15
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 15
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.80_muC-5.85_seed3_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.80_muC-5.85_seed3_side.bmp
+mol delete 15
+display resetview
+mol addrep 16
+display resetview
+mol new {../results/raw/muSi-5.90_muC-5.75_seed1_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 16
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 16
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 16
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.90_muC-5.75_seed1_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.90_muC-5.75_seed1_side.bmp
+mol delete 16
+display resetview
+mol addrep 17
+display resetview
+mol new {../results/raw/muSi-5.90_muC-5.75_seed2_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 17
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 17
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 17
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.90_muC-5.75_seed2_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.90_muC-5.75_seed2_side.bmp
+mol delete 17
+display resetview
+mol addrep 18
+display resetview
+mol new {../results/raw/muSi-5.90_muC-5.75_seed3_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 18
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 18
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 18
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-5.90_muC-5.75_seed3_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-5.90_muC-5.75_seed3_side.bmp
+mol delete 18
+display resetview
+mol addrep 19
+display resetview
+mol new {../results/raw/muSi-6.00_muC-5.75_seed1_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 19
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 19
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 19
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-6.00_muC-5.75_seed1_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-6.00_muC-5.75_seed1_side.bmp
+mol delete 19
+display resetview
+mol addrep 20
+display resetview
+mol new {../results/raw/muSi-6.00_muC-5.75_seed2_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 20
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 20
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 20
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-6.00_muC-5.75_seed2_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-6.00_muC-5.75_seed2_side.bmp
+mol delete 20
+display resetview
+mol addrep 21
+display resetview
+mol new {../results/raw/muSi-6.00_muC-5.75_seed3_ase.xyz} type {xyz} first -2 last -1 step 1 waitfor -1
+animate style Loop
+mol delrep 0 21
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection z > -0.9
+mol material Opaque
+mol addrep 21
+mol representation CPK 1.000000 0.600000 12.000000 12.000000
+mol color Name
+mol selection all
+mol material Transparent
+mol addrep 21
+display projection Orthographic
+axes location Off
+scale by 1.200000
+scale by 1.200000
+color Display Background white
+color Display BackgroundTop black
+color Display BackgroundBot blue2
+color Display FPS white
+color Name C black
+color Name S cyan
+label textsize 1.000000
+render snapshot ../results/images/muSi-6.00_muC-5.75_seed3_top.bmp
+rotate x by -90.000000
+render snapshot ../results/images/muSi-6.00_muC-5.75_seed3_side.bmp
+mol delete 21

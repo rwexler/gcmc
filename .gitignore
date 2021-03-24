@@ -1,3 +1,4 @@
 # ignore data files like logs and CSVs
 *.lammps
 *.csv
+results/
