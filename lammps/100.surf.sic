@@ -11,8 +11,8 @@ boundary	p p f
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
 variable			lat_const equal 4.3596
-variable			lbox equal 3.0
-variable			lzbox equal 1.0
+variable			lbox index 3.0
+variable			lzbox index 1.0
 variable			myTemp equal 500
 
 # Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
@@ -82,4 +82,4 @@ thermo			100
 thermo_modify temp mdtemp
 run					10000
 
-write_dump		all atom dumps/struct.init
+write_dump		all atom struct.init
