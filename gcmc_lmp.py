@@ -22,7 +22,7 @@ class FixGCMC :
         self.kT = kb*self.T
         
         self.ntotal = nmoves + nexchanges
-        act_p = [nmoves/ntotal, 0.5*nexchanges/ntotal, 0.5*nexchanges/ntotal]
+        act_p = [nmoves/ntotal, 0.0*nexchanges/ntotal, 1.0*nexchanges/ntotal]
         act_cdf = []
         sum = 0
         for p in act_p:
@@ -217,8 +217,8 @@ def main():
     # run infile all at once
     lmp.file(infile)
     
-    gcmcSi = FixGCMC(infile, lmp, "gcmcSi", type = 1)
-    gcmcC = FixGCMC(infile, lmp, "gcmcC", type = 2)
+    gcmcSi = FixGCMC(infile, lmp, "gcmcSi", type = 1, nmoves = 0)
+    gcmcC = FixGCMC(infile, lmp, "gcmcC", type = 2, nmoves = 0)
     for n in range(1000):
         gcmc1.run()
         gcmc2.run()

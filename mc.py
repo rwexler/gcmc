@@ -72,8 +72,10 @@ class MonteCarlo :
             self.pace = self.pace_max
         self.nvt_acc = 0
     
-    # uvt proposed structure
     def uvt_propose_structure(self, el, act_p, bvo) : # el is of el_info class # act_p defines probability for different actions, [0]: move, [1]: swap, [2]: jump, [3]: add, [4]: remove      
+        '''
+            uvt proposed structure based on random moves, deletes, inserts
+        '''
         act_pp = np.array(act_p)
         #------------------------------------------adjust act_p-----------------------------------------------------------------
         # avoid swapping action if only one element is removable(swappable)
@@ -314,7 +316,7 @@ class MonteCarloLammps( MonteCarlo ):
         np.append( self.proposed_xsf.num_each_element, lmp.numpy.extract_variable("nC") )
         return self.proposed_xsf
         
-def main():
+def main_test():
     '''
     main function for debugging lammps functionality
     '''
@@ -340,4 +342,4 @@ def main():
         
 # if running this as main, create a instance of MC for testing
 if __name__ == "__main__":
-    main()
+    main_test()

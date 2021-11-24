@@ -23,7 +23,6 @@ el_filename    = sys.argv[2] # read element list filename
 lmp_init       = ""
 dump_file      = ""
 step_max       = 5000
-biasProposals = False       # don't use lammps, just the basic random structure proposal
 
 #############################
 # SET SIMULATION PARAMETERS #
@@ -47,6 +46,7 @@ nkdiv    = 1
 ndiag    = 144
 
 useQE = False						# parameter to check if Quantum Espresso i.e. DFT calculations should be used
+biasProposals = False       # don't use lammps, just the basic random structure proposal
 
 ###########################
 # GET ELEMENT INFORMATION #
@@ -70,6 +70,8 @@ bvo = BondValence()
 ###################################
 mc_run = MonteCarlo(T_move, max_disp, xsf)
 
+
+# I shouldn't need to directly instantiate lammps
 lmp = lammps()
 lmp.file(lmp_init)
 		
