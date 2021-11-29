@@ -1,3 +1,3 @@
 # index element mass       ideal-nn rmin rmax prob-add
-  0     Ag      196.966543 3        1.5  3.0  0.50
-  1     O       15.9994    3        1.5  3.0  0.50
+  0     Si      28.0855    4        1.5  3.0  0.50
+  1     C       12.0107    4        1.5  3.0  0.50

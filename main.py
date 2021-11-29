@@ -7,7 +7,8 @@ from input_output import qe_out_info, make_qe_in
 from input_output import init_log, upd_log
 from input_output import init_axsf, upd_axsf
 from mc import MonteCarlo
-from bv import bv
+from structure import *
+from bv import BondValence
 import os
 import numpy as np
 import subprocess
@@ -16,7 +17,7 @@ from lammps import lammps
 
 ####################
 # READ INPUT FILES #
-####################
+####################  
 xsf_filename   = sys.argv[1] # read xsf filename
 el_filename    = sys.argv[2] # read element list filename
 
@@ -45,7 +46,7 @@ nproc    = 144
 nkdiv    = 1
 ndiag    = 144
 
-useQE = False						# parameter to check if Quantum Espresso i.e. DFT calculations should be used
+useQE = True						# parameter to check if Quantum Espresso i.e. DFT calculations should be used
 biasProposals = False       # don't use lammps, just the basic random structure proposal
 
 ###########################
@@ -57,7 +58,7 @@ el = Element_info(el_filename, T_move)
 # GET STRUCTURAL INFORMATION #
 ##############################
 if useQE:
-	xsf = Structure_xsf(xsf_filename, el, buf_len)
+	xsf = Structure(xsf_filename, el, buf_len)
 else:
 	xsf = None
 ####################################
@@ -80,12 +81,15 @@ lmp.file(lmp_init)
 ###################################
 os.system('mkdir -p tmp')                                              # make temporary directory for qe calculations
 os.chdir('tmp')                                                        # enter temp
-log_file              = init_log('log.dat')                             # initialize log file
-axsf_opt_file         = init_axsf('coord_opt.axsf', niter, xsf)         # "        " axsf file recording optimized structure
-axsf_new_file         = init_axsf('coord_new.axsf', niter, xsf)         # "                            " structure created in current iteration
-axsf_accept_file      = init_axsf('coord_accept.axsf', niter, xsf)      # "                                      " accepted in current iteration
-axsf_failed_file      = init_axsf('coord_failed.axsf', niter, xsf)      # initialize axsf file recording structure failed in qe
-axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
+try:
+  log_file              = init_log('log.dat')                             # initialize log file
+  axsf_opt_file         = init_axsf('coord_opt.axsf', niter, xsf)         # "        " axsf file recording optimized structure
+  axsf_new_file         = init_axsf('coord_new.axsf', niter, xsf)         # "                            " structure created in current iteration
+  axsf_accept_file      = init_axsf('coord_accept.axsf', niter, xsf)      # "                                      " accepted in current iteration
+  axsf_failed_file      = init_axsf('coord_failed.axsf', niter, xsf)      # initialize axsf file recording structure failed in qe
+  axsf_failed_iter_file = init_axsf('coord_failed_iter.axsf', niter, xsf) # initialize axsf file recording structure failed in qe
+except:
+  print("xsf doesn't exist!")
 
 failed_cnt = 0
 for i in range(niter) :

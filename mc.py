@@ -292,7 +292,9 @@ class MonteCarloLammps( MonteCarlo ):
             chain with a classical hamiltonian
             It should be a close approximation of the QM-accurate states
         """
+        step_interval = 100
         step = np.random.randint(step_max)
+        #step = step*step_interval
         print("step:", step)
         command = "read_dump " + dump_file + " " + str(step) + " x y z purge yes replace no add yes box no scaled no format xyz"
         print("LAMMPS COMMAND:", command)
@@ -322,9 +324,9 @@ def main_test():
     '''
     from lammps import lammps
     el_filename = "el_list.txt"
-    lmp_init   = "lammps/gcmc.init"
-    dump_file      = "lammps/gcmc.dump"
-    step_max       = 750
+    lmp_init   = "gcmc.init"
+    dump_file      = "gcmc.dump"
+    step_max       = 25
     T = 500
     niter    = 100
     mc_run = MonteCarloLammps(T, 0.5)

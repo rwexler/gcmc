@@ -75,12 +75,12 @@ class Structure:
         self.vol         = 0                              # volume of variable composition region
         if filename is not None:
             # get number of atoms
-            self.set_num_atoms(self, filename)
+            self.set_num_atoms(filename)
             # get lattice vectors
-            self.set_lat_vecss(self, filename)
+            self.set_lat_vecs(filename)
             if el is not None:    
                 # get atom related attributes
-                self.set_atom_attrs(self, filename, el)               
+                self.set_atom_attrs(filename, el)               
             self.get_c_min_max(buf_len)
             self.get_r_min_max(buf_len)
             self.get_vol()
