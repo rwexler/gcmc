@@ -1,0 +1,83 @@
+#######################################
+#	Cubic Silicon Carbide (3C-SiC) 100 Facet
+# Fix GCMC Test
+#	Using Tersoff Potential
+#######################################
+
+units		metal
+atom_style	atomic
+dimension	3
+boundary	p p p
+
+variable            dumpFile equal "muSi-5.80_muC-5.85_seed3.xyz"
+
+variable			massSi equal 28.086000
+variable			massC equal 12.011150
+variable			lat_const equal 4.3596
+
+variable			myTemp equal 500
+variable			lbox equal 5.0
+
+# Lattice Constants a = 4.3596 A c = 4.3596 A for 100 3C-SiC
+lattice custom ${lat_const} &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.5 0.0 0.5 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25  &
+basis 0.75 0.25 0.75  &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.75 0.25 & 
+orient x 1 0 0	&
+orient y 0 1 0 &
+orient z 0 0 1
+
+# make the z direction twice as long
+region whole block 0 ${lbox} 0 ${lbox} -${lbox} ${lbox} units lattice
+create_box 4 whole
+
+mass 1  ${massSi}
+mass 2  ${massC}
+mass 3 ${massSi}
+mass 4 ${massC}
+
+group				groupSi type 1 
+group				groupC type 2 
+
+variable			nSi equal count(groupSi)
+variable			nC equal count(groupC)
+
+# ---------- Define Interatomic Potential --------------------- 
+#pair_style 		tersoff
+#pair_coeff		 * * ..//SiC.tersoff Si C Si C
+#neighbor			5.0 bin
+#neigh_modify	delay 0 every 1 check yes
+# velocity			all create ${myTemp}$ 12345
+
+log					rdf.log
+
+# print					"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"
+
+timestep			0.0001
+
+# compute			mdtemp all temp
+# compute_modify	mdtemp dynamic/dof yes
+
+compute             myRDF all rdf 10 cutoff 5.0
+fix                 fix1 all ave/time 100 1 100 c_myRDF[*] file tmp_all.rdf mode vector
+
+group               slabGroup dynamic region slabRegion
+
+compute             slabRDF slabGroup rdf 10 cutoff 5.0
+fix                 fix1 all ave/time 100 1 100 c_slabRDF[*] file tmp_slab.rdf mode vector
+
+thermo			    10
+thermo_style	    custom step temp pe v_nSi v_nC 
+
+#read_dump          $(dump_file) $(step) x y z purge yes replace no add yes box no scaled no format xyz
+
+rerun               $(dump_file) first 0 last 10 dump x y z purge yes replace no add yes box no scaled no format xyz
+
