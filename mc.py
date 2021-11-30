@@ -50,14 +50,14 @@ class MonteCarlo :
     # propose new coords
     def propose_coords(self) :
         # number of atoms to move
-        self.at_mv_num = np.random.randint(1, current_xsf.atom_num + 1)
-        if self.at_mv_num == xsf.atom_num :
+        self.at_mv_num = np.random.randint(1, self.current_xsf.atom_num + 1)
+        if self.at_mv_num == self.current_xsf.atom_num :
             self.at_mv_ind = np.array(range(self.at_mv_num))
         else :
-             self.at_mv_ind = np.array(random.sample(range(current_xsf.atom_num), self.at_mv_num))
+             self.at_mv_ind = np.array(random.sample(range(self.current_xsf.atom_num), self.at_mv_num))
         self.at_mv_vec = (np.random.rand(self.at_mv_num, 3) * 2 - 1) * self.pace
 
-        self.proposed_xsf = current_xsf.copy()
+        self.proposed_xsf = self.current_xsf.copy()
         for i, ind in enumerate(self.at_mv_ind) :
             self.proposed_xsf.atom_coords[ind, :] += self.at_mv_vec[i, :]
     
@@ -77,12 +77,15 @@ class MonteCarlo :
             uvt proposed structure based on random moves, deletes, inserts
         '''
         act_pp = np.array(act_p)
+        # shorthand for the current structure, and also to be compatible with how Rob wrote the code
+        # before I functionalized it and made it more like OOP
+        xsf = self.current_xsf
         #------------------------------------------adjust act_p-----------------------------------------------------------------
         # avoid swapping action if only one element is removable(swappable)
         if act_pp[1] > 0 :
             el_swap_num = 0
-            for i in range(len(xsf.atoms_swap)) :
-                if len(xsf.atoms_swap[i]) > 0 :
+            for i in range(len(self.current_xsf.atoms_swap)) :
+                if len(self.current_xsf.atoms_swap[i]) > 0 :
                     el_swap_num += 1
             if el_swap_num <= 1 :
                 act_pp[1] = 0
@@ -90,21 +93,21 @@ class MonteCarlo :
         if act_pp[2] > 0 :
             # choose atom to jump
             at_neighbor_list = bvo.at_all_nn(xsf)
-            at_neighbor_pref = np.zeros(xsf.atom_num).astype('int')
-            for i in range(xsf.atom_num) :
-                el_ind = xsf.at_type[i]
+            at_neighbor_pref = np.zeros(self.current_xsf.atom_num).astype('int')
+            for i in range(self.current.xsf.atom_num) :
+                el_ind = self.current_xsf.at_type[i]
                 at_neighbor_pref[i] = el.pref_nn[el_ind]
             weight = np.power((at_neighbor_list - at_neighbor_pref),4).astype('float')
             if np.sum(weight) != 0 :
                 weight /= np.sum(weight)
                 jump_at_ind = np.random.choice(range(xsf.atom_num), 1, p=weight)[0]
-                jump_el_ind = xsf.at_type[jump_at_ind]
+                jump_el_ind = self.current.xsf.at_type[jump_at_ind]
                 """choose site to jump to"""
                 for i in np.arange(xsf.vol * 1000) : 
                     jump_vec = np.zeros(3)
-                    jump_vec += np.random.rand() * xsf.lat_vec[0]
-                    jump_vec += np.random.rand() * xsf.lat_vec[1]
-                    jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
+                    jump_vec += np.random.rand() * xsf.lat_vecs[0]
+                    jump_vec += np.random.rand() * xsf.lat_vecs[1]
+                    jump_vec += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vecs[2]) * xsf.lat_vecs[2]
                     jump_neighbor = bvo.at_single_nn(xsf, jump_at_ind, jump_vec)
                     if (jump_neighbor == el.pref_nn[jump_el_ind]) : 
                         break
@@ -119,14 +122,16 @@ class MonteCarlo :
         # also avoid adding if could not find a site based on coordination rule
         if act_pp[3] > 0 :
             at_add = xsf.atom_num # index of atom to be added
-            self.uvt_el_exc  = np.random.choice(range(el.num), 1, p=el.p_add)[0]   # find the element index
+            #print("el.num:", np.arange(el.num))
+            #print("el.p_add:", el.p_add)
+            self.uvt_el_exc  = np.random.choice(el.num, 1, p=el.p_add)[0]   # find the element index
             dis = 0
             trial = 0
             while dis < el.r_min[self.uvt_el_exc] or dis > el.r_max[self.uvt_el_exc] : # control atom distance
                 at_add_coord  = np.zeros(3)
-                at_add_coord += np.random.rand() * xsf.lat_vec[0] 
-                at_add_coord += np.random.rand() * xsf.lat_vec[1]
-                at_add_coord += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vec[2]) * xsf.lat_vec[2]
+                at_add_coord += np.random.rand() * xsf.lat_vecs[0] 
+                at_add_coord += np.random.rand() * xsf.lat_vecs[1]
+                at_add_coord += (np.random.rand() * (xsf.c_max - xsf.c_min) + xsf.c_min) / np.linalg.norm(xsf.lat_vecs[2]) * xsf.lat_vecs[2]
                 dis = min([np.linalg.norm(at_add_coord - xsf.atom_coords[ind]) for ind in range(xsf.atom_num)])
                 trial += 1
                 if trial >= 100000 :
@@ -137,7 +142,7 @@ class MonteCarlo :
                 act_pp[3] = 0
         # avoid removing action if no removable atoms
         if act_pp[4] > 0 :
-            if len(xsf.atoms_rm) == 0 : 
+            if len(xsf.atoms_removable) == 0 : 
                 act_pp[4] = 0
         # normalize act_p, and make it accumalate probability
         act_pp = act_pp / float(np.sum(act_pp))
@@ -182,9 +187,9 @@ class MonteCarlo :
         elif cndt < act_pp[3] : 
             self.uvt_act        = 3
             self.uvt_at_exc_num = 1
-            self.proposed_xsf.atom_coords = np.vstack((current_xsf.atom_coords, at_add_coord))   # add coordinates to xsf
-            self.proposed_xsf.at_type  = np.append(current_xsf.at_type, self.uvt_el_exc)  # add atom to the atom list
-            self.proposed_xsf.atoms_rm   = np.append(current_xsf.atoms_rm, at_add)             # add atom to removable atom array
+            self.proposed_xsf.atom_coords = np.vstack((self.current_xsf.atom_coords, at_add_coord))   # add coordinates to xsf
+            self.proposed_xsf.atom_type  = np.append(self.current_xsf.atom_type, self.uvt_el_exc)  # add atom to the atom list
+            self.proposed_xsf.atoms_rm   = np.append(self.current_xsf.atoms_removable, at_add)             # add atom to removable atom array
             self.proposed_xsf.atoms_swap[self.uvt_el_exc].append(at_add)              # add atom to swappable atom list
             self.proposed_xsf.num_each_element[self.uvt_el_exc] += 1                   # increase the number of that element
             self.proposed_xsf.atom_num += 1                                         # increase the total number of atoms
@@ -193,14 +198,17 @@ class MonteCarlo :
         else :             
             self.uvt_act        = 4
             self.uvt_at_exc_num = -1
-            at_rm = random.choice(curent_xsf.atoms_rm)                           # index of atom to be removed
-            self.uvt_el_exc = current_xsf.at_type[at_rm]                        # element index
+            at_rm = random.choice(self.current_xsf.atoms_removable)                           # index of atom to be removed
+            self.uvt_el_exc = self.current_xsf.atom_type[at_rm]                        # element index
             self.proposed_xsf.atom_coords = np.delete(xsf.atom_coords, at_rm, 0)   # remove the coordinates
-            self.proposed_xsf.at_type = np.delete(xsf.at_type, at_rm, 0)     # remove the atom from atoms list
+            self.proposed_xsf.atom_type = np.delete(xsf.atom_type, at_rm, 0)     # remove the atom from atoms list
             self.proposed_xsf.num_each_element[self.uvt_el_exc] -= 1              # decrease the number of that element
             self.proposed_xsf.atom_num -= 1                                    # decrease the total number of atoms
-            self.proposed_xsf.atoms_rm = np.append(xsf.atoms_rm[xsf.atoms_rm < at_rm], xsf.atoms_rm[xsf.atoms_rm > at_rm] - 1) # remove the atom from removable atoms
-            self.proposed_xsf.atoms_swap[self.uvt_el_exc].remove(at_rm)         # remove the atom from swappable atoms
+            self.proposed_xsf.atoms_removable = np.append(xsf.atoms_removable[xsf.atoms_removable < at_rm], xsf.atoms_removable[xsf.atoms_removable > at_rm] - 1) # remove the atom from removable atoms
+            # I don't think we always require that the removed atom
+            # be in the swappable list, so this throws a ValueError if x is not in list
+            if at_rm in self.proposed_xsf.atoms_swap[self.uvt_el_exc]:
+                self.proposed_xsf.atoms_swap[self.uvt_el_exc].remove(at_rm)         # remove the atom from swappable atoms
             for i in range(len(self.proposed_xsf.atoms_swap)) :                        # remove the atom from swappable atoms
                 for j in range(len(self.proposed_xsf.atoms_swap[i])) :
                     if self.proposed_xsf.atoms_swap[i][j] > at_rm :
@@ -292,7 +300,7 @@ class MonteCarloLammps( MonteCarlo ):
             chain with a classical hamiltonian
             It should be a close approximation of the QM-accurate states
         """
-        step_interval = 100
+        #step_interval = 10.0
         step = np.random.randint(step_max)
         #step = step*step_interval
         print("step:", step)
@@ -302,9 +310,13 @@ class MonteCarloLammps( MonteCarlo ):
         natoms = lmp.get_natoms()
         print("natoms", natoms)
         self.proposed_xsf = Structure(filename = None, el = el, natoms = natoms)
+        # this assumes that the lattice vectors to do change from one snapshot to the next
+        # i.e. no variable cells
+        self.proposed_xsf.lat_vecs = self.current_xsf.lat_vecs.copy()
         self.proposed_xsf.atom_coords = lmp.numpy.extract_atom("x")
-        self.proposed_xsf.atom_type = lmp.numpy.extract_atom("type")
+        self.proposed_xsf.atom_type = lmp.numpy.extract_atom("type").flatten()
         print("Atom coords:", self.proposed_xsf.atom_coords)
+        print("Atom types:", self.proposed_xsf.atom_type)
         # print("One atom's coord:", 
         #    self.proposed_xsf.atom_coords[1][0], self.proposed_xsf.atom_coords[1][1], self.proposed_xsf.atom_coords[1][2])
         # print("Atom types:", self.proposed_xsf.atom_type)

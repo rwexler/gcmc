@@ -79,10 +79,11 @@ timestep			0.0001
 compute			mdtemp mdatoms temp
 compute_modify	mdtemp dynamic/dof yes
 
-dump                    mydump2 all custom 100 struct.111.xsf type xs ys zs
-run                     1
-undump			mydump2                                                                                                                                                                     
-dump                    mydump all atom 100 struct.111.lmpstrj
+#dump                    mydump2 all custom 100 struct.111.xsf type xs ys zs
+#dump_modify		mydump2 element Si C Si C
+#run                     1
+#undump			mydump2                                                                                                                                                                     
+dump                    mydump all atom 100 struct.111.init
 log                     struct.111.lammp
 
 fix                     mynvt mdatoms nvt temp ${myTemp} ${myTemp} $(100.0*dt) drag 0.0

@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 from lammps import lammps
 
 # global variable definitions
@@ -40,7 +41,7 @@ class Element_info :
                     # maximum neighbor distance
                     self.r_max = np.append(self.r_max, np.array(line.split()[5]).astype('float'))
                     # probablity of choosing elements to add
-            self.p_add = np.append(self.p_add, np.array(line.split()[6]).astype('float'))
+                    self.p_add = np.append(self.p_add, np.array(line.split()[6]).astype('float'))
             self.p_add = self.p_add / np.sum(self.p_add)
         self.update_therm_db(T)
 
@@ -49,7 +50,7 @@ class Element_info :
 
     def update_therm_db(self, T) :
         """function for updating thermal de broglie wavelengths"""
-        if T is not 0:
+        if T != 0:
             self.therm_db = np.sqrt(h ** 2 / (2 * np.pi * self.wt * kb * T)) * 1e10
         else:
             print("Temperature equal to zero! Thermal de Brogle wavelength calculation would cause division by zero")
@@ -59,9 +60,11 @@ class Structure:
     class for representing structure of material, i.e. stores atom coordinates 
     class for representing a structure from xsf file
     """
-    def __init__(self, filename = None, el = None, buf_len = 0, natoms = 0) :       
+    def __init__(self, filename, el, buf_len = 0, natoms = 0) :       
         self.atom_num      = natoms                             # number of atoms
         self.atom_coords    = np.zeros((self.atom_num, 3))               # atomic coordinates        
+        # initialize forces on atoms
+        self.atom_forces = np.zeros((self.atom_num, 3))
         self.atom_type     = np.array([]).astype('int')     # indices of of element symbols
         self.num_each_element = np.array([]).astype('int')     # number of each unique element
         self.atoms_removable      = np.array([]).astype('int')     # indices of removable atoms
@@ -73,18 +76,17 @@ class Structure:
         self.r_min       = 0                              # minimum allowed distance to origin
         self.r_max       = 0                              # maximum allowed distance to origin
         self.vol         = 0                              # volume of variable composition region
-        if filename is not None:
-            # get number of atoms
-            self.set_num_atoms(filename)
-            # get lattice vectors
-            self.set_lat_vecs(filename)
-            if el is not None:    
-                # get atom related attributes
-                self.set_atom_attrs(filename, el)               
+        
+        # get number of atoms
+        # get lattice vectors
+        # get atom related attributes
+        if filename is not None and el is not None: 
+            self.set_attrs(filename, el)               
+        
             self.get_c_min_max(buf_len)
             self.get_r_min_max(buf_len)
             self.get_vol()
-            #self.get_vol_np()
+        #self.get_vol_np()
         
         # initialize forces on atoms
         self.atom_forces = np.zeros((self.atom_num, 3))
@@ -114,18 +116,46 @@ class Structure:
                     self.lat_vecs = np.vstack((self.lat_vecs, np.array([line.split()[0:3]]).astype('float')))
                     break
                     
-    def set_atom_attrs(self, filename, el):
+    '''
+        Set the atom related attributes from the XSF file
+        Arguments:
+            filename -- the input structure in an XSF-formatted file
+            el -- Element_info object that stores constants relating to the elements involved in GCMC
+        Exceptions:
+            el or filename are None
+    '''
+    def set_attrs(self, filename, el):
+        if el is None or filename is None:
+            raise TypeError('NoneType')
         # get atom related attributes
         self.num_each_element = np.zeros(el.num).astype('int')
+        primVecLine = None
+        primCoordLine = None
+        atomIndex = 0
         for t1 in range(el.num) :
             self.atoms_swap.append([])
         with open(filename, 'r') as f :
-            for line in f :
+            for (index, line) in enumerate(f) :
+                if 'PRIMVEC' in line:
+                    primVecLine = index
                 if 'PRIMCOORD' in line :
+                    primCoordLine = index
+                if primVecLine is not None and primCoordLine is not None:
                     break
-            f.next()
-            for at in range(self.atom_num) :
-                for line in f :
+            # go back to the beginning of the file
+            f.seek(0)
+            for (index, line) in enumerate(f):
+                #print("line:\n", line)
+                # set primitive vectors
+                if index > primVecLine and index < primCoordLine:
+                    self.lat_vecs = np.vstack((self.lat_vecs, np.array([line.split()[0:3]]).astype('float')))
+                # set atom number
+                if index == (primCoordLine+1):
+                    self.atom_num = np.array(line.split())[0].astype('int')
+                # PRIMCOORD is the preamble for the primitive coordinates of the cell
+                # the next line is the number of atoms
+                # after that is a description of each atom, per line
+                if index > (primCoordLine+1):
                     # indices of element symbols of atoms
                     self.atom_type = np.append(self.atom_type, el.sym.index(line.split()[0]))
                     # number of each element
@@ -134,11 +164,12 @@ class Structure:
                     self.atom_coords = np.vstack((self.atom_coords, np.array([line.split()[1:4]]).astype('float')))
                     # removable atoms
                     if line.split()[4] != '0' :
-                        self.atoms_rm = np.append(self.atoms_rm, at)
-                    # swappable atoms
+                        self.atoms_removable = np.append(self.atoms_removable, atomIndex)
+                    ## swappable atoms
                     if line.split()[4] != '0' :
-                        self.atoms_swap[el.sym.index(line.split()[0])].append(at)
-                    break
+                        self.atoms_swap[el.sym.index(line.split()[0])].append(atomIndex)
+                    #break
+                    atomIndex += 1
                     
     def get_c_min_max(self, buf_len) :
         """get minimum and maximum projection of atomic coordinates along c"""

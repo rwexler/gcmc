@@ -13,8 +13,8 @@ variable			seed1 index 12345
 variable 			seed2 index 98765
 variable			suffix index ""
 # these are index variables in case they are to be iterated over or set from the commandline"
-variable			si_mu_ex index 5.0
-variable			c_mu_ex index 5.5
+variable			si_mu_ex index -5.0
+variable			c_mu_ex index -5.5
 
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
@@ -106,6 +106,8 @@ neigh_modify			delay 0 every 1 check yes exclude type 3 3 exclude type 4 4
 velocity			mdatoms create ${myTemp} ${seed1}
 
 dump				mydump all xyz 100 muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)${suffix}.xyz
+dump_modify                     mydump element Si C Si C
+
 log				muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)${suffix}.lammps
 
 print				"muSi $(v_si_mu:%2.2f) and muC $(v_c_mu:%2.2f)"

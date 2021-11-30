@@ -1,0 +1,45 @@
+&CONTROL
+  calculation = 'scf',
+  tprnfor = .true.,
+  prefix = 'qe',
+  etot_conv_thr = 0.00073496986,  ! 0.01 eV / slab
+  forc_conv_thr = 0.003889380791, ! 0.1 eV/Angstrom
+  pseudo_dir = '../PSPs/'
+!  tefield = .true.,
+!  dipfield = .true.,
+/
+
+&SYSTEM
+  ibrav = 0,
+nat = 588,
+  ntyp = 2,
+  ecutwfc = 50,
+  occupations = 'smearing',
+  degauss = 0.00734986449,
+  smearing = 'methfessel-paxton',
+!  edir = 3,
+!  emaxpos = 0.7,
+/
+
+&ELECTRONS
+  electron_maxstep = 200,
+  conv_thr = 0.000073496986,      ! 0.001 eV / slab
+  startingwfc = 'atomic',
+/
+
+&IONS
+/
+
+ATOMIC_SPECIES
+ Ag  196.966543  ag.upf
+ O    15.9994     o.upf
+
+K_POINTS automatic
+3 3 1 0 0 0
+
+CELL_PARAMETERS (angstrom)
+18.0 0.0 0.0
+0.0 18.0 0.0
+0.0 0.0 18.0
+
+ATOMIC_POSITIONS (angstrom)

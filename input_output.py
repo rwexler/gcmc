@@ -56,7 +56,7 @@ def make_qe_in(filename, xsf, el) :
 					break
 				else :
 					f_new.write(line)
-			f_new.write('nat = ' + str(xsf.at_num) + ',\n')
+			f_new.write('nat = ' + str(xsf.atom_num) + ',\n')
 			for line in f_old :
 				if 'CELL_PARAMETERS' in line :
 					f_new.write(line)
@@ -64,9 +64,9 @@ def make_qe_in(filename, xsf, el) :
 				else :
 					f_new.write(line)
 			for row in range(3) :
-				f_new.write(str(xsf.lat_vec[row, 0]) + ' ' +
-							str(xsf.lat_vec[row, 1]) + ' ' +
-							str(xsf.lat_vec[row, 2]) + '\n')
+				f_new.write(str(xsf.lat_vecs[row, 0]) + ' ' +
+							str(xsf.lat_vecs[row, 1]) + ' ' +
+							str(xsf.lat_vecs[row, 2]) + '\n')
 
 			for line in f_old :
 				if 'ATOMIC_POSITIONS' in line :
@@ -74,15 +74,15 @@ def make_qe_in(filename, xsf, el) :
 					break
 				else :
 					f_new.write(line)
-			for row in range(xsf.at_num) :
-				if row in xsf.at_rmb :
+			for row in range(xsf.atom_num) :
+				if row in xsf.atoms_removable :
 					fix_str = ' 1 1 1'
 				else :
 					fix_str = ' 0 0 0'
-				f_new.write(el.sym[xsf.at_type[row]] + ' ' +
-							str(xsf.at_coord[row, 0]) + ' ' +
-							str(xsf.at_coord[row, 1]) + ' ' +
-							str(xsf.at_coord[row, 2]) + fix_str + '\n')
+				f_new.write(el.sym[xsf.atom_type[row]] + ' ' +
+							str(xsf.atom_coords[row, 0]) + ' ' +
+							str(xsf.atom_coords[row, 1]) + ' ' +
+							str(xsf.atom_coords[row, 2]) + fix_str + '\n')
 
 def init_log(filename) :
 	"""function for initializing log file"""
@@ -106,22 +106,22 @@ def init_axsf(filename, niter, xsf) :
 	axsf_file.write('ANIMSTEPS ' + str(niter) + '\n')
 	axsf_file.write('CRYSTAL\n')
 	axsf_file.write('PRIMVEC\n')
-	for row in range(xsf.lat_vec.shape[0]) :
-		axsf_file.write(str(xsf.lat_vec[row, 0]) + ' ' +
-						 str(xsf.lat_vec[row, 1]) + ' ' +
-						 str(xsf.lat_vec[row, 2]) + '\n')
+	for row in range(xsf.lat_vecs.shape[0]) :
+		axsf_file.write(str(xsf.lat_vecs[row, 0]) + ' ' +
+						 str(xsf.lat_vecs[row, 1]) + ' ' +
+						 str(xsf.lat_vecs[row, 2]) + '\n')
 	return axsf_file
 
 def upd_axsf(axsf_file, iter, xsf, el) :
 	"""function for updating axsf file"""
 	axsf_file.write('PRIMCOORD ' + str(iter + 1) + '\n')
-	axsf_file.write(str(xsf.at_num) + ' 1\n')
-	for row in range(xsf.at_coord.shape[0]) :
-		axsf_file.write(el.sym[xsf.at_type[row]] + ' ' +
-						str(xsf.at_coord[row, 0]) + ' ' +
-						str(xsf.at_coord[row, 1]) + ' ' +
-						str(xsf.at_coord[row, 2]) + ' ' +
-						str(xsf.at_force[row, 0]) + ' ' +
-						str(xsf.at_force[row, 1]) + ' ' +
-						str(xsf.at_force[row, 2]) + '\n')
+	axsf_file.write(str(xsf.atom_num) + ' 1\n')
+	for row in range(xsf.atom_coords.shape[0]) :
+		axsf_file.write(el.sym[xsf.atom_type[row]] + ' ' +
+						str(xsf.atom_coords[row, 0]) + ' ' +
+						str(xsf.atom_coords[row, 1]) + ' ' +
+						str(xsf.atom_coords[row, 2]) + ' ' +
+						str(xsf.atom_forces[row, 0]) + ' ' +
+						str(xsf.atom_forces[row, 1]) + ' ' +
+						str(xsf.atom_forces[row, 2]) + '\n')
 	axsf_file.flush()
