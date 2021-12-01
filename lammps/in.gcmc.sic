@@ -11,16 +11,16 @@ boundary	p p f
 
 variable			seed1 index 12345
 variable 			seed2 index 98765
-variable			suffix index ""
+variable			suffix index "_100" #""
 # these are index variables in case they are to be iterated over or set from the commandline"
-variable			si_mu_ex index -5.0
-variable			c_mu_ex index -5.5
+variable			si_mu_ex index -3.0
+variable			c_mu_ex index -3.5
 
 variable			massSi equal 28.086000
 variable			massC equal 12.011150
 variable			lat_const equal 4.3596
 
-variable			myTemp equal 1600
+variable			myTemp equal 1200
 variable			pressSi equal 0.1
 variable 			pressC equal 0.1
 # typical interatomic distance for displacement
@@ -51,9 +51,12 @@ basis 0.25 0.25 0.25  &
 basis 0.75 0.25 0.75  &
 basis 0.25 0.75 0.75 &
 basis 0.75 0.75 0.25 & 
-orient x 1 -1 0	&
-orient y 1 1 -2 &
-orient z 1 1 1
+orient x 1 0 0 &
+orient y 0 1 0 &
+orient z 0 0 1
+#orient x 1 -1 0	&
+#orient y 1 1 -2 &
+#orient z 1 1 1
 
 # make the z direction twice as long
 # The box extends 1 lattice unit 4.5 A above the surface
@@ -70,7 +73,8 @@ mass 3 ${massSi}
 mass 4 ${massC}
 
 #read_dump		dumps/struct.init 10000 x y z add yes
-read_dump		struct.111.init 10000 x y z add yes
+#read_dump		struct.111.init 10000 x y z add yes
+read_dump               struct.100.init 10000 x y z add yes
 reset_timestep		0
 
 # create_atoms		1 random 2 12345 add
@@ -106,7 +110,7 @@ neigh_modify			delay 0 every 1 check yes exclude type 3 3 exclude type 4 4
 velocity			mdatoms create ${myTemp} ${seed1}
 
 dump				mydump all xyz 100 muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)${suffix}.xyz
-dump_modify                     mydump element Si C Si C
+#dump_modify                     mydump element Si C Si C
 
 log				muSi$(v_si_mu:%2.2f)_muC$(v_c_mu:%2.2f)${suffix}.lammps
 

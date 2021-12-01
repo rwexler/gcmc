@@ -82,4 +82,4 @@ thermo			100
 thermo_modify temp mdtemp
 run					10000
 
-write_dump		all atom struct.init
+write_dump		all atom struct.100.init
