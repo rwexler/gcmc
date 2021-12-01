@@ -85,6 +85,9 @@ FixCBGCMC::FixCBGCMC(LAMMPS *lmp, int narg, char **arg) :
   extvector = 0;
   restart_global = 1;
   time_depend = 1;
+  
+  // Will added this to keep a pointer to the lammps object around to call minimize
+  lmp_ptr = lmp;
 
   // required args
 
@@ -902,14 +905,36 @@ void FixCBGCMC::attempt_atomic_deletion()
   int i = pick_random_gas_atom();
 
   int success = 0;
+  
   if (i >= 0) {
+
     double deletion_energy = energy(i,ngcmc_type,-1,atom->x[i]);
+    
     if (random_unequal->uniform() <
         ngas*exp(beta*deletion_energy)/(zz*volume)) {
       atom->avec->copy(atom->nlocal-1,i,1);
       atom->nlocal--;
       success = 1;
     }
+    else {
+        // reset the atom positions
+        for (int i = 0; i < atom->nlocal; i++) {
+            atom->x[i][0] = stored_x[i][0];
+            atom->x[i][1] = stored_x[i][1];
+            atom->x[i][2] = stored_x[i][2];
+            
+            atom->v[i][0] = stored_v[i][0];
+            atom->v[i][1] = stored_v[i][1];
+            atom->v[i][2] = stored_v[i][2];
+        }
+      }
+      for(int i = 0; i < atom->nlocal; i++) {
+            delete stored_x[i];
+            delete stored_v[i];
+      }
+      delete stored_x;
+      delete stored_v;
+  
   }
 
   int success_all = 0;
@@ -998,6 +1023,7 @@ void FixCBGCMC::attempt_atomic_insertion()
       if (ii >= atom->nmax) atom->avec->grow(0);
       atom->q[ii] = charge;
     }
+
     double insertion_energy = energy(ii,ngcmc_type,-1,coord);
 
     if (insertion_energy < MAXENERGYTEST &&
@@ -1022,8 +1048,7 @@ void FixCBGCMC::attempt_atomic_insertion()
 
       success = 1;
     }
-  }
-
+  
   int success_all = 0;
   MPI_Allreduce(&success,&success_all,1,MPI_INT,MPI_MAX,world);
 
@@ -1595,6 +1620,26 @@ void FixCBGCMC::attempt_atomic_deletion_full()
   }
   if (force->kspace) force->kspace->qsum_qsq();
   if (force->pair->tail_flag) force->pair->reinit();
+        
+  double** stored_x = new double*[atom->nlocal];
+  double** stored_v = new double*[atom->nlocal];
+  for(int i = 0; i < atom->nlocal; i++) {
+    stored_x[i] = new double[3];
+    stored_v[i] = new double[3];
+  } 
+  // store original positions
+  for (int i = 0; i < atom->nlocal; i++) {
+    stored_x[i][0] = atom->x[i][0];
+    stored_x[i][1] = atom->x[i][1];
+    stored_x[i][2] = atom->x[i][2];
+    
+    stored_v[i][0] = atom->v[i][0];
+    stored_v[i][1] = atom->v[i][1];
+    stored_v[i][2] = atom->v[i][2];
+  }
+  // first minimize the structure before calculating the energy
+  lmp_ptr->input->one("1.0e-2 1.0e-4 100 1000");  
+  
   double energy_after = energy_full();
 
   if (random_equal->uniform() <
@@ -1615,7 +1660,25 @@ void FixCBGCMC::attempt_atomic_deletion_full()
     if (force->kspace) force->kspace->qsum_qsq();
     if (force->pair->tail_flag) force->pair->reinit();
     energy_stored = energy_before;
+    
+    // reset the atom positions
+    for (int i = 0; i < atom->nlocal; i++) {
+      atom->x[i][0] = stored_x[i][0];
+      atom->x[i][1] = stored_x[i][1];
+      atom->x[i][2] = stored_x[i][2];
+            
+      atom->v[i][0] = stored_v[i][0];
+      atom->v[i][1] = stored_v[i][1];
+      atom->v[i][2] = stored_v[i][2];
+    }
   }
+  for(int i = 0; i < atom->nlocal-1; i++) {
+    delete stored_x[i];
+    delete stored_v[i];
+  }
+  delete stored_x;
+  delete stored_v;
+   
   update_gas_atoms_list();
 }
 
@@ -1712,6 +1775,26 @@ void FixCBGCMC::attempt_atomic_insertion_full()
   
   if (force->kspace) force->kspace->qsum_qsq();
   if (force->pair->tail_flag) force->pair->reinit();
+      
+  double** stored_x = new double*[atom->nlocal];
+  double** stored_v = new double*[atom->nlocal];
+  for(int i = 0; i < atom->nlocal; i++) {
+    stored_x[i] = new double[3];
+    stored_v[i] = new double[3];
+  } 
+  // store original positions
+  for (int i = 0; i < atom->nlocal; i++) {
+    stored_x[i][0] = atom->x[i][0];
+    stored_x[i][1] = atom->x[i][1];
+    stored_x[i][2] = atom->x[i][2];
+    
+    stored_v[i][0] = atom->v[i][0];
+    stored_v[i][1] = atom->v[i][1];
+    stored_v[i][2] = atom->v[i][2];
+  }
+  // first minimize the structure before calculating the energy
+  lmp_ptr->input->one("1.0e-2 1.0e-4 100 1000");  
+  
   double energy_after = energy_full();
 
   if (energy_after < MAXENERGYTEST &&
@@ -1726,7 +1809,25 @@ void FixCBGCMC::attempt_atomic_insertion_full()
     if (force->kspace) force->kspace->qsum_qsq();
     if (force->pair->tail_flag) force->pair->reinit();
     energy_stored = energy_before;
+    
+    // reset the atom positions
+    for (int i = 0; i < atom->nlocal; i++) {
+      atom->x[i][0] = stored_x[i][0];
+      atom->x[i][1] = stored_x[i][1];
+      atom->x[i][2] = stored_x[i][2];
+            
+      atom->v[i][0] = stored_v[i][0];
+      atom->v[i][1] = stored_v[i][1];
+      atom->v[i][2] = stored_v[i][2];
+    }
   }
+  for(int i = 0; i < atom->nlocal-1; i++) {
+    delete stored_x[i];
+    delete stored_v[i];
+  }
+  delete stored_x;
+  delete stored_v;
+    
   update_gas_atoms_list();
 }
 

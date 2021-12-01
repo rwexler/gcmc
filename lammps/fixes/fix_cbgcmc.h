@@ -50,6 +50,8 @@ class FixCBGCMC : public Fix {
 
   int check_cutoffs(double *);
   
+  class LAMMPS* lmp_ptr;
+  
   double energy_full();
   int pick_random_gas_atom();
   tagint pick_random_gas_molecule();
